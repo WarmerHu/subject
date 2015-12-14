@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$','django.views.static.serve',),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'exercise.views.index'),
+    url(r'^elist/p1(\d+)/$', 'exercise.views.get_title'),
 )

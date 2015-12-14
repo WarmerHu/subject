@@ -1,6 +1,9 @@
 #coding=utf-8
 from django.shortcuts import render, render_to_response
 from django.template.context import RequestContext
+from exercise.dao import read_a_title
+from django.http.response import HttpResponse
+import json
 
 # Create your views here.
 '''
@@ -12,3 +15,8 @@ from django.template.context import RequestContext
 '''
 def index(req):
     return render_to_response('test.html',RequestContext(req))
+
+
+def get_title(req,param):
+    rsp = read_a_title(param)
+    return HttpResponse(json.dumps(rsp), content_type="application/json")
