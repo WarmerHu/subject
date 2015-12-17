@@ -10,9 +10,11 @@ from subject.models import Exercise
 读取1条题目:迭代一——按顺序读取一条数据
 '''
 def read_a_title(req=1):
-    e = Exercise.objects.all()[req:req]
+    e = Exercise.objects.all()[req-1:req]
+    print e
     rsp = {}
-    rsp['id'] = e.id
-    rsp['title'] = e.title
-    rsp['answer'] = e.answer
+    for v in e:
+        rsp['id'] = v.id
+        rsp['title'] = v.title
+        rsp['answer'] = (v.answer).encode('utf8')
     return rsp

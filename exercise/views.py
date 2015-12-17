@@ -14,9 +14,14 @@ import json
     3.校准答案
 '''
 def index(req):
-    return render_to_response('test.html',RequestContext(req))
+    return render_to_response('index.html',RequestContext(req))
 
+def into_title(req):
+    rsp = read_a_title()
+    return render_to_response('title.html',{'rsp':rsp},RequestContext(req))
 
+#获取一条题目
 def get_title(req,param):
     rsp = read_a_title(param)
     return HttpResponse(json.dumps(rsp), content_type="application/json")
+
