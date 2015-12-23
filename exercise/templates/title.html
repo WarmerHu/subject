@@ -27,20 +27,33 @@
   <meta name="msapplication-TileColor" content="#0e90d2">
   <link rel="stylesheet" href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css" />
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="{{STATIC_URL}}jquery/title.js">  </script>
   <script>
-  $(function() {
-		$("#sub-val").click(function() {
-			if({{rsp.answer}}==$('#sub-ans').val()){
-				$.ajax({
+    	  $(
+  			  function () {
+  		$("#sub-val").bind("click",function() {
+  			if("daf" != $('#sub-ans').val()){
+				$('#tips').html(josnData.tips);
+			}
+  			else{
+  				$.ajax({
 			        type: 'GET',
-			        url: '/elist/{{rsp.id}}+1',
-//			        获取返回的json
-//			        将数据放入title中
-//			        清空answer输入框
-			      });
+			        url: '/elist/jsonData.id +1',
+			        dataType: 'json',
+			        timeout: 1000,
+			        error: function(){
+			        	alert("获取下一题失败");
+			        },
+			        success: function(data){
+			        	$('#title').html(data.title);
+			        	$("input[name='answer']").val("").focus();
+		  				jsonDate = data;
+			        }
+			      })
 			 }
 		})
-	})
+	}
+  			  )
   </script>
 </head>
 <body>
@@ -88,20 +101,18 @@
   <div class="col-ms-10 col-md-6">
     
     
-    
-    <form method="post" action=""> <input type='hidden' name='csrfmiddlewaretoken' value='WXxL1hnit3PZ5a18BzHZek0Z6oHQpb5O' />
+    <div class="alert alert-danger" id="tips"></div>
+     <input type='hidden' name='csrfmiddlewaretoken' value='' />
       <input name="problem_id" type="hidden" value="11" />
-      <pre>
-      {{rsp.title}}
-</pre>
+      <pre><div id="title">
+      </div></pre>
       <div class="input-group">
         <span class="input-group-addon">答案</span>
         <input id="sub-ans" name="answer" type="text" class="form-control" />
       </div>
       <br />
       <br />
-      <input type="submit" class="btn btn-primary btn-lg btn-block" id="sub-val" value="提交"/>
-    </form>
+      <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >提交</button>
     <br />
     <a href="/forum/">实在搞不懂?去论坛问问别人?</a>
     <a href="/examination/exercise/contribute/" class="pull-right">我要出题!</a>

@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'exercise.views.index'),
     url(r'^title$', 'exercise.views.into_title'),
-    url(r'^elist/p1(\d+)/$', 'exercise.views.get_title'),
+    url(r'^elist/(.+)/$', 'exercise.views.get_title'),
+    url(r'^elist/$', 'exercise.views.check_answer'),
 )

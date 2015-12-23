@@ -18,7 +18,7 @@ def index(req):
 
 def into_title(req):
     rsp = read_a_title()
-    return render_to_response('title.html',{'rsp':rsp},RequestContext(req))
+    return render_to_response('title.html',RequestContext(req))
 
 #获取一条题目
 def get_title(req,param):

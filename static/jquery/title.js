@@ -1,13 +1,21 @@
-$(function() {
-		$("#sub-val").click(function() {
-			if({{rsp.answer}}==$('#sub-ans').val()){
-				$.ajax({
-			        type: 'GET',
-			        url: '/elist/{{rsp.id}}+1',
-//			        获取返回的json
-//			        将数据放入title中
-//			        清空answer输入框
-			      });
-			 }
-		})
-	})
+  
+var jsonData = {};
+$(function()
+  	{$('#tips').hide();}
+  	)
+  	
+  	$(function(){
+  		$.ajax({
+  			type:"GET",
+  			url:"/elist/1",
+  			dataType:"json",
+  			success:function(data){
+  				$('#title').html(data.title);
+  				jsonDate = data;
+  			},
+  			error:function(){
+  				alert("失败");
+  			}
+  		})
+  	})
+  	
