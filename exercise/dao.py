@@ -15,8 +15,8 @@ def read_a_title(req=1):
     for v in e:
         rsp['id'] = v.id
         rsp['title'] = v.title
-#        rsp['answer'] = (v.answer).encode('utf8')
-#        rsp['tips'] = v.tips
+        rsp['answer'] = (v.answer).encode('utf8')
+        rsp['tips'] = v.tips
     return rsp
 
 def get_answer_byId(req):

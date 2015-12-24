@@ -25,3 +25,6 @@ def get_title(req,param):
     rsp = read_a_title(param)
     return HttpResponse(json.dumps(rsp), content_type="application/json")
 
+#def check_answer(req):
+    
+

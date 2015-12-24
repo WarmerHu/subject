@@ -7,7 +7,7 @@
   <meta name="keywords" content="smart,python题目,mysql题目,smart论坛,程序员,部落">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title> 刷题宝 </title>
+  <title> smart </title>
 
   <!-- Set render engine for 360 browser -->
   <meta name="renderer" content="webkit">
@@ -27,10 +27,7 @@
   <meta name="msapplication-TileColor" content="#0e90d2">
   <link rel="stylesheet" href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css" />
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery-1.9.1.min.js"></script>
-  <script type="text/javascript" src="{{STATIC_URL}}jquery/title.js">  </script>
-  <script type="text/javascript">
-
-  </script>
+  <script type="text/javascript" src="{{STATIC_URL}}jquery/login.js">  </script>
 </head>
 <body>
 <div class="container">
@@ -62,41 +59,60 @@
     </nav>
   </div>
   
-<div class="row">
-  <div class="col-md-12">
-    <ol class="breadcrumb">
-      <li><a href="/">主页</a></li>
-      <li>刷题宝</li>
-    </ol>
-  </div>
-</div>
-<div class="row">
-  <div class="col-ms-1 col-md-3">
-    &nbsp;
-  </div>
-  <div class="col-ms-10 col-md-6">
+<style type="text/css">
+div.topSpace {
+    height: 100px;
+}
+</style>
+<div class="container">
+  <div class="row">
     
-    
-    <div class="alert alert-danger" id="tips"></div>
-     <input type='hidden' name='csrfmiddlewaretoken' value='WXxL1hnit3PZ5a18BzHZek0Z6oHQpb5O' />
-      <input name="problem_id" type="hidden" value="11" />
-      <pre>
-      <div id="title">
-      </div></pre>
-      <div class="input-group">
-        <span class="input-group-addon">答案</span>
-        <input id="sub-ans" name="answer" type="text" class="form-control" />
+  </div>
+  <div class="row">
+  	<div class="col-md-3">
+     &nbsp;
+    </div>
+  	<div class="col-md-6">
+      <div class="topSpace">
+        &nbsp;
       </div>
-      <br />
-      <br />
-      <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >提交</button>
-    <br />
-    <a href="/forum/">实在搞不懂?去论坛问问别人?</a>
-    <a href="/examination/exercise/contribute/" class="pull-right">我要出题!</a>
-    
-  </div>
-  <div class="col-ms-1 col-md-3">
-    &nbsp;
+      <div class="alert alert-danger" id="tips"></div>
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <b>登录</b>
+        </div>
+        <div class="panel-body">
+          <input type='hidden' name='csrfmiddlewaretoken' value='WXxL1hnit3PZ5a18BzHZek0Z6oHQpb5O' />
+          
+          <div class="input-group">
+              <span class="input-group-addon">用户名</span>
+              <input id="id_username" maxlength="254" name="username" type="text" class="form-control" />
+          </div>
+          <br />
+          <div class="input-group">
+              <span class="input-group-addon">密码&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <input id="id_password" name="password" type="password" class="form-control" />
+          </div>
+          <br />
+          <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >登录</button>
+          <input type="hidden" name="next" value="" />
+          </form>
+        </div>
+        <div class="panel-footer">
+          <a href="/user/register">还没有账户?去注册...</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="/accounts/password_reset/">忘记密码!</a>
+        </div>
+      </div>
+    </div>
+  	<div class="col-md-3">
+     &nbsp;
+    </div>
   </div>
 </div>
 
