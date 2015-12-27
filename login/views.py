@@ -20,11 +20,9 @@ def login(req):
 #            password = jsonReq['password']
             user = User.objects.filter(username = userna,password = jsonReq['password'])
             if user:
-                response = HttpResponse()
-                response.set_cookie('name', userna, 3600)
-                return response
+                return HttpResponse(json.dumps({'username':user[0].username,}),content_type='application/json')
             else:
-                return HttpResponse(json.dumps({'error':'error'}),content_type='application/json')
+                return HttpResponse(json.dumps({'error':'请输入正确的账号密码'}),content_type='application/json')
     except:
         import sys
         info = "%s || %s" % (sys.exc_info()[0], sys.exc_info()[1])
@@ -32,7 +30,27 @@ def login(req):
     
     
 def logout(req):
-    pass
+    response = HttpResponseRedirect("/")
+    response.delete_cookie("username", "/")
+    return response
 
+def regist_page(req):
+    return render_to_response('regist.html',context_instance=RequestContext(req))
+
+@csrf_exempt
 def regist(req):
-    pass
+    info = 'end'
+    try:
+        if req.method == 'POST':
+            jsonReq = simplejson.loads(req.body)
+            userna = jsonReq['username']
+            usere = jsonReq['email']
+            if User.objects.filter(username=userna) or User.objects.filter(email=usere):
+                return HttpResponse(json.dumps({'error':'请输入正确的账号密码'}),content_type='application/json')
+            else: 
+                User(username=userna,password=jsonReq['password'],email=usere).save()
+                return HttpResponse(json.dumps({'username':userna,}),content_type='application/json')
+    except:
+        import sys
+        info = "%s || %s" % (sys.exc_info()[0], sys.exc_info()[1])
+    return HttpResponse(json.dumps({'error':info}),content_type="application/json")
