@@ -1,0 +1,23 @@
+{% extends "baseE.html" %}
+  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/collection.js">  </script>{% endblock %}
+
+{% block content %}  
+
+<div class="row">
+<div class="alert alert-danger" id="tips"></div>
+  <div class="col-md-4">
+  
+    <b>错题列表&nbsp&nbsp&nbsp&nbsp</b>
+    <button class="btn btn-primary" id="do-collection">顺序做题</button></div>
+    <br />
+    <hr/>
+    <br />
+    <div >
+      <table class="table table-striped">
+      	<tbody id="col-list"></tbody>
+      </table>
+    </div>
+  
+
+</div>
+{% endblock %} 

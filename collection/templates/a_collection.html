@@ -1,5 +1,5 @@
 {% extends "baseE.html" %}
-  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}jquery/title.js">  </script>{% endblock %}
+  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/a_collection.js">  </script>{% endblock %}
 
 {% block content %}  
 
@@ -12,10 +12,17 @@
     
     <div class="alert alert-danger" id="tips"></div>
      <input type='hidden' name='csrfmiddlewaretoken' value='WXxL1hnit3PZ5a18BzHZek0Z6oHQpb5O' />
+     <input type='hidden' name='col-id'/>
+  	 <input type='hidden' name='col-title-id'/> 
       <input name="problem_id" type="hidden" value="11" />
+      <div>
+      	<p class="text-info">
+      	正确次数：<strong name="right"></strong>&nbsp&nbsp&nbsp&nbsp&nbsp错误次数：<strong name="wrong"></strong>
+      	</p>
+      </div>
       <pre>
-      <div id="title">
-      </div></pre>
+      <div id="title"></div>
+      </pre>
       <div class="input-group">
         <span class="input-group-addon">答案</span>
         <input id="sub-ans" name="answer" type="text" class="form-control" />
@@ -24,8 +31,6 @@
       <br />
       <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >提交</button>
     <br />
-    <a href="/forum/">实在搞不懂?去论坛问问别人?</a>
-    <a href="/title/publish/add/" class="pull-right">我要出题!</a>
     
   </div>
   <div class="col-ms-1 col-md-3">

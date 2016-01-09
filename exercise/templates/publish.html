@@ -1,0 +1,44 @@
+{% extends "baseE.html" %}
+{% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/publish.js">  </script>{% endblock %}
+{% block content %} 
+  
+
+<div class="row">
+  <div class="col-ms-1 col-md-3">
+    &nbsp;
+  </div>
+  <div class="col-ms-10 col-md-6">
+    
+    
+    <br />
+    <br />
+    <div class="alert alert-danger" id="tips"></div>
+    <input type='hidden' name='csrfmiddlewaretoken' value='8LRbxNhIKyTzKvnGHbQVM7ZKPJGxp6FF' />
+      <div class="input-group">
+        <span class="input-group-addon">问题</span>
+        <textarea name="question" type="text" class="form-control"></textarea>
+      </div>
+      <br />
+      <div class="input-group">
+        <span class="input-group-addon">答案</span>
+        <input name="answer" type="text" class="form-control" />
+      </div>
+      <br />
+      <div class="input-group">
+        <span class="input-group-addon">答题提示</span>
+        <input name="hint" type="text" class="form-control" />
+      </div>
+      <br />
+      <br />
+      <button class="btn btn-primary btn-lg btn-block" id="add-val"  >继续添加下一题</button>
+      <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >保存</button>
+      
+    </form>
+    <br />
+  </div>
+  <div class="col-ms-1 col-md-3">
+    &nbsp;
+  </div>
+</div>
+
+{% endblock %} 

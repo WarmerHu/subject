@@ -1,11 +1,11 @@
 #coding:utf-8
 from django.shortcuts import render, render_to_response
-from subject.models import User
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.template.context import RequestContext
 from django.utils import simplejson
 import json
 from django.views.decorators.csrf import csrf_exempt
+from subject.models import User
 
 def login_page(req):
     return render_to_response('login.html',context_instance=RequestContext(req))
@@ -48,7 +48,7 @@ def regist(req):
             if User.objects.filter(username=userna) or User.objects.filter(email=usere):
                 return HttpResponse(json.dumps({'error':'请输入正确的账号密码'}),content_type='application/json')
             else: 
-                User(username=userna,password=jsonReq['password'],email=usere).save()
+                User(username=userna,password=jsonReq['password'],email=usere,state='ACTIVE').save()
                 return HttpResponse(json.dumps({'username':userna,}),content_type='application/json')
     except:
         import sys

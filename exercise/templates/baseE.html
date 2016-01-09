@@ -30,9 +30,14 @@
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.cookie.js"></script>
   <script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
   {% block script %}{% endblock %}
+  <style type="text/css">
+  .container{
+  	margin:100px;
+  }
+  </style>
 </head>
 <body>
-<div class="container">
+
   <div class="row">
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
@@ -41,6 +46,26 @@
           <a class="navbar-brand" href="/">Smart</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+         <ul class="nav navbar-nav">
+			<li>
+				<a href="/">部落论坛</a>
+			</li>
+			<li>
+				<a href="/resources">共享资源</a>
+			</li>
+			<li>
+				<a href="/">财富榜</a>
+			</li>
+			<li>
+				<a href="/title">刷题宝典</a>
+			</li>
+			<li>
+				<a href="/collection">错题集</a>
+			</li>
+			<li>
+				<a href="/">模拟考</a>
+			</li>
+		</ul>
           <ul class="nav navbar-nav navbar-right">
             <li>
             <a id="reallog"></a>
@@ -58,20 +83,11 @@
       </div>
     </nav>
   </div>
- <header id="overview" class="jumbotron subhead">
-	<div class="container">
-		<h1>smart</h1>
-		<p class="lead">smarter的交流中心，可供smarters交流学习。</p>
-		<p class="lead">功能完善中，敬请期待......</p>
-	</div>
-</header>
- 
+
+
+ <div class="container">
 {% block content %}{% endblock %} 
 
-  <div>
-    <hr />
-    <center><a href="/"></a><a href="/"></a></center>
-  </div>
 </div>
 <div style="display:none;">
 </div>

@@ -1,7 +1,6 @@
   
-dataAsw = "";
 dataId = "";
-dataTips = "";
+time = 1;
 
 	$(function(){
   		if($.cookie("username")){
@@ -17,53 +16,53 @@ $(function()
   	{$('#tips').hide();}
   	)
   	
-  	$(function(){
+  	$(function initial(){
   		$.ajax({
   			type:"GET",
-  			url:"/elist/1",
+  			url:"/title/elist/1",
   			dataType:"json",
   			success:function(data){
-  				$('#title').html(data.title);
-  				dataAsw = data.answer;
-  				dataId = data.id;
-  				dataTips = data.tips;
+  				if(data){
+  					$('#title').html(data.title);
+  					dataId = data.id;
+  				}
+  				else{
+  					location.href = "/account/go_login";
+  				}
   			},
   			error:function(){
   				alert("失败");
   			}
   		})
   	})
-  	
-    $(function() {
+
+  	$(function check() {
   		$("#sub-val").click(function() {
-  			if(dataAsw != $("#sub-ans").val()){
-  				if(dataTips){
-  					$("#tips").html(dataTips).show();
-  				}
-  				else{
-  					$("#tips").html("无提示").show();
-  				}
-				
-			}
-  			else{
-  				nextId =  dataId+1;
   				$.ajax({
-			        type: "GET",
-			        url: "/elist/"+nextId,
+			        type: "POST",
+			        url: "/title/answer/check/",
 			        dataType: "json",
 			        timeout: 1000,
+			        data:JSON.stringify({
+					'id':dataId,
+					'answer':$("#sub-ans").val(),
+					'num':time+1
+				}),
 			        error: function(){
 			        	alert("获取下一题失败");
 			        },
 			        success: function(data){
+			        if(data.tips){
+			            $("#tips").html(data.tips).show();
+			        }
+			        else{
 			        	$("#title").html(data.title);
 			        	$("input[name='answer']").val("").focus();
-		  				dataAsw = data.answer;
 		  				dataId = data.id;
-		  				dataTips = data.tips;
+		  				time += 1;
+		  				}
 			        }
-			      })
-			 }
 		})
 	}
   			  )
+  	})

@@ -17,7 +17,7 @@ $(function(){
 				timeout:1000,
 				data:JSON.stringify({
 					'username':usna,
-					'password':usps
+					'password':$.md5(usps)
 				}),
 				success:function(result){
 					if("username" in result){

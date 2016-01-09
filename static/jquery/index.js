@@ -16,7 +16,18 @@
   			if($.cookie("username")){
   				location.href = "/title";
   			}else{
-  				alert($.cookie("username"));
+  				alert("请先登录");
+  				location.href = "/account/go_login";
+  			}
+  	})
+  	})
+  	
+  	$(function toCollection(){
+  	$("#toCollection").click(function(){
+  			if($.cookie("username")){
+  				location.href = "/collection";
+  			}else{
+  				alert("请先登录");
   				location.href = "/account/go_login";
   			}
   	})
