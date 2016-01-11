@@ -42,33 +42,9 @@
   			location.href = "/account/go_login";
   		}
   	})  
-  	
-  	
- $(function(){
-	 $("body").on('click',"button[name='del']",function(){
-		 var n = $(this).attr("id");
-		 console.log(n);
-		 var coid = $("input[name='col-id-"+n+"']").attr("value");
-		 console.log(coid);
-		 $.ajax({
-			    url: '/collection/delete/'+coid,
-			    type: 'DELETE',
-			    success: function(data) {
-			    	if(data.tips){
-			    		$("#tips").html(data.tips).show();
-			    	}else{
-			    		$("tr[name='tr-" + n + "']").remove();
-			    	}
-			    }
-			});
-	 })
- })
+  
  
- $(function doCol(){
-	 $("#do-collection").click(function(){
-		 location.href = "/collection/Clist/";
-	 });
- })
-
-  	
+$("#do").click(function(){
+	$("#points").val();
+})
  

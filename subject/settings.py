@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.conf.global_settings import MEDIA_URL
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -37,6 +38,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'exercise',
+    'login',
+    'collection',
+    'activity',
+    'resources',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,8 +63,12 @@ WSGI_APPLICATION = 'subject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'subject',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -81,9 +90,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/public/'
 
 STATICFILES_DIRS = (  
     'static',  
 )  
 STATIC_ROOT = os.path.join(BASE_DIR,'subject/static')  
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'subject/public')
 
