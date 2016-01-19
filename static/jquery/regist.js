@@ -1,8 +1,8 @@
-$(function()
+$(function initial()
   	{$('#tips').hide();}
   	)
   	
-$(function(){
+$(function check(){
 	$("#sub-val").click(function(){
 		var reg =/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
 		

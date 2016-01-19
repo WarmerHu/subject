@@ -1,22 +1,7 @@
   
 dataId = "";
 time = 1;
-
-	$(function(){
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  		}else{
-  			location.href = "/account/go_login";
-  		}
-  	})  
-
-$(function()
-  	{$('#tips').hide();}
-  	)
-  	
-  	$(function initial(){
+	function initial(){
   		$.ajax({
   			type:"GET",
   			url:"/title/elist/1",
@@ -34,7 +19,21 @@ $(function()
   				alert("失败");
   			}
   		})
-  	})
+  	}
+	$(function(){
+  		if($.cookie("username")){
+  			$("#islog").html("退出登录");
+  			$("#reallog").html($.cookie("username"));
+  			$("#islog").attr("href","/account/logout");
+  			$('#tips').hide();
+  			initial();
+  		}else{
+  			location.href = "/account/go_login";
+  		}
+  	})  
+
+
+  	
 
   	$(function check() {
   		$("#sub-val").click(function() {

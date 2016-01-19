@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^Clist/$', 'collection.views.into_a_collection'),
     url(r'^Clist/(.+)$', 'collection.views.get_a_collection'),
     url(r'^answer/check/$', 'collection.views.check_answer'),
+    url(r'^note/$', 'collection.views.note'),
 )

@@ -1,34 +1,13 @@
-"""
-Django settings for subject project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
-"""
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.conf.global_settings import MEDIA_URL
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+BASE_DIR = os.path.dirname(os.path.dirname(__file__),)
 SECRET_KEY = '1+z60-pf0mz6_7ofaahfa*u_g7a95f(68r&1s-3#_+%0cymr_g'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -58,22 +37,16 @@ ROOT_URLCONF = 'subject.urls'
 WSGI_APPLICATION = 'subject.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'subject',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'warmer',
         'HOST': '',
         'PORT': '',
     }
 }
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -86,16 +59,13 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_URL = '/static/'
-MEDIA_URL = '/public/'
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (  
     'static',  
 )  
-STATIC_ROOT = os.path.join(BASE_DIR,'subject/static')  
+STATIC_ROOT = os.path.join(BASE_DIR,'subject/static')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'subject/public')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/').replace("\\","/")
 

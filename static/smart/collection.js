@@ -1,5 +1,5 @@
 
-	$(function(){
+	$(function initial(){
 		console.log("initial");
 		$("#do-collection").hide();
 		$("#tips").hide();
@@ -46,7 +46,7 @@
   	})  
   	
   	
- $(function(){
+ $(function del(){
 	 $("body").on('click',"button[name='del']",function(){
 		 var n = $(this).attr("id");
 		 console.log(n);

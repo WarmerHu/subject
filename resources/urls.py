@@ -5,4 +5,5 @@ urlpatterns = patterns('',
     url(r'^$', 'resources.views.into_resources'),
     url(r'^list/$', 'resources.views.get_resources'),
     url(r'^upload/$', 'resources.views.upload_resources'),
+    url(r'^download/$', 'resources.views.download_resources'),
 )

@@ -17,7 +17,6 @@ def login(req):
         if req.method == 'POST':
             jsonReq = simplejson.loads(req.body)
             userna = jsonReq['username']
-#            password = jsonReq['password']
             user = User.objects.filter(username = userna,password = jsonReq['password'])
             if user:
                 return HttpResponse(json.dumps({'username':user[0].username,}),content_type='application/json')
@@ -48,7 +47,7 @@ def regist(req):
             if User.objects.filter(username=userna) or User.objects.filter(email=usere):
                 return HttpResponse(json.dumps({'error':'请输入正确的账号密码'}),content_type='application/json')
             else: 
-                User(username=userna,password=jsonReq['password'],email=usere,state='ACTIVE').save()
+                User(username=userna,password=jsonReq['password'],email=usere,state='ACTIVE',points=0).save()
                 return HttpResponse(json.dumps({'username':userna,}),content_type='application/json')
     except:
         import sys

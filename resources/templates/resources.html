@@ -9,21 +9,23 @@
   #points{
   	width:30px
   }
-
+	#tips{
+		color:red
+	}
   </style> 
   {% endblock %}
 
 {% block content %}  
 
 <div class="row">
-    	<b>资源列表&nbsp&nbsp&nbsp&nbsp</b>
+    	<b>资源列表&nbsp&nbsp&nbsp&nbsp</b><strong id="tips" ></strong>
      
-     
+    <form id= "uploadForm"  enctype="multipart/form-data"> 
     <input id="uploadedfile" name="uploadedfile" type="file" />
-    <span>
-    	<button class="btn btn-primary" id="do">提交</button>
-    	下载时所需积分：<input id="points" value=0></input>
-    </span>
+    <input type="button" value="上传" onclick="doUpload()" /> 
+    	下载时所需积分：<input id="points" name="points" value=0 />
+    	<input type="hidden" name="filename" id="filename" />
+    </form>
     <hr/>
   <div >
       <table class="table table-striped">

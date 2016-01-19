@@ -54,6 +54,9 @@ dataVal = []
 			        },
 			        success: function(data){
 			        	$("#tips").html("已保存").show();
+			        	title = $("textarea[name='question']").val("");
+			   		 answer = $("input[name='answer']").val("");
+			   		 tips = $("input[name='hint']").val("");
 			        }
   				})
   			}else{

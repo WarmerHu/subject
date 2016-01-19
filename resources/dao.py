@@ -9,8 +9,8 @@ from subject import settings
 def select_resources():
     s = Source.objects.all()
     rsp = []
-    content = {}
     for v in s:
+        content = {}
         content['id'] = v.id
         content['uploader'] = v.userid.id
         content['downloaded'] = v.content
@@ -19,18 +19,30 @@ def select_resources():
         rsp.append(content)
     return rsp
 
+def update_a_resources_byReq(req):
+    if req.has_key('id'):
+        s = Source.objects.get(id = req['id'])
+    s.content += 1
+    s.save()
+    return s.content
+
 class resourcesDao():
     def __init__(self,req):
         if req.has_key("username"):
-            self.us = User.objects.get(username=self.us)
+            self.us = User.objects.get(username=req["username"])
+        elif req.has_key("id"):
+            self.us = User.objects.get(id=req["id"])
                 
     def insert_a_resources(self,req):
-        Source(userid=self.us,content=0,points=0,download=req)
+        Source(userid=self.us,content=0,points=req['points'],download=req['path']).save()
+    
+    
+
 
 def uploadFile(req):
-    f_path = settings.MEDIA_URL + req['file'].name
+    f_path = settings.MEDIA_ROOT + req['filename']
+    print f_path
     with open(f_path,'wb+') as info:
-        print req['file'].name
-        for chunk in req.chunks():
+        for chunk in req['file'].chunks():
             info.write(chunk)
-    resourcesDao(req['username']).insert_a_resources(f_path)
+    resourcesDao({"username":req['username']}).insert_a_resources({'points':req['points'],'path':req['filename']})

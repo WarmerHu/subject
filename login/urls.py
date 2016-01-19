@@ -7,5 +7,14 @@ urlpatterns = patterns('',
 
                        url(r'^go_regist/$', 'login.views.regist_page'),
                        url(r'^regist/$', 'login.views.regist'),
+                       
                        url(r'^logout/$', 'login.views.logout'),
+                       
+                       url(r'^go_reset/$', 'login.views.reset_page'),
+                       url(r'^reset/$', 'login.views.reset'),
+                       
+                       url(r'^go_account/$', 'login.views.account_page'),
+                       url(r'^list/$', 'login.views.list'),
+                       url(r'^topic/$', 'login.views.topic'),
+                       url(r'^picture/$', 'login.views.picture'),
 )

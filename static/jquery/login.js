@@ -1,8 +1,8 @@
-$(function()
+$(function initial()
   	{$('#tips').hide();}
   	)
   	
-$(function(){
+$(function check(){
 	$("#sub-val").click(function(){
 		var usps = $.trim($("input[name='password']").val());
 		var usna = $.trim($("input[name='username']").val());

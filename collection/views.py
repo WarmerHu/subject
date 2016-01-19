@@ -14,9 +14,9 @@ from exercise.dao import get_tips_byId
 
 def into_collection(req):
     if req.COOKIES.has_key('username'):
-        userNa = get_id_byName(req.COOKIES['username'])
-        content = req.COOKIES['username']+'进入错题集'
-        ADao = activityDao(userNa)
+        username = req.COOKIES['username'] 
+        content = username +'进入错题集'
+        ADao = activityDao({"username":username})
         ADao.add_a_activity(content)
         return render_to_response('collection.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))

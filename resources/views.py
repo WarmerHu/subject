@@ -3,8 +3,11 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.http.response import HttpResponse
 import json
-from resources.dao import select_resources, uploadFile
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from resources.dao import select_resources, uploadFile, update_a_resources_byReq
+from django.views.decorators.csrf import csrf_exempt
+from subject.models import User
+from login.dao import update_point_byReq, get_id_byName
+from activity.dao import activityDao
 
 def into_resources(req):
     return render_to_response('resources.html',RequestContext(req))
@@ -13,14 +16,45 @@ def get_resources(req):
     return HttpResponse(json.dumps(select_resources()),content_type="application/json")
 
  
- 
-
 @csrf_exempt
-@csrf_protect
 def upload_resources(req):
     if req.COOKIES.has_key('username'):
-        file = req.FILES.get('uploadedfile',None)
-        if file:              
-            if uploadFile({'username':req.COOKIES['username'],'file':file}):
-                return HttpResponse(json.dumps({'tips':'上传成功'}),content_tyoe="application/json")  
-    return HttpResponse(json.dumps({'tips':'上传失败'}),content_tyoe="application/json")  
+        file = req.FILES['uploadedfile']  # @ReservedAssignment
+        points = req.POST['points']
+        filename = req.POST['filename']
+        print "filename:",filename
+        if file:
+            username = req.COOKIES['username']
+            uploadFile({'username':username,'file':file,'filename':filename,'points':points})
+            content = username +'上传资源：' + filename 
+            ADao = activityDao({"username":username})
+            ADao.add_a_activity(content)
+            return HttpResponse(json.dumps({'tips':'上传成功'}),content_type="application/json")  
+    return HttpResponse(json.dumps({'tips':'上传失败'}),content_type="application/json") 
+
+'''
+下载时的积分处理：
+1.获取登录信息：成功，下一步；失败，返回错误信息
+2.获取传递参数
+3.判断下载者积分：充足，下一步；否，返回错误信息
+4.减少下载者积分，增加上传者积分
+5.返回空白json
+'''
+@csrf_exempt
+def download_resources(req):
+    print req
+    if req.COOKIES.has_key('username'):
+        downloader = req.COOKIES['username']
+        downloadPoint = int(req.POST["points"])
+        uploader = int(req.POST["uploader"])
+        resourceID = int(req.POST["resourceID"])
+        if User.objects.filter(username=downloader,points__gte=downloadPoint):
+            update_point_byReq({'username':downloader,'method':'-','points':downloadPoint}) 
+            update_point_byReq({'id':uploader,'method':'+','points':downloadPoint})
+            count = update_a_resources_byReq({'id': resourceID})
+            content = downloader +'下载资源' 
+            ADao = activityDao({"username":downloader})
+            ADao.add_a_activity(content)
+            return HttpResponse(json.dumps({'resourceID':resourceID,"count":count}),content_type="application/json")
+        return  HttpResponse(json.dumps({'tips':'积分不足'}),content_type="application/json")
+    return  HttpResponse(json.dumps({'tips':'请先登录'}),content_type="application/json")

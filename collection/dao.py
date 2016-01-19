@@ -29,11 +29,11 @@ class collectionDao():
         self.us = User.objects.get(username = req['username'])
 
     def insert_collection(self):
-        Collection(exerciseid=self.ex,userid=self.us,wrongtime=1).save()
+        Collection(exerciseid=self.ex,userid=self.us,wrongtime=1,righttime=0).save()
         return
 
     def select_collection_byExUs(self):
-        col = Collection.objects.get(userid=self.us,exerciseid=self.ex)
+        col = Collection.objects.filter(userid=self.us,exerciseid=self.ex)
         if col:
             return True
         return False

@@ -6,28 +6,21 @@ from collection.dao import collectionDao
 from exercise.dao import read_a_title, get_tips_byId, exerciseDao
 from django.http.response import HttpResponse
 import json
-from login.dao import get_id_byName, update_point_byName
 from activity.dao import activityDao
 from django.utils import simplejson
 from subject.models import Exercise, Collection, User
 from django.views.decorators.csrf import csrf_exempt
+from login.dao import get_id_byName, update_point_byReq
 
-# Create your views here.
-'''
-功能：1.主界面：
-                        显示模块
-                        点击后跳转
-    2.显示题目：题目&答题区域
-    3.校准答案
-'''
+
 def index(req):
     return render_to_response('index.html',RequestContext(req))
 
 def into_title(req):
     if req.COOKIES.has_key('username'):
-        userNa = get_id_byName(req.COOKIES['username'])
-        content = req.COOKIES['username']+'进入刷题宝'
-        ADao = activityDao(userNa)
+        username = req.COOKIES['username'] 
+        content = username +'进入刷题宝典'
+        ADao = activityDao({"username":username})
         ADao.add_a_activity(content)
         return render_to_response('title.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))
@@ -53,19 +46,20 @@ def check_answer(req):
         jsonReq = simplejson.loads(req.body)
         titleId = jsonReq['id']
         titleAs = jsonReq['answer']
-        isTitle = Exercise.objects.filter(id = titleId,answer = titleAs)
         reqNa = req.COOKIES['username']
-        if isTitle:
-            update_point_byName(reqNa)
-            rsp = read_a_title(jsonReq['num'])
-            return HttpResponse(json.dumps(rsp), content_type="application/json")
-        else:
-            rsp = {'exerciseid':titleId,'username':reqNa}
-            CDao = collectionDao(rsp)
-            if not CDao.select_collection_byExUs():
-                CDao.insert_collection()    
-            return HttpResponse(json.dumps({'tips':get_tips_byId(titleId)}), content_type="application/json")
-    return HttpResponse(json.dumps({'tips':'访问错误'}), content_type="application/json")
+        if titleAs:
+            isTitle = Exercise.objects.filter(id = titleId,answer = titleAs)
+            if isTitle:
+                update_point_byReq({'username':reqNa,'method':'+','points':1})
+                rsp = read_a_title(jsonReq['num'])
+                return HttpResponse(json.dumps(rsp), content_type="application/json")
+        rsp = {'exerciseid':titleId,'username':reqNa}
+        print ("rsp:",rsp)
+        CDao = collectionDao(rsp)
+        if not CDao.select_collection_byExUs():
+            CDao.insert_collection()    
+        return HttpResponse(json.dumps({'tips':get_tips_byId(titleId)}), content_type="application/json")
+    return HttpResponse(json.dumps({'tips':'请输入正确的答案'}), content_type="application/json")
 
 
 def into_publish(req):
