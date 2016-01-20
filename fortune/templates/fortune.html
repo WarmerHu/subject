@@ -1,0 +1,33 @@
+{% extends "baseE.html" %}
+  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/fortune.js">  </script>
+    <style>
+  body b{
+  	font-size:30px
+  }
+	#tips{
+		color:red
+	}
+  </style> 
+  {% endblock %}
+
+{% block content %}  
+
+<div class="row">
+    	<b>财富榜&nbsp&nbsp&nbsp&nbsp</b><strong id="tips" ></strong>
+    <hr/>
+  <div >
+      <table class="table table-striped">
+      	<thead>
+      		<tr>
+      			<th>用户</th>
+      			<th>积分</th>
+      		</tr>
+      	</thead>
+      	<tbody id="col-list">
+      	</tbody>
+      </table>
+    </div>
+  
+
+</div>
+{% endblock %} 
