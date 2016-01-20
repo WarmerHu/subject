@@ -21,6 +21,7 @@ INSTALLED_APPS = (
     'collection',
     'activity',
     'resources',
+    'fortune',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -41,8 +42,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'subject',
-        'USER': 'root',
-        'PASSWORD': 'warmer',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }
