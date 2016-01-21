@@ -8,13 +8,11 @@ import resources.urls
 from subject import settings
 import activity.urls
 import fortune.urls
+import bbs.urls
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
     # url(r'^$', 'subject.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
     url(r'^static/(?P<path>.*)$','django.views.static.serve',),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),    
     url(r'^admin/', include(admin.site.urls)),
@@ -24,5 +22,6 @@ urlpatterns = patterns('',
     url(r'^resources/', include(resources.urls)),
     url(r'^activity/', include(activity.urls)),
     url(r'^fortune/', include(fortune.urls)),
+    url(r'^bbs/', include(bbs.urls)),
     url(r'^$', 'exercise.views.index'),
 )

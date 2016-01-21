@@ -64,9 +64,9 @@ def check_answer(req):
 
 def into_publish(req):
     if req.COOKIES.has_key('username'):
-        userNa = get_id_byName(req.COOKIES['username'])
-        content = req.COOKIES['username']+'发布了题目'
-        ADao = activityDao(userNa)
+        username = req.COOKIES['username'] 
+        content = username +'发布了题目'
+        ADao = activityDao({"username":username})
         ADao.add_a_activity(content)
         return render_to_response('publish.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))

@@ -1,19 +1,10 @@
-{% extends "base.html" %}
+{% extends "baseE.html" %}
   {% block script %}
   <script type="text/javascript" src="{{STATIC_URL}}jquery/regist.js">  </script>
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.md5.js">  </script>
   {% endblock %}
 
 {% block content %} 
-<style type="text/css">
-div.topSpace {
-    height: 100px;
-}
-</style>
-<div class="container">
-  <div class="row">
-    
-  </div>
   <div class="row">
   	<div class="col-md-3">
      &nbsp;
@@ -32,7 +23,7 @@ div.topSpace {
           
           <div class="input-group">
               <span class="input-group-addon">用户名&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <input id="id_username" maxlength="254" name="username" type="text" class="form-control" placeholder="请输入不少于2位字符"/>
+              <input id="id_username" maxlength="254" name="username" type="text" class="form-control" placeholder="请输入2~6位字符"/>
           </div>
           <br />
           <div class="input-group">
@@ -53,7 +44,7 @@ div.topSpace {
           <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >注册</button>
         </div>
         <div class="panel-footer">
-          <a href="/accounts/login/">已有账户?去登录...</a>
+          <a href="/account/go_login/">已有账户?去登录...</a>
         </div>
       </div>
     </div>
@@ -61,5 +52,4 @@ div.topSpace {
      &nbsp;
     </div>
   </div>
-</div>
 {% endblock %} 

@@ -1,0 +1,73 @@
+{% extends "baseB.html" %}
+  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/bbs.js">  </script>
+    <style>
+  body b{
+  	font-size:30px
+  }
+  .container{
+	margin:100px 25px;
+	width:1300px;
+  }
+  .affix{
+  	width:30em;
+  }
+  #detail{
+  	height:10em;
+  }
+  #tips {
+    color: red;
+}
+  </style> 
+  {% endblock %}
+
+{% block content %}  
+
+
+  <div  class="col-md-8" role="main">
+  <b>部落论坛&nbsp&nbsp&nbsp&nbsp </b>
+<strong id="tips"></strong>
+<hr>
+      <table class="table table-hover">
+      	<thead>
+      		<tr>
+      			<th>标题</th>
+      			<th>发布人</th>
+      			<th>回复数</th>
+      			<th>发表时间</th>
+      			<th>最新修改时间</th>
+      		</tr>
+      	</thead>
+      	<tbody id="col-list">
+      	</tbody>
+      </table>
+    </div>
+    <div class="col-md-4" role="complementary">
+	<div  class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix">
+		<b>发布话题</b>
+		<br/>
+		<br/>
+		<div class="input-group">
+			<span class="input-group-addon">标题</span>
+			<input class="form-control" type="text" name="name"  placeholder="请输入6~20位字符的描述">
+		</div>
+		<br/>
+		<div class="input-group">
+			<span class="input-group-addon">详情</span>
+			<textarea id="detail" class="form-control" type="text" name="detail" placeholder="适当的补充题目，不少于10个字符"></textarea>
+		</div>
+		<br>
+		<div id="tips"></div>
+		<button id="add-val" class="btn btn-primary btn-lg btn-block">发布</button>
+		<br/>
+		<hr/>
+		<p>发布规则</p>
+		<ul>
+			<li>每位用户每天最多可发表5则话题</li>
+			<li>用户发布的话题，每达到5则回复数奖励一定积分（自己的回帖不算在内）</li>
+			<li>用户每发表一则意见，奖励相应积分</li>
+			<li>默认按最新修改时间排序</li>
+		</ul>
+	</div>
+	</div>
+
+{% endblock %} 

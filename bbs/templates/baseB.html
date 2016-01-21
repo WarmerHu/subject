@@ -30,20 +30,39 @@
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.cookie.js"></script>
   <script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
   {% block script %}{% endblock %}
+  <style type="text/css">
+  </style>
 </head>
 <body>
-<div class="container">
+
   <div class="row">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Smart部落</a>
+          <a class="navbar-brand" href="/">Smart</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="/">部落规则</a></li>
-          </ul>
+         <ul class="nav navbar-nav">
+			<li>
+				<a href="/bbs">部落论坛</a>
+			</li>
+			<li>
+				<a href="/resources">共享资源</a>
+			</li>
+			<li>
+				<a href="/fortune">财富榜</a>
+			</li>
+			<li>
+				<a href="/title">刷题宝典</a>
+			</li>
+			<li>
+				<a href="/collection">错题集</a>
+			</li>
+			<li>
+				<a href="/">模拟考</a>
+			</li>
+		</ul>
           <ul class="nav navbar-nav navbar-right">
             <li>
             <a id="reallog"></a>
@@ -56,19 +75,16 @@
             <li>
             <a id="islog"></a>
             </li>
-	        
           </ul>
         </div>
       </div>
     </nav>
   </div>
- 
+
+
+ <div class="container">
 {% block content %}{% endblock %} 
 
-  <div>
-    <hr />
-    <center><a href="/"></a><a href="/"></a></center>
-  </div>
 </div>
 <div style="display:none;">
 </div>

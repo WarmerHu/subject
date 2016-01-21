@@ -45,7 +45,7 @@ def regist(req):
             userna = jsonReq['username']
             usere = jsonReq['email']
             if User.objects.filter(username=userna) or User.objects.filter(email=usere):
-                return HttpResponse(json.dumps({'error':'请输入正确的账号密码'}),content_type='application/json')
+                return HttpResponse(json.dumps({'error':'用户名 or 邮箱已注册'}),content_type='application/json')
             else: 
                 User(username=userna,password=jsonReq['password'],email=usere,state='ACTIVE',points=0).save()
                 return HttpResponse(json.dumps({'username':userna,}),content_type='application/json')
