@@ -29,12 +29,30 @@ def add_a_bbs(req):
         if nlen<6 or nlen>20 or dlen<10 or dlen>10000:
             return HttpResponse(json.dumps({"tips":"请正确输入标题与详情，标题长度∈[6,20]，详情长度∈[10,10000]"}),content_type="application/json")
         else:
-            dao = BBSDao({"username":req.COOKIES["username"]}) 
+            dao = BBSDao({"userid":req.COOKIES["userid"]}) 
             if dao.insert_a_topic({"name":name,"content":detail}):
-                return HttpResponse(json.dumps({"id":dao.select_newestTopic_byUs()}),content_type="application/json")
+                return HttpResponse(json.dumps(dao.select_newestTopic_byUs()),content_type="application/json")
     return HttpResponse(json.dumps({"tips":"登录用户一天内最多可发布5则话题"}),content_type="application/json")
 
 def into_a_bbs(req):
     return render_to_response('a_bbs.html',RequestContext(req))
-        
+
+
+def get_topic(req,param):
+    return HttpResponse(json.dumps(BBSDao({"id":int(param)}).select_topicOpinions()),content_type="application/json")
+ 
+@csrf_exempt
+def add_a_opinion(req,param):
+    if req.method == "POST" and req.COOKIES.has_key('userid'):
+        content = req.POST["content"]
+        userid = req.COOKIES["userid"]
+        dlen = len(content)
+        if dlen<10 or dlen>10000:
+            return HttpResponse(json.dumps({"tips":"请正确输入意见，长度∈[10,10000]"}),content_type="application/json")
+        else:
+            dao = BBSDao({"userid":userid,"id":int(param)}) 
+            if dao.insert_a_opinion({"content":content,"userid":userid}):
+                return HttpResponse(json.dumps({}),content_type="application/json")
+    return HttpResponse(json.dumps({"tips":"登录用户每min只可发布一条意见"}),content_type="application/json")
+
         

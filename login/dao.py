@@ -10,10 +10,8 @@ def get_id_byName(req):
     return e.id
 
 def update_point_byReq(req):
-    if req.has_key('username'):
-        dao = User.objects.get(username=req['username'])
-    elif req.has_key('id'):
-        dao = User.objects.get(id=req['id'])
+    if req.has_key('userid'):
+        dao = User.objects.get(id=req['userid'])
     if req['method'] == '+':
         dao.points += int(req['points'])
     else:

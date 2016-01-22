@@ -1,17 +1,6 @@
   
 dataId = "";
 dataVal = []
-	$(function(){
-		$("#tips").hide();
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  		}else{
-  			location.href = "/account/go_login";
-  		}
-  	})  
-
   	
  $(function nextData(){
 	 $("#add-val").click(function(){

@@ -1,13 +1,4 @@
 	$(function initial(){
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  			
-  		}else{
-  			$("#islog").html("登录");
-  			$("#islog").attr("href","/account/go_login");
-  		}
   		$.ajax({
 				type:"GET",
 				url:"/resources/list",
@@ -58,10 +49,10 @@ function doUpload(){
 	          contentType: false,  
 	          processData: false,  
 	          success: function (data) {  
-	              $("#tips").html(data.tips);  
+	              $("#tips").html(data.tips).show();  
 	          },  
 	          error: function (data) {  
-	        	  $("#tips").html("上传失败");  
+	        	  $("#tips").html("上传失败").show();  
 	          }  
 	     }); 
 	}
@@ -85,10 +76,10 @@ function doUpload(){
 					},
 			        success: function(data){
 			        	if(data.tips){
-			        		$("#tips").html(data.tips);
+			        		$("#tips").html(data.tips).show();
 			        	}else{
-			        		$("#"+data.resourceID+"-count").html(data.count);
-			        		$("#tips").html("扣除"+points+"积分");
+			        		$("#"+data.resourceID+"-count").html(data.count).show();
+			        		$("#tips").html("扣除"+points+"积分").show();
 			        		location.href = "/media/"+value;
 			        	}
 			        }

@@ -1,7 +1,7 @@
   
 dataId = "";
 time = 1;
-	function initial(){
+	$(function initial(){
   		$.ajax({
   			type:"GET",
   			url:"/title/elist/1",
@@ -19,20 +19,7 @@ time = 1;
   				alert("失败");
   			}
   		})
-  	}
-	$(function(){
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  			$('#tips').hide();
-  			initial();
-  		}else{
-  			location.href = "/account/go_login";
-  		}
-  	})  
-
-
+  	})
   	
 
   	$(function check() {
@@ -59,6 +46,7 @@ time = 1;
 			        	$("input[name='answer']").val("").focus();
 		  				dataId = data.id;
 		  				time += 1;
+		  				$("#tips").hide();
 		  				}
 			        }
 		})

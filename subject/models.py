@@ -45,7 +45,7 @@ class Exercise(models.Model):
 class Opinion(models.Model):
     id = models.IntegerField(primary_key=True)
     userid = models.ForeignKey('User', db_column='userId') # Field name made lowercase.
-    topicname = models.ForeignKey('Topic', db_column='topicName') # Field name made lowercase.
+    topicid = models.ForeignKey('Topic', db_column='topicId') # Field name made lowercase.
     opinion = models.CharField(max_length=255)
     time = models.DateTimeField()
     class Meta:
@@ -65,7 +65,7 @@ class Source(models.Model):
 class Topic(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
-    content = models.CharField(max_length=255)
+    content = models.TextField()
     time = models.DateTimeField()
     userid = models.ForeignKey('User', db_column='userID') # Field name made lowercase.
     replytime = models.IntegerField(db_column='replyTime') # Field name made lowercase.

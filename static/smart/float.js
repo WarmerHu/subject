@@ -1,14 +1,23 @@
-$(function () {
-	var ie6 = document.all;
-	var dv = $('#fixedMenu_keleyi_com'), st;
-	dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
-	$(window).scroll(function () {
-		st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
-		if (st > parseInt(dv.attr('otop'))) {
-			if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
-				dv.css({ position: 'absolute', top: st });
-			}
-			else if (dv.css('position') != 'fixed') dv.css({ 'position': 'fixed', top: 0 });
-		} else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
-	});
-});
+function menuFixed(id){
+    var obj = document.getElementById(id);
+    var _getHeight = obj.offsetTop; //offsetTop:获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置
+    
+    window.onscroll = function(){ //onscroll:滚动div时的事件
+        changePos(id,_getHeight);
+    }
+}
+function changePos(id,height){
+    var obj = document.getElementById(id);
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;	//获取滚动条的滚动距离
+    if(scrollTop < height){
+        obj.style.position = 'relative';
+        obj.style.top = '0px';
+    }else{
+        obj.style.position = 'fixed';
+        obj.style.top = '50px';
+    }
+}
+
+window.onload = function(){
+    menuFixed('nav');
+}

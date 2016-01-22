@@ -17,10 +17,10 @@ def index(req):
     return render_to_response('index.html',RequestContext(req))
 
 def into_title(req):
-    if req.COOKIES.has_key('username'):
-        username = req.COOKIES['username'] 
-        content = username +'进入刷题宝典'
-        ADao = activityDao({"username":username})
+    if req.COOKIES.has_key('userid'):
+        userid = req.COOKIES['userid'] 
+        content = '进入刷题宝典'
+        ADao = activityDao({"userid":userid})
         ADao.add_a_activity(content)
         return render_to_response('title.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))
@@ -42,19 +42,18 @@ def get_title(req,param):
 '''
 @csrf_exempt
 def check_answer(req):
-    if req.method=='POST' and req.COOKIES.has_key('username'):
+    if req.method=='POST' and req.COOKIES.has_key('userid'):
         jsonReq = simplejson.loads(req.body)
         titleId = jsonReq['id']
         titleAs = jsonReq['answer']
-        reqNa = req.COOKIES['username']
+        userid = req.COOKIES['userid']
         if titleAs:
             isTitle = Exercise.objects.filter(id = titleId,answer = titleAs)
             if isTitle:
-                update_point_byReq({'username':reqNa,'method':'+','points':1})
+                update_point_byReq({'userid':userid,'method':'+','points':1})
                 rsp = read_a_title(jsonReq['num'])
                 return HttpResponse(json.dumps(rsp), content_type="application/json")
-        rsp = {'exerciseid':titleId,'username':reqNa}
-        print ("rsp:",rsp)
+        rsp = {'exerciseid':titleId,'userid':userid}
         CDao = collectionDao(rsp)
         if not CDao.select_collection_byExUs():
             CDao.insert_collection()    
@@ -63,10 +62,10 @@ def check_answer(req):
 
 
 def into_publish(req):
-    if req.COOKIES.has_key('username'):
-        username = req.COOKIES['username'] 
-        content = username +'发布了题目'
-        ADao = activityDao({"username":username})
+    if req.COOKIES.has_key('userid'):
+        userid = req.COOKIES['userid'] 
+        content = '发布了题目'
+        ADao = activityDao({"userid":userid})
         ADao.add_a_activity(content)
         return render_to_response('publish.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))
@@ -77,9 +76,9 @@ def into_publish(req):
 '''
 @csrf_exempt
 def publish_title(req):
-    if req.method=='POST' and req.COOKIES.has_key('username'):
+    if req.method=='POST' and req.COOKIES.has_key('userid'):
         jsonReq = simplejson.loads(req.body)
-        ED = exerciseDao({'username':req.COOKIES['username']})
+        ED = exerciseDao({'userid':req.COOKIES['userid']})
         for v in jsonReq:
             ED.insert_a_title(v)
         return HttpResponse(json.dumps({'tips':'添加成功'}), content_type="application/json")

@@ -31,6 +31,8 @@ class exerciseDao():
     def __init__(self,req):
         if req.has_key('username'):
             self.us = User.objects.get(username=req['username'])
+        elif req.has_key('userid'):
+            self.us = User.objects.get(id=req['userid'])
     
     def insert_a_title(self,req):
         Exercise(title=req['title'],answer=req['answer'],tips=req['tips'],userid=self.us,state='ACTIVE').save()

@@ -18,16 +18,15 @@ def get_resources(req):
  
 @csrf_exempt
 def upload_resources(req):
-    if req.COOKIES.has_key('username'):
+    if req.COOKIES.has_key('userid'):
         file = req.FILES['uploadedfile']  # @ReservedAssignment
         points = req.POST['points']
-        filename = req.POST['filename']
-        print "filename:",filename
+        filename = req.POST['filename'].decode('utf-8').encode('utf-8')
         if file:
-            username = req.COOKIES['username']
-            uploadFile({'username':username,'file':file,'filename':filename,'points':points})
-            content = username +'上传资源：' + filename 
-            ADao = activityDao({"username":username})
+            userid = req.COOKIES['userid'].decode('utf-8').encode('utf-8')
+            uploadFile({'userid':userid,'file':file,'filename':filename,'points':points})
+            content = '上传资源：' + filename 
+            ADao = activityDao({"userid":userid})
             ADao.add_a_activity(content)
             return HttpResponse(json.dumps({'tips':'上传成功'}),content_type="application/json")  
     return HttpResponse(json.dumps({'tips':'上传失败'}),content_type="application/json") 
@@ -42,18 +41,17 @@ def upload_resources(req):
 '''
 @csrf_exempt
 def download_resources(req):
-    print req
-    if req.COOKIES.has_key('username'):
-        downloader = req.COOKIES['username']
+    if req.COOKIES.has_key('userid'):
+        downloader = req.COOKIES['userid']
         downloadPoint = int(req.POST["points"])
         uploader = int(req.POST["uploader"])
         resourceID = int(req.POST["resourceID"])
-        if User.objects.filter(username=downloader,points__gte=downloadPoint):
-            update_point_byReq({'username':downloader,'method':'-','points':downloadPoint}) 
-            update_point_byReq({'id':uploader,'method':'+','points':downloadPoint})
+        if User.objects.filter(id=downloader,points__gte=downloadPoint):
+            update_point_byReq({'userid':downloader,'method':'-','points':downloadPoint}) 
+            update_point_byReq({'userid':uploader,'method':'+','points':downloadPoint})
             count = update_a_resources_byReq({'id': resourceID})
-            content = downloader +'下载资源' 
-            ADao = activityDao({"username":downloader})
+            content = '下载资源' 
+            ADao = activityDao({"userid":downloader})
             ADao.add_a_activity(content)
             return HttpResponse(json.dumps({'resourceID':resourceID,"count":count}),content_type="application/json")
         return  HttpResponse(json.dumps({'tips':'积分不足'}),content_type="application/json")

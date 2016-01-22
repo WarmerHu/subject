@@ -13,17 +13,17 @@ from django.utils import simplejson
 from exercise.dao import get_tips_byId
 
 def into_collection(req):
-    if req.COOKIES.has_key('username'):
-        username = req.COOKIES['username'] 
-        content = username +'进入错题集'
-        ADao = activityDao({"username":username})
+    if req.COOKIES.has_key('userid'):
+        userid = req.COOKIES['userid'] 
+        content = '进入错题集'
+        ADao = activityDao({"userid":userid})
         ADao.add_a_activity(content)
         return render_to_response('collection.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))
 
 def get_collection(req):
-    if req.COOKIES.has_key('username'):
-        dataVal = collectionDao({'username':req.COOKIES['username']}).select_collection_byUs()
+    if req.COOKIES.has_key('userid'):
+        dataVal = collectionDao({'userid':req.COOKIES['userid']}).select_collection_byUs()
         return HttpResponse(json.dumps(dataVal),content_type="application/json")
     return HttpResponse(json.dumps({}),content_type="application/json")
 
@@ -37,14 +37,14 @@ def delete_collection(req,p1):
         
 
 def into_a_collection(req):
-    if req.COOKIES.has_key('username'):
+    if req.COOKIES.has_key('userid'):
         return render_to_response('a_collection.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))   
 
 #获取一条错题
 def get_a_collection(req,param):
-    if req.COOKIES.has_key('username'):
-        rsp = collectionDao({'username':req.COOKIES['username']}).select_a_collection_byUs(param)
+    if req.COOKIES.has_key('userid'):
+        rsp = collectionDao({'userid':req.COOKIES['userid']}).select_a_collection_byUs(param)
         return HttpResponse(json.dumps(rsp), content_type="application/json")
     return HttpResponse(json.dumps({}), content_type="application/json")
 
@@ -56,12 +56,12 @@ def get_a_collection(req,param):
 '''
 @csrf_exempt
 def check_answer(req):
-    if req.method=='POST' and req.COOKIES.has_key('username'):
+    if req.method=='POST' and req.COOKIES.has_key('userid'):
         jsonReq = simplejson.loads(req.body)
         title = jsonReq['title']
         id = jsonReq['id']
         isTitle = Exercise.objects.filter(id = title['id'],answer = title['answer'])
-        CDao = collectionDao({'username':req.COOKIES['username']})
+        CDao = collectionDao({'userid':req.COOKIES['userid']})
         if isTitle:
             update_rightTime_byReq({'id':id})
             rsp = CDao.select_a_collection_byUs(jsonReq['num'])

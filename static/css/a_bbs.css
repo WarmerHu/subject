@@ -1,0 +1,110 @@
+@CHARSET "UTF-8";
+.core_title_wrap_bright {
+    border-color:#bbbdbf #e5e5e5 #bbbdbf #e5e5e5;
+    border-style: none none solid solid;
+    border-width: 0 0 1px 1px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    width: 81.5em;
+}
+.core_title_theme_bright {
+    background: #fff none repeat scroll 0 0;
+    height: 70px;
+    line-height: 70px;
+    position: relative;
+    z-index: 5;
+}
+.core_title_theme_bright .core_title_txt {
+    display: inline;
+    float: left;
+    font-family: "Microsoft Yahei",STHeiti,Arial,SimSun;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 20px;
+}
+.core_title h1 {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.core_title_theme_bright .core_title_btns {
+    height: 25px;
+    margin: 15px 20px 15px 0;
+}
+.core_title_btns {
+    float: right;
+}
+.core_title_btns li{
+	float:left;
+	margin-right:10px;
+}
+ul{
+	list-style: outside none none;
+}
+.l_lzonly {
+	background:FFFFFF;
+    display: block;
+    line-height: 25px;
+    text-align: center;
+    text-decoration: none;
+    width: 100px;
+    	border-color:#d9d9d9;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+}
+.d_lzonly_bdaside, .p_favthr_main p, .j_quick_reply, .j_lzl_p a {
+    color: #333;
+}
+
+.p_postlist {
+	border-color:#d9d9d9;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    width: 81.5em;
+    margin-bottom:10px;
+    padding-bottom:20px;
+}
+.opi_postlist {
+	border-color:#d9d9d9;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    width: 81.5em;
+    margin-bottom:10px;
+    padding:20px;
+}
+.p_author {
+    position: relative;
+    text-align: center;
+    top:20px;
+    left:-20px;
+    float: left;
+    border-right: 1px solid #d9d9d9;
+    padding-right: 20px;
+}
+
+.p_author_face {
+    border: 1px solid #ccc;
+    display: block;
+    padding: 3px;
+}
+.p_author_face img{
+	width:150px;
+	height:150px;	
+}
+
+.p_content pre{
+		background:none;
+		border:none;
+		margin: 10px;
+		padding: 10px;
+		left:10px;
+		left:10px;
+		font-size:15px;
+		position:relative;
+}
+

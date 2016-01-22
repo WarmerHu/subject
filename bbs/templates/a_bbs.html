@@ -1,54 +1,81 @@
-{% extends "baseB.html" %}
+{% extends "baseNoLog.html" %}
   {% block script %}
   <script type="text/javascript" src="{{STATIC_URL}}smart/a_bbs.js">  </script>
   <script type="text/javascript" src="{{STATIC_URL}}smart/float.js"></script>
-<style type="text/css">
-  body b{
-  	font-size:30px;
-  }
-  #tips {
-    color: red;
-}
-
-</style> 
+	<link href="{{STATIC_URL}}css/a_bbs.css" rel="stylesheet" type="text/css">
 
   {% endblock %}
 
 {% block content %}  
+<ol class="breadcrumb">
+	<li>
+		<a href="/">主页</a>
+	</li>
+	<li>
+		<a href="/bbs">部落论坛</a>
+	</li>
+	<li  class="active">帖子</li>
+</ol>
 
+<div id="opi">
+<div id="nav" class="core_title_wrap core_title_wrap_bright">
+	<div class="core_title core_title_theme_bright">
+		<input type="hidden" name="title-id"/>
+		<h1 class="core_title_txt " name="title-topic"> </h1>
+		<ul class="core_title_btns">
+			<li>
+				<div id="lzonly_cntn" class="l_lzonly" alog-alias="lzonly">
+					<span id="lzonly" class="d_lzonly_bdaside">回复数：<cc></cc></span>
+				</div>
+			</li>
+			<li>
+				<a id="lzonly_cntn" class="l_lzonly" alog-alias="lzonly" href="javascript:scroll(0,0)">
+					<span id="lzonly" class="d_lzonly_bdaside">回到顶部</span>
+				</a>
+			</li>
+			<li>
+				<a id="lzonly_cntn" class="l_lzonly" alog-alias="lzonly" href="#pu-opi">
+					<span id="lzonly" class="d_lzonly_bdaside">回复</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<hr>
 
-	<strong id="tips"></strong>
-<div id="fixedMenu_keleyi_com" style="background:#999;width:81.5em;margin-top:50px;"><ul><li><a
-
-href="http://www.keleyi.com/menu/net/" target="_blank">.NET</a></li>
-<li><a href="http://www.keleyi.com/menu/javascript/" target="_blank">Javascript</a></li>
-<li><a href="http://www.keleyi.com/menu/jquery/" target="_blank">jQuery</a></li>
-<li><a href="http://www.keleyi.com/menu/csharp/" target="_blank">C#</a></li>
-<li><a href="http://www.keleyi.com/menu/other/" target="_blank">其他</a></li>
-<li><a href="http://www.keleyi.com/" target="_blank">首页</a></li></ul>
+<div class="p_postlist">
+				<ul class="p_author">
+				<li>
+						<a class="p_author_face " target="_blank">
+							<img id="title-imgs">
+						</a>
+				</li>
+				<li>
+					<a class="p_author_name j_user_card" target="_blank" alog-group="p_author" id="title-author"></a>
+				</li>
+				<br>
+				<li id="title-time">
+				</li>
+			</ul>
+			<div class="p_content">
+				<pre id="title-content"></pre>
+			</div>
 </div>
 
-<hr>
-      <table class="table table-hover">
-      	<thead>
-      	</thead>
-      	<tbody id="col-list">
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	<tr><td>hi</td></tr>
-      	</tbody>
-      </table>
-
+<div id="opi-all"></div>						
+<!--  -->
+<div class="opi_postlist" id="pu-opi">
+	<div class="d_post_content_main">
+		<p>发表意见</p>
+		<div class="input-group">
+			<span class="input-group-addon">意见</span>
+			<textarea id="detail" class="form-control" type="text" name="detail" placeholder="发表对该话题的意见，不少于10个字符。"></textarea>
+		</div>
+		<br/>
+		<div class="alert alert-danger" id="tips"></div>
+		<button id="add-val" class="btn btn-primary btn-lg btn-block">发布</button>
+	</div>
+</div> 
+		
 
 {% endblock %} 

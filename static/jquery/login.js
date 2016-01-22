@@ -1,7 +1,3 @@
-$(function initial()
-  	{$('#tips').hide();}
-  	)
-  	
 $(function check(){
 	$("#sub-val").click(function(){
 		var usps = $.trim($("input[name='password']").val());
@@ -22,6 +18,7 @@ $(function check(){
 				success:function(result){
 					if("username" in result){
 						$.cookie("username",result.username,{expires:7,path:"/"});
+						$.cookie("userid",result.id,{expires:7,path:"/"});
 						location.href = "/";
 					}else{
 						$("#tips").html(result.error).show();						

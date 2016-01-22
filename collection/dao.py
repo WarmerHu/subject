@@ -26,7 +26,7 @@ class collectionDao():
     def __init__(self,req):
         if req.has_key('exerciseid'):
             self.ex = Exercise.objects.get(id=req['exerciseid'])
-        self.us = User.objects.get(username = req['username'])
+        self.us = User.objects.get(id = req['userid'])
 
     def insert_collection(self):
         Collection(exerciseid=self.ex,userid=self.us,wrongtime=1,righttime=0).save()

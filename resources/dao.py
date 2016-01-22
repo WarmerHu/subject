@@ -45,4 +45,4 @@ def uploadFile(req):
     with open(f_path,'wb+') as info:
         for chunk in req['file'].chunks():
             info.write(chunk)
-    resourcesDao({"username":req['username']}).insert_a_resources({'points':req['points'],'path':req['filename']})
+    resourcesDao({"id":req['userid']}).insert_a_resources({'points':req['points'],'path':req['filename']})

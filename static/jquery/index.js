@@ -17,14 +17,7 @@ function get_activity(){
 
 $(function initial(){
 	get_activity();
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  		}else{
-  			$("#islog").html("登录");
-  			$("#islog").attr("href","/account/go_login");
-  		}
+
   	})  
   	
 

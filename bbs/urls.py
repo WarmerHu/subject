@@ -7,5 +7,5 @@ urlpatterns = patterns('',
     url(r'^publish/$', 'bbs.views.add_a_bbs'),
     url(r'^topic/$', 'bbs.views.into_a_bbs'),
     url(r'^topic/list/(.+)$', 'bbs.views.get_topic'),
-    url(r'^topic/(.+)/publish$', 'bbs.views.add_a_topic'),
+    url(r'^topic/(.+)/publish$', 'bbs.views.add_a_opinion'),
 )

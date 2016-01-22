@@ -1,14 +1,5 @@
 $(function initial(){
 	$('#tips').hide();
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  			
-  		}else{
-  			$("#islog").html("登录");
-  			$("#islog").attr("href","/account/go_login");
-  		}
   		$.ajax({
 				type:"GET",
 				url:"/bbs/list",
@@ -65,10 +56,10 @@ $(function toTopic(){
 				url:"/bbs/publish/",
 				dataType:"json",
 				timeout:1000,
-				data:JSON.stringify({
+				data:{
 					'name':name,
 					'detail':detail
-				}),
+				},
 				success:function(result){
 					if("tips" in result){
 						$("#tips").html(result.error).show();

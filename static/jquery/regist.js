@@ -1,6 +1,3 @@
-$(function initial()
-  	{$('#tips').hide();}
-  	)
   	
 $(function check(){
 	$("#sub-val").click(function(){

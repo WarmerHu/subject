@@ -19,7 +19,7 @@ def login(req):
             userna = jsonReq['username']
             user = User.objects.filter(username = userna,password = jsonReq['password'])
             if user:
-                return HttpResponse(json.dumps({'username':user[0].username,}),content_type='application/json')
+                return HttpResponse(json.dumps({'username':user[0].username,'id':user[0].id}),content_type='application/json')
             else:
                 return HttpResponse(json.dumps({'error':'请输入正确的账号密码'}),content_type='application/json')
     except:

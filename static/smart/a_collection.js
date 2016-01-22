@@ -6,7 +6,7 @@
 			$("input[name='col-title-id']").val(data.title.id);
 			$('#title').html(data.title.title);
  }
-  	function initial(){
+  	$(function initial(){
   		$.ajax({
   			type:"GET",
   			url:"/collection/Clist/1",
@@ -23,19 +23,7 @@
   				alert("获取错题失败");
   			}
   		})
-  	}	
-  	$(function(){
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  			$('#tips').hide();
-  			initial();
-  		}else{
-  			location.href = "/account/go_login";
-  		}
-  	})  	
-
+  	})	
 
   	$(function check() {
   		$("#sub-val").click(function() {
@@ -68,6 +56,7 @@
 				        else{
 				        	addData(data);
 			  				time += 1;
+			  				$("#tips").hide();
 			  				}
 			    	}
 
