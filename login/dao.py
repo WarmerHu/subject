@@ -5,19 +5,6 @@ Created on 2016-1-4
 description:
 '''
 from subject.models import User
-def get_id_byName(req):
-    e = User.objects.get(username=req)
-    return e.id
-
-def update_point_byReq(req):
-    if req.has_key('userid'):
-        dao = User.objects.get(id=req['userid'])
-    if req['method'] == '+':
-        dao.points += int(req['points'])
-    else:
-        dao.points -= int(req['points'])
-    dao.save()
-    return
 
 def select_fortune():
     dao = User.objects.order_by("-points")
@@ -29,4 +16,28 @@ def select_fortune():
         value["fortune"] = v.points
         rsp.append(value)
     return rsp
+
+class userDao():
+    us = ''
+    def __init__(self,req):
+        if req.has_key('userid'):
+            self.us = User.objects.get(id=req['userid'])
+        elif req.has_key('username'):
+            self.us = User.objects.get(username=req['username'])
+    
+    def update_state(self):
+        self.us.state = 'NORMAL'
+        self.us.save()
         
+    def update_point_byReq(self,req):
+        if req['method'] == '+':
+            self.us.points += int(req['points'])
+        else:
+            self.us.points -= int(req['points'])
+            self.us.save()
+    
+    def update_flag(self,req):
+        self.us.flag = req
+        self.us.save()
+    
+    

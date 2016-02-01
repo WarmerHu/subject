@@ -9,7 +9,7 @@ import time
 import datetime
 from subject import settings
 from django.utils import timezone
-from login.dao import update_point_byReq
+from login.dao import userDao
 
 '''
 参数{"method":"-","column":"replyTime"}    method：+,-    column:time,replytime,modifytime
@@ -47,10 +47,10 @@ class BBSDao():
             realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
             Opinion(userid=self.us,topicid=self.bbs,opinion=req["content"],time=realtime).save()
             self.update_topic({"realtime":realtime})
-            update_point_byReq({'userid':req['userid'],'method':'+','points':1})
+            userDao({'userid':req['userid']}).update_point_byReq({'method':'+','points':1})
             num = Opinion.objects.filter(topicid=self.bbs).count()
             if not num%5:
-                update_point_byReq({'userid':self.bbs.userid.id,'method':'+','points':num/5})
+                userDao({'userid':self.bbs.userid.id}).update_point_byReq({'method':'+','points':num/5})
             return True
         return False
     

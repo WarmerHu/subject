@@ -1,5 +1,5 @@
 {% extends "baseL.html" %}
-  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}jquery/login.js">  </script>
+  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/login.js">  </script>
     <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.md5.js">  </script>
   
   {% endblock %}
@@ -14,6 +14,12 @@
       <div class="topSpace">
         &nbsp;
       </div>
+      {% if tips %}
+      <div class="alert alert-success">
+      	{{tips}}
+      </div>
+      {% endif %}
+      
       <div class="alert alert-danger" id="tips"></div>
       <div class="panel panel-info">
         <div class="panel-heading">

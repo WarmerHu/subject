@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     'activity',
     'resources',
     'fortune',
+    'bbs',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -42,8 +43,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'subject',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'warmer',
         'HOST': '',
         'PORT': '',
     }
@@ -69,4 +70,23 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR,'subject/static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/').replace("\\","/")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_SUBJECT_PREFIX = 'smart'
+
+
+SSH_KEY = 'pbkdf2_sha256'
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+)
 

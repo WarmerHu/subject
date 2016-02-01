@@ -6,8 +6,8 @@ import json
 from resources.dao import select_resources, uploadFile, update_a_resources_byReq
 from django.views.decorators.csrf import csrf_exempt
 from subject.models import User
-from login.dao import update_point_byReq, get_id_byName
 from activity.dao import activityDao
+from login.dao import userDao
 
 def into_resources(req):
     return render_to_response('resources.html',RequestContext(req))
@@ -47,8 +47,8 @@ def download_resources(req):
         uploader = int(req.POST["uploader"])
         resourceID = int(req.POST["resourceID"])
         if User.objects.filter(id=downloader,points__gte=downloadPoint):
-            update_point_byReq({'userid':downloader,'method':'-','points':downloadPoint}) 
-            update_point_byReq({'userid':uploader,'method':'+','points':downloadPoint})
+            userDao({'userid':downloader}).update_point_byReq({'method':'-','points':downloadPoint}) 
+            userDao({'userid':uploader}).update_point_byReq({'method':'+','points':downloadPoint})
             count = update_a_resources_byReq({'id': resourceID})
             content = '下载资源' 
             ADao = activityDao({"userid":downloader})

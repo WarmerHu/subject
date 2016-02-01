@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import  render_to_response
 from django.http.response import HttpResponse
 from django.template.context import RequestContext
 import json

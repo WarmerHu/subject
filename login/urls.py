@@ -1,5 +1,5 @@
 #coding:utf-8
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
                        url(r'^go_login/$', 'login.views.login_page'),
@@ -7,6 +7,7 @@ urlpatterns = patterns('',
 
                        url(r'^go_regist/$', 'login.views.regist_page'),
                        url(r'^regist/$', 'login.views.regist'),
+                       url(r'^active/$', 'login.views.active'),
                        
                        url(r'^logout/$', 'login.views.logout'),
                        

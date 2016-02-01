@@ -23,5 +23,5 @@ urlpatterns = patterns('',
     url(r'^activity/', include(activity.urls)),
     url(r'^fortune/', include(fortune.urls)),
     url(r'^bbs/', include(bbs.urls)),
-    url(r'^$', 'exercise.views.index'),
+    url(r'^$', 'login.views.index'),
 )

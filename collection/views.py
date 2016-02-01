@@ -1,6 +1,5 @@
 #coding:utf-8
-from django.shortcuts import render, render_to_response, get_object_or_404
-from login.dao import get_id_byName
+from django.shortcuts import  render_to_response, get_object_or_404
 from activity.dao import activityDao
 from django.template.context import RequestContext
 from collection.dao import collectionDao, select_collection_byReq,\

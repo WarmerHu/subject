@@ -1,5 +1,5 @@
 #coding=utf-8
-from django.shortcuts import render, render_to_response
+from django.shortcuts import  render_to_response
 from django.template.context import RequestContext
 
 from collection.dao import collectionDao
@@ -8,13 +8,10 @@ from django.http.response import HttpResponse
 import json
 from activity.dao import activityDao
 from django.utils import simplejson
-from subject.models import Exercise, Collection, User
+from subject.models import Exercise
 from django.views.decorators.csrf import csrf_exempt
-from login.dao import get_id_byName, update_point_byReq
+from login.dao import userDao
 
-
-def index(req):
-    return render_to_response('index.html',RequestContext(req))
 
 def into_title(req):
     if req.COOKIES.has_key('userid'):
@@ -50,7 +47,7 @@ def check_answer(req):
         if titleAs:
             isTitle = Exercise.objects.filter(id = titleId,answer = titleAs)
             if isTitle:
-                update_point_byReq({'userid':userid,'method':'+','points':1})
+                userDao({'userid':userid}).update_point_byReq({'method':'+','points':1})
                 rsp = read_a_title(jsonReq['num'])
                 return HttpResponse(json.dumps(rsp), content_type="application/json")
         rsp = {'exerciseid':titleId,'userid':userid}

@@ -6,14 +6,14 @@ description:
 '''
 from subject.models import Activity, User
 import time
-import datetime
+from django.utils import timezone
 
 
 def select_activity(req):
     dao = Activity.objects.order_by("-id")[:req]
     rsp = []
     for v in dao:
-        rsp.append('\t'.join([datetime.datetime.strftime(v.time,'%Y-%m-%d %H:%M:%S'), v.content]))
+        rsp.append('\t'.join([timezone.localtime(v.time).strftime('%Y-%m-%d %H:%M:%S'), v.content]))
     return rsp
 
 class activityDao():

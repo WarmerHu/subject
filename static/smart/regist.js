@@ -22,18 +22,21 @@ $(function check(){
 				type:"POST",
 				url:"/account/regist/",
 				dataType:"json",
-				timeout:1000,
 				data:JSON.stringify({
 					'username':usna,
 					'password':$.md5(usps),
 					'email':use
 				}),
 				success:function(result){
-					if("username" in result){
-						$.cookie("username",result.username,{expires:7,path:"/"});
-						location.href = "/";
-					}else{
-						$("#tips").html(result.error).show();						
+					if("error" in result){
+//						$.cookie("username",result.username,{expires:7,path:"/"});
+//						location.href = "/";
+						$("#tips").html(result.error).show();
+					}else if($.isEmptyObject(result)){
+						$("div[class='panel panel-info']").remove();
+						$("div[id='tips']").remove();
+						var su = $("<div class='alert alert-success'>注册成功，请登录邮箱，并完成激活！</div>");
+						su.appendTo($(".col-md-6"));
 					}
 				},
 				error:function(result){

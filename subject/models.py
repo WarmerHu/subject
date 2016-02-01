@@ -82,6 +82,7 @@ class User(models.Model):
     state = models.CharField(max_length=6, blank=True)
     points = models.IntegerField(blank=True, null=True)
     head = models.CharField(max_length=255, blank=True)
+    flag = models.CharField(max_length=255, blank=True)
     class Meta:
         managed = False
         db_table = 'user'

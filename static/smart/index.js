@@ -17,10 +17,7 @@ function get_activity(){
 
 $(function initial(){
 	get_activity();
-
-  	})  
-  	
-
+}
   	
   	$(function(){
   	$("#toTitle").click(function(){
