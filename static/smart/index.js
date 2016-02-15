@@ -17,9 +17,9 @@ function get_activity(){
 
 $(function initial(){
 	get_activity();
-}
+})
   	
-  	$(function(){
+$(function(){
   	$("#toTitle").click(function(){
   			if($.cookie("username")){
   				location.href = "/title";
@@ -27,8 +27,8 @@ $(function initial(){
   				alert("请先登录");
   				location.href = "/account/go_login";
   			}
-  	})
-  	})
+  	});
+})
   	
   	$(function toCollection(){
   	$("#toCollection").click(function(){

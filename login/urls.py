@@ -9,13 +9,17 @@ urlpatterns = patterns('',
                        url(r'^regist/$', 'login.views.regist'),
                        url(r'^active/$', 'login.views.active'),
                        
+                       url(r'^go_reset/$','login.views.into_reset'),
+                       url(r'^reset/$','login.views.reset'),
+                       
                        url(r'^logout/$', 'login.views.logout'),
                        
                        url(r'^go_reset/$', 'login.views.reset_page'),
                        url(r'^reset/$', 'login.views.reset'),
                        
-                       url(r'^go_account/$', 'login.views.account_page'),
+                       url(r'^go_account/$', 'login.views.into_account'),
                        url(r'^list/$', 'login.views.list'),
                        url(r'^topic/$', 'login.views.topic'),
+                       
                        url(r'^picture/$', 'login.views.picture'),
 )

@@ -19,15 +19,18 @@ def select_fortune():
 
 class userDao():
     us = ''
+    name = ''
     def __init__(self,req):
         if req.has_key('userid'):
             self.us = User.objects.get(id=req['userid'])
         elif req.has_key('username'):
             self.us = User.objects.get(username=req['username'])
+        elif req.has_key('email'):
+            self.us = User.objects.get(email=req['email'])
+            self.name = self.us.username
     
-    def update_state(self):
-        self.us.state = 'NORMAL'
-        self.us.save()
+    def update_state(self,req):
+        self.us.state = req
         
     def update_point_byReq(self,req):
         if req['method'] == '+':
@@ -38,6 +41,10 @@ class userDao():
     
     def update_flag(self,req):
         self.us.flag = req
-        self.us.save()
+        
+    def update_ps(self,req):
+        self.us.password = req
     
+    def save_update(self):
+        self.us.save()
     

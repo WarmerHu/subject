@@ -1,0 +1,32 @@
+{% extends "baseE.html" %}
+  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/account.js">  </script>{% endblock %}
+
+{% block content %}  
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="well">
+			<b>基础信息</b>
+			<br/>
+			<br/>
+			<a class="thumbnail" href="#"></a>
+			<br/>
+			<div id="na-e-p"></div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<table class="table table-bordered">
+			<caption>
+				<b>参与话题</b>
+			</caption>
+			<thead>
+				<tr>
+					<th>标题</th>
+					<th>参与时间</th>
+				</tr>
+			</thead>
+			<tbody> </tbody>
+		</table>
+	</div>
+</div>
+{% endblock %} 

@@ -52,7 +52,7 @@ def regist(req):
         if not User.objects.filter(username=userna) and not User.objects.filter(email=usere):
             unameDeadline = mail_control({'method':'regist','username':userna,'email':usere})
             User(username=userna,password=jsonReq['password'],email=usere,state='ACTIVE',points=0,flag=unameDeadline,head='test.jpg').save()
-            userDao({'username':userna.decode('utf-8')}).update_flag(unameDeadline)
+#             userDao({'username':userna.decode('utf-8')}).update_flag(unameDeadline)
             return HttpResponse(json.dumps({}),content_type='application/json')
     return HttpResponse(json.dumps({'error':'请输入正确的未注册的用户名、邮箱'}),content_type="application/json")
 
@@ -65,12 +65,39 @@ def active(req):
         dao = userDao({'username':name})
         if dao.us and dao.us.state=='ACTIVE':
 #             if check_password(name+str(deadline), dao.us.flag):
-            if flag == dao.us.flag:
-                dao.update_state()
+            if flag == dao.us.flag.encode('utf-8'):
+                dao.update_state('NORMAL')
+                dao.save_update()
                 return render_to_response('login.html',{'tips':'激活成功!'},context_instance=RequestContext(req))
             else:
                 unameDeadline = mail_control({'method':'regist','username':name,'email':dao.us.email})
-                userDao({'username':name.decode('utf-8')}).update_flag(unameDeadline)
+                dao.update_flag(unameDeadline)
+                dao.save_update()
     return render_to_response('active.html',{'tips':'链接失效，已重新发送激活邮件！！'},context_instance=RequestContext(req))
     
+  
+def into_reset(req):
+    return render_to_response('reset.html',context_instance=RequestContext(req))
+
+@csrf_exempt
+def reset(req):
+    if req.method == 'POST':
+        jsonReq = simplejson.loads(req.body)
+        usere = jsonReq['email']
+        if User.objects.filter(email=usere):
+            dao = userDao({'email':usere})
+            us = dao.us
+            if us.state == 'NORMAL':
+                unameDeadline = mail_control({'method':'regist','username':us.username.encode('utf-8'),'email':usere})
+                dao.update_flag(unameDeadline)
+                dao.update_ps(jsonReq['password'])
+                dao.update_state('ACTIVE')
+                dao.save_update()
+                return HttpResponse(json.dumps({}),content_type='application/json')
+    return HttpResponse(json.dumps({'error':'请输入正确的已激活邮箱'}),content_type="application/json")
+
+def into_account(req):
+    if req.COOKIES.has_key('userid'):
+        return render_to_response('account.html',context_instance=RequestContext(req))
+    return render_to_response('login.html',context_instance=RequestContext(req))
     
