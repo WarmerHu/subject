@@ -5,6 +5,7 @@ Created on 2016-1-4
 description:
 '''
 from subject.models import User
+from subject import settings
 
 def select_fortune():
     dao = User.objects.order_by("-points")
@@ -47,4 +48,13 @@ class userDao():
     
     def save_update(self):
         self.us.save()
+        
+    def select_user(self):
+        rsp = {}
+        rsp['head'] = settings.STATIC_URL+'img/'+self.us.head
+        rsp['name'] = self.us.username
+        rsp['email'] = self.us.email
+        rsp['point'] = self.us.points
+        return rsp 
+    
     

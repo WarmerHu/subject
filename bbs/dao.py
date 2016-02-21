@@ -33,13 +33,40 @@ def select_topics_byReq(req):
         
 
 class BBSDao():
+    userid = ''
     def __init__(self,req):
         if req.has_key("username"):
             self.us = User.objects.get(username=req["username"])
         elif req.has_key("userid"):
             self.us = User.objects.get(id=req["userid"])
+            userid = req["userid"]
         if req.has_key("id"):
             self.bbs = Topic.objects.get(id=req["id"])
+    
+    def select_Obbs_by_us(self):
+        q = '''select DISTINCT topicID,opinion.id, name,max(opinion.time) as newtime
+            from opinion,topic where opinion.userID = 11 and topicId=topic.id
+            GROUP BY topicId;'''
+        opi = Opinion.objects.raw(q)
+        rsp = []
+        for v in opi:
+            value = {}
+            value['topicId'] = v.topicID
+            value['topicName'] = v.name
+            value['time'] = timezone.localtime(v.newtime).strftime('%Y-%m-%d %H:%M:%S')
+            rsp.append(value)
+        return rsp
+    
+    def select_bbs_by_us(self):
+        bbs = Topic.objects.filter(userid=self.us)
+        rsp = []
+        for v in bbs:
+            value = {}
+            value['topicId'] = v.id
+            value['topicName'] = v.name
+            value['time'] = timezone.localtime(v.time).strftime('%Y-%m-%d %H:%M:%S')
+            rsp.append(value)
+        return rsp
     
     def insert_a_opinion(self,req):
         realtime = time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time()))

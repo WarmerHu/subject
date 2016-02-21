@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                        url(r'^go_account/$', 'login.views.into_account'),
                        url(r'^list/$', 'login.views.list'),
                        url(r'^topic/$', 'login.views.topic'),
+                       url(r'^opinion/$', 'login.views.opinion'),
                        
                        url(r'^picture/$', 'login.views.picture'),
 )

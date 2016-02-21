@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from subject.models import User
 from login.controller import time_control, mail_control
 from login.dao import userDao
+from bbs.dao import BBSDao
 
 def index(req):
     return render_to_response('index.html',RequestContext(req))
@@ -100,4 +101,21 @@ def into_account(req):
     if req.COOKIES.has_key('userid'):
         return render_to_response('account.html',context_instance=RequestContext(req))
     return render_to_response('login.html',context_instance=RequestContext(req))
-    
+
+def list(req):  # @ReservedAssignment
+    id = req.COOKIES["userid"]  # @ReservedAssignment
+    dao = userDao({'userid':id})
+    rsp = dao.select_user()
+    return HttpResponse(json.dumps(rsp),content_type="application/json")
+
+def topic(req):
+    id = req.COOKIES["userid"]  # @ReservedAssignment
+    dao = BBSDao({'userid':id})
+    rsp = dao.select_Obbs_by_us()
+    return HttpResponse(json.dumps(rsp),content_type="application/json")
+
+def opinion(req):
+    id = req.COOKIES["userid"]  # @ReservedAssignment
+    dao = BBSDao({'userid':id})
+    rsp = dao.select_bbs_by_us()
+    return HttpResponse(json.dumps(rsp),content_type="application/json")
