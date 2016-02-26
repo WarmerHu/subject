@@ -6,7 +6,6 @@ Created on 2016年1月21日
 '''
 from subject.models import User, Topic, Opinion
 import time
-import datetime
 from subject import settings
 from django.utils import timezone
 from login.dao import userDao
@@ -33,13 +32,11 @@ def select_topics_byReq(req):
         
 
 class BBSDao():
-    userid = ''
     def __init__(self,req):
         if req.has_key("username"):
             self.us = User.objects.get(username=req["username"])
         elif req.has_key("userid"):
             self.us = User.objects.get(id=req["userid"])
-            userid = req["userid"]
         if req.has_key("id"):
             self.bbs = Topic.objects.get(id=req["id"])
     
