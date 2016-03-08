@@ -11,7 +11,6 @@ function getHeight(){
 $(function initial(){
 	$('#tips').hide();
 	bbsid = $.cookie("bbsid");
-	console.log(bbsid);
 	$.ajax({
 		type:"GET",
 		url:"/bbs/topic/list/"+bbsid,

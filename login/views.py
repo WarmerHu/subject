@@ -33,6 +33,7 @@ def login(req):
 def logout(req):
     response = HttpResponseRedirect("/")
     response.delete_cookie("username", "/")
+    response.delete_cookie("userid", "/")
     return response
 
 def regist_page(req):
@@ -111,11 +112,11 @@ def list(req):  # @ReservedAssignment
 def topic(req):
     id = req.COOKIES["userid"]  # @ReservedAssignment
     dao = BBSDao({'userid':id})
-    rsp = dao.select_Obbs_by_us()
+    rsp = dao.select_bbs_by_us()
     return HttpResponse(json.dumps(rsp),content_type="application/json")
 
 def opinion(req):
     id = req.COOKIES["userid"]  # @ReservedAssignment
     dao = BBSDao({'userid':id})
-    rsp = dao.select_bbs_by_us()
+    rsp = dao.select_Obbs_by_us()
     return HttpResponse(json.dumps(rsp),content_type="application/json")

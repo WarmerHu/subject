@@ -9,7 +9,7 @@ function get_base(){
 						"<br/>积分："+data.point+"</div>");
 				base.appendTo($("#na-e-p"));
 				
-				var img = $("<img src='"+data.head+"'>");
+				var img = $("<img src='"+data.head+"'class='img-polaroid'>");
 				img.appendTo($(".thumbnail"));
 			}
 		}
@@ -52,14 +52,24 @@ function get_topic(){
 
 $(function toTopic(){
 	$("body").on('click',"tr[class='toTopic']",function(){
-		$.cookie("bbsid",$(this).attr("id"));
+		$.cookie("bbsid",$(this).attr("id"),{path:"/bbs/"});
 		location.href = "/bbs/topic";
 	});
 })
+function changePW(){
+	$("#sub-val").click(function(){
+			$("#PWch").toggle();
+	})
+}
 
 $(function initial(){
 	get_base();
 	get_topic();
 	get_opinion();
-})   
+	$("#PWch").hide();
+	changePW();
+}) 
+
+
+
 
