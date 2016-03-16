@@ -46,6 +46,9 @@ class userDao():
     def update_ps(self,req):
         self.us.password = req
     
+    def update_head(self,req):
+        self.us.head = req
+    
     def save_update(self):
         self.us.save()
         
@@ -56,5 +59,15 @@ class userDao():
         rsp['email'] = self.us.email
         rsp['point'] = self.us.points
         return rsp 
+    
+def uploadHead(req):
+    f_path = settings.STATIC_ROOT + req['filename']
+    print f_path
+    with open(f_path,'wb+') as info:
+        for chunk in req['file'].chunks():
+            info.write(chunk)
+    dao = userDao({"userid":req['userid']})
+    dao.update_head(req['filename'])
+    dao.save_update()
     
     

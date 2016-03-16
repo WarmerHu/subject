@@ -21,6 +21,6 @@ urlpatterns = patterns('',
                        url(r'^list/$', 'login.views.list'),
                        url(r'^topic/$', 'login.views.topic'),
                        url(r'^opinion/$', 'login.views.opinion'),
-                       
                        url(r'^picture/$', 'login.views.picture'),
+                       url(r'^ps/$', 'login.views.reset_ps'),
 )

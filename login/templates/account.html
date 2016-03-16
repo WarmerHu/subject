@@ -1,22 +1,9 @@
 {% extends "baseE.html" %}
   {% block script %}
   <script type="text/javascript" src="{{STATIC_URL}}smart/account.js">  </script>
-  <style type="text/css">
-  .input-group{
-  	margin:5px 0px;
-  }
-  #uploadForm{
-	border: 1px solid #ddd;
-	background-color:white;
-	padding:5px;
-  }
-#uploadedfile {
-    left: -12px;
-    margin-bottom: 5px;
-    position: relative;
-    width: 210px;
-}
-  </style>
+  <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.md5.js">  </script>
+  <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.pagination.js">  </script>
+  <link href="{{STATIC_URL}}css/account.css" rel="stylesheet" type="text/css">
   {% endblock %}
 
 {% block content %}  
@@ -35,16 +22,19 @@
     				<input type="button" value="取消" onclick="$('#change-head').hide();"  class="btn btn-info "/>
 			    	<input type="hidden" name="filename" id="filename" />
     			</form>
+    			<div class="alert alert-danger" id="tips"></div>
 			</div>
+			
 			<br/>
 			<div id="na-e-p"></div>
 			<br />
-			<button class="btn btn-primary btn-lg btn-block" id="sub-val"  >更改密码</button>
+			<button class="btn btn-primary btn-lg btn-block" id="sub"  >更改密码</button>
+			<div class="alert alert-danger" id="error"></div>
 			<br />
 			<div id="PWch">
 				<div class="input-group">
               		<span class="input-group-addon">旧密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-             		<input id="id_password" name="password" type="password" class="form-control" placeholder="请输入6~20位字符"/>
+             		<input id="id_password" name="oldpassword" type="password" class="form-control" placeholder="请输入6~20位字符"/>
           		</div>
 				<div class="input-group">
               		<span class="input-group-addon">新密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -58,6 +48,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="col-md-8">
 		<table class="table table-hover">
 			<caption>
@@ -71,6 +62,14 @@
 			</thead>
 			<tbody id="o-all"></tbody>
 		</table>
+		<div>
+			<input type='hidden' id='current_page' />
+			<input type='hidden' id='show_per_page' />
+			<div id='page_navigation'></div>
+		</div>
+		<br>
+		<br>
+		<br>
 		
 		<table class="table table-hover">
 			<caption>

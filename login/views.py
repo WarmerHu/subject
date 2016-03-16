@@ -7,7 +7,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from subject.models import User
 from login.controller import time_control, mail_control
-from login.dao import userDao
+from login.dao import userDao, uploadHead
 from bbs.dao import BBSDao
 
 def index(req):
@@ -120,3 +120,31 @@ def opinion(req):
     dao = BBSDao({'userid':id})
     rsp = dao.select_Obbs_by_us()
     return HttpResponse(json.dumps(rsp),content_type="application/json")
+
+@csrf_exempt
+def picture(req):
+    if req.COOKIES.has_key('userid'):
+        file = req.FILES['uploadedfile']  # @ReservedAssignment
+        filename = req.POST['filename'].decode('utf-8').encode('utf-8')
+        if file:
+            userid = req.COOKIES['userid'].decode('utf-8').encode('utf-8')
+            uploadHead({'userid':userid,'file':file,'filename':filename})
+            return HttpResponse(json.dumps({'head':userDao({'userid':userid}).select_user()["head"]}),content_type="application/json")  
+    return HttpResponse(json.dumps({'tips':'上传失败'}),content_type="application/json")
+
+@csrf_exempt
+def reset_ps(req):
+    if req.method == 'POST':
+        jsonReq = simplejson.loads(req.body)
+        oldps = jsonReq['oldps']
+        newps = jsonReq['newps']
+        userid = req.COOKIES["userid"]
+        if User.objects.filter(id = userid, password = oldps):
+            dao = userDao({'userid':userid})
+            us = dao.us
+            if us.state == 'NORMAL':
+                dao.update_ps(newps)
+                dao.save_update()
+                return HttpResponse(json.dumps({"error":"更改密码成功"}),content_type='application/json')
+    return HttpResponse(json.dumps({"error":"请输入正确输入新旧密码，并保证账号状态正常"}),content_type="application/json")
+ 

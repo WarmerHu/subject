@@ -1,5 +1,4 @@
 import os
-from django.conf.global_settings import MEDIA_URL
 BASE_DIR = os.path.dirname(os.path.dirname(__file__),)
 SECRET_KEY = '1+z60-pf0mz6_7ofaahfa*u_g7a95f(68r&1s-3#_+%0cymr_g'
 
@@ -67,7 +66,7 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = (  
     'static',  
 )  
-STATIC_ROOT = os.path.join(BASE_DIR,'subject/static')
+STATIC_ROOT = os.path.join(BASE_DIR,'static/img/').replace("\\","/")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/').replace("\\","/")
 

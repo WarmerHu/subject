@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+ .input-group{
+  	margin:5px 0px;
+  } 
+  #uploadForm{
+	border: 1px solid #ddd;
+	background-color:white;
+	padding:5px;
+  }
+#uploadedfile {
+    left: -12px;
+    margin-bottom: 5px;
+    position: relative;
+    width: 210px;
+}
+.table-hover{
+	margin-bottom:10px;
+}
+#page_navigation a{
+	padding:3px;
+	border:1px solid;
+	margin:2px;
+	text-decoration:none
+}
+.active_page{
+	background:darkblue;
+	color:white !important;
+}

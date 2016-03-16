@@ -7,14 +7,11 @@
     overflow: hidden;
     position: relative;
     width: 81.5em;
-}
-.core_title_theme_bright {
+    z-index: 999;
     background: #fff none repeat scroll 0 0;
-    height: 70px;
-    line-height: 70px;
-    position: relative;
-    z-index: 5;
 }
+
+
 .core_title_theme_bright .core_title_txt {
     display: inline;
     float: left;
