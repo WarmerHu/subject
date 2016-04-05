@@ -42,6 +42,18 @@ class Exercise(models.Model):
         managed = False
         db_table = 'exercise'
 
+class Jobs(models.Model):
+    id = models.IntegerField(primary_key=True)
+    createtime = models.DateTimeField()
+    company = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    duty = models.TextField()
+    contact = models.CharField(max_length=255)
+    source = models.CharField(max_length=255)
+    class Meta:
+        managed = False
+        db_table = 'jobs'
+
 class Opinion(models.Model):
     id = models.IntegerField(primary_key=True)
     userid = models.ForeignKey('User', db_column='userId') # Field name made lowercase.

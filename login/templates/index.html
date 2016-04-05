@@ -1,7 +1,7 @@
-{% extends "base.html" %}
-
-{% block script %}  <script type="text/javascript" src="{{STATIC_URL}}smart/index.js"></script>
-<style type="text/css">
+{% extends "baseB.html" %}
+  {% block script %}
+ <script type="text/javascript" src="{{STATIC_URL}}smart/index.js"></script>
+ <style type="text/css">
 	pre{
 		background:none;
 		border:none;
@@ -9,10 +9,15 @@
 		padding: 5px;
 	}
 </style>
-
-{% endblock %}
-
-{% block content %}
+  {% endblock %}
+  {% block content %}
+ <header id="overview" class="jumbotron subhead">
+	<div class="container">
+		<h1>smart</h1>
+		<p class="lead">smarter的交流中心，可供smarters交流学习。</p>
+		<p class="lead">功能完善中，敬请期待......</p>
+	</div>
+</header>
 <div class="row">
   <div class="col-md-3">
 
@@ -59,7 +64,7 @@
       <a href="/examination/index" class="list-group-item">
         <h4 class="list-group-item-heading">
           <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-          模拟考
+          笔试面试
         </h4>
         <p class="list-group-item-text">够姜就来挑战</p>
       </a>
@@ -82,7 +87,15 @@
         <p class="list-group-item-text">土豪的世界，谁不懂</p>
       </a>
     </div>
-    
+    <div class="list-group">
+      <a href="/jobs" class="list-group-item">
+        <h4 class="list-group-item-heading">
+          <span class="glyphicon glyphicon-road" aria-hidden="true"></span>
+          就业信息
+        </h4>
+        <p class="list-group-item-text">来自各大网站的靠谱资料</p>
+      </a>
+    </div>
       
        
   </div>

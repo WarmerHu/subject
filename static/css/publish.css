@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+.col-md-5{
+	float:right;
+}
+
+#qu{
+	height:10em;
+}
+  #uploadForm{
+	border: 1px solid #ddd;
+	background-color:white;
+	padding:5px;
+  }
+#uploadedfile {
+    width: 100%;
+}
+.btn{
+	margin-top:3px;
+	margin-bottom:3px;
+}
+

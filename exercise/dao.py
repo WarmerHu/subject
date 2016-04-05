@@ -10,11 +10,13 @@ from subject.models import Exercise, User
 读取1条题目:迭代一——按顺序读取一条数据
 '''
 def read_a_title(req=1):
-    e = Exercise.objects.filter(state="NORMAL")[int(req)-1 : req]
+    e = Exercise.objects.filter()[int(req)-1 : req]
     rsp = {}
     for v in e:
         rsp['id'] = v.id
         rsp['title'] = v.title
+        rsp['state'] = v.state
+        rsp['author'] = v.userid.username
     return rsp
 
 def get_tips_byId(req):
@@ -36,5 +38,15 @@ class exerciseDao():
     
     def insert_a_title(self,req):
         Exercise(title=req['title'],answer=req['answer'],tips=req['tips'],userid=self.us,state='ACTIVE').save()
+    
+    def insert_titles(self,req):
+        querysetlist=[]
+        for i in req:
+            querysetlist.append(Exercise(title=i['title'],
+                                         answer=i['answer'],
+                                         tips=i['tips'],
+                                         userid=self.us,
+                                         state='ACTIVE'))        
+        Exercise.objects.bulk_create(querysetlist)
     
 

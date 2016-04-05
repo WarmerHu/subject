@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.head{
+	margin:5px 0px;
+}
+
+#state {
+    positon: relative;
+    top: -18px;
+    float: right;
+    font-size: 10px;
+    color: grey;
+    /* left: 10px; */
+    position: relative;
+}
+pre {
+	width: 42.7em;
+}

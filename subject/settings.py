@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     'resources',
     'fortune',
     'bbs',
+    'jobs',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -41,9 +42,9 @@ WSGI_APPLICATION = 'subject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'subject',
-        'USER': 'root',
-        'PASSWORD': 'warmer',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }
@@ -71,11 +72,11 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static/img/').replace("\\","/")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/').replace("\\","/")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.163.com'
+EMAIL_HOST = ''
 EMAIL_PORT = 25
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
-EMAIL_SUBJECT_PREFIX = 'smart'
+EMAIL_SUBJECT_PREFIX = ''
 
 
 SSH_KEY = 'pbkdf2_sha256'

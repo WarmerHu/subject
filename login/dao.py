@@ -62,7 +62,6 @@ class userDao():
     
 def uploadHead(req):
     f_path = settings.STATIC_ROOT + req['filename']
-    print f_path
     with open(f_path,'wb+') as info:
         for chunk in req['file'].chunks():
             info.write(chunk)

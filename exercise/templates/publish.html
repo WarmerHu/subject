@@ -1,53 +1,78 @@
-{% extends "baseE.html" %}
-{% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/publish.js">  </script>{% endblock %}
-{% block content %} 
-  
-
-<ol class="breadcrumb">
-	<li>
-		<a href="/">主页</a>
-	</li>
-	<li>
-		<a href="/title">刷题宝典</a>
-	</li>
-	<li  class="active">发布题目</li>
-</ol>
-<div class="row">
-  <div class="col-ms-1 col-md-3">
-    &nbsp;
-  </div>
-  <div class="col-ms-10 col-md-6">
-    
-    
-    <br />
-    <br />
-    <div class="alert alert-danger" id="tips"></div>
-    <input type='hidden' name='csrfmiddlewaretoken' value='8LRbxNhIKyTzKvnGHbQVM7ZKPJGxp6FF' />
-      <div class="input-group">
-        <span class="input-group-addon">问题</span>
-        <textarea name="question" type="text" class="form-control"></textarea>
-      </div>
-      <br />
-      <div class="input-group">
-        <span class="input-group-addon">答案</span>
-        <input name="answer" type="text" class="form-control" />
-      </div>
-      <br />
-      <div class="input-group">
-        <span class="input-group-addon">答题提示</span>
-        <input name="hint" type="text" class="form-control" />
-      </div>
-      <br />
-      <br />
-      <button class="btn btn-primary btn-lg btn-block" id="add-val"  >继续添加下一题</button>
-      <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >保存</button>
-      
-    </form>
-    <br />
-  </div>
-  <div class="col-ms-1 col-md-3">
-    &nbsp;
-  </div>
-</div>
-
-{% endblock %} 
+	{% extends "baseE.html" %}
+	{% block script %}
+	<script type="text/javascript" src="{{STATIC_URL}}smart/publish.js">  </script>
+	<link href="{{STATIC_URL}}css/publish.css" rel="stylesheet" type="text/css">
+	{% endblock %}
+	{% block content %} 
+	  
+	
+	<ol class="breadcrumb">
+		<li>
+			<a href="/">主页</a>
+		</li>
+		<li>
+			<a href="/title">刷题宝典</a>
+		</li>
+		<li  class="active">发布题目</li>
+	</ol>
+	<ul class="nav nav-pills" role="tablist">
+		<li class="active" role="presentation">
+			<a data-toggle="tab" role="tab" aria-controls="home" href="#intro" onclick="firt()">逐一手动输入题目</a>
+		</li>
+		<li role="presentation">
+			<a data-toggle="tab" role="tab" aria-controls="profile" href="#coin" onclick="sect()">通过execl发布题目</a>
+		</li>
+	</ul>
+	<div class="row">
+	  <div class="col-ms-1 col-md-6">
+	    <br />
+	    <br />
+	    <div class="alert alert-danger" id="tips"></div>
+	    <input type='hidden' name='csrfmiddlewaretoken' value='8LRbxNhIKyTzKvnGHbQVM7ZKPJGxp6FF' />
+	      <div class="input-group" >
+	        <span class="input-group-addon">问题</span>
+	        <textarea id='qu' name="question" type="text" class="form-control"></textarea>
+	      </div>
+	      <br />
+	      <div class="input-group">
+	        <span class="input-group-addon">答案</span>
+	        <input name="answer" type="text" class="form-control" />
+	      </div>
+	      <br />
+	      <div class="input-group">
+	        <span class="input-group-addon">答题提示</span>
+	        <input name="hint" type="text" class="form-control" />
+	      </div>
+	      <br />
+	      <br />
+	      <button class="btn btn-primary btn-lg btn-block" id="add-val"  >继续添加下一题</button>
+	      <div id="excecl-up">
+	      		<form id="uploadForm" enctype="multipart/form-data">
+					<input id="uploadedfile" class="btn btn-link" type="file" name="uploadedfile">
+					<input id="filename" type="hidden" name="filename">
+				</form>
+			</div>
+	      <button class="btn btn-primary btn-lg btn-block" id="sub-val"  >保存</button>
+	      
+	    </form>
+	    <br />
+	  </div>
+	  <div class="col-ms-1 col-md-5">
+	      <br />
+	    <br />
+	        <ul>
+				<li>若需要添加多题，可在正确输入一道题目后直接点击“继续添加至下一题”</li>
+				<li>当添加完毕后，直接点击“保存”</li>
+				<li>可上传execl，然后点击“保存”</li>
+				<li>在execl中，题目、答案、提示 均需填写</li>
+				<li>选择execl上传时，不需要再次填写输入框（输入框无效）</li>
+				<li>execl的格式为：</li>
+				<li>
+					<img src='/static/img/demon.png'class='img-polaroid'>
+				</li>
+			</ul>
+				
+	  </div>
+	</div>
+	
+	{% endblock %} 

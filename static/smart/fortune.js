@@ -1,13 +1,4 @@
 $(function initial(){
-  		if($.cookie("username")){
-  			$("#islog").html("退出登录");
-  			$("#reallog").html($.cookie("username"));
-  			$("#islog").attr("href","/account/logout");
-  			
-  		}else{
-  			$("#islog").html("登录");
-  			$("#islog").attr("href","/account/go_login");
-  		}
   		$.ajax({
 				type:"GET",
 				url:"/fortune/list",
@@ -23,6 +14,7 @@ $(function initial(){
 						var content = $("<tr><td>暂无用户</td><td></td></tr>");
 						content.appendTo($("#col-list"));
 					}
+					console.log("s");
 			},
 			error:function(){
 				$("#tips").html("获取资源列表失败");

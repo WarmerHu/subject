@@ -9,6 +9,7 @@ from subject import settings
 import activity.urls
 import fortune.urls
 import bbs.urls
+import jobs.urls
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -23,5 +24,6 @@ urlpatterns = patterns('',
     url(r'^activity/', include(activity.urls)),
     url(r'^fortune/', include(fortune.urls)),
     url(r'^bbs/', include(bbs.urls)),
+    url(r'^jobs/', include(jobs.urls)),
     url(r'^$', 'login.views.index'),
 )
