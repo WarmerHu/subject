@@ -1,3 +1,6 @@
+pageCount = 1;
+curPage = 1;
+
 function getHeight(){
 	authorh = $(".p_author").outerHeight(true)+30;
 	contenth = $(".p_content").outerHeight(true);

@@ -1,31 +1,12 @@
 {% extends "baseB.html" %}
-  {% block script %}<script type="text/javascript" src="{{STATIC_URL}}smart/bbs.js">  </script>
-    <style>
-  body b{
-  	font-size:30px
-  }
-  .container{
-	margin:100px 25px;
-	width:1300px;
-  }
-  .affix{
-  	width:30em;
-  }
-  #detail{
-  	height:10em;
-  }
-  #tips {
-    color: red;
-}
-  </style> 
+  {% block script %}
+  	<script type="text/javascript" src="{{STATIC_URL}}smart/bbs.js">  </script>
+  	<link href="{{STATIC_URL}}css/bbs.css" rel="stylesheet" type="text/css">
   {% endblock %}
 
 {% block content %}  
-
-
   <div  class="col-md-8" role="main">
   <b>部落论坛&nbsp&nbsp&nbsp&nbsp </b>
-<strong id="tips"></strong>
 <hr>
       <table class="table table-hover">
       	<thead>
@@ -37,9 +18,13 @@
       			<th>最新修改时间</th>
       		</tr>
       	</thead>
-      	<tbody id="col-list">
-      	</tbody>
+      	<tbody id="col-list"></tbody>
       </table>
+    <nav>
+  		<ul class="pagination">
+			<li><a href="#" class="ap" name="pre"><span aria-hidden="true">&laquo;</span></a></li>
+  		</ul>
+	</nav>
     </div>
     <div class="col-md-4" role="complementary">
 	<div  class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix">
@@ -56,7 +41,7 @@
 			<textarea id="detail" class="form-control" type="text" name="detail" placeholder="适当的补充题目，不少于10个字符"></textarea>
 		</div>
 		<br>
-		<div id="tips"></div>
+		<div id="error"></div>
 		<button id="add-val" class="btn btn-primary btn-lg btn-block">发布</button>
 		<br/>
 		<hr/>

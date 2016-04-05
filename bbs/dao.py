@@ -10,12 +10,17 @@ from subject import settings
 from django.utils import timezone
 from login.dao import userDao
 
+ONE_PAGE_NUM = 20
+
+def select_Ctopic():
+    return Topic.objects.count()
+
 '''
 参数{"method":"-","column":"replyTime"}    method：+,-    column:time,replytime,modifytime
 返回[{"id":12,"title":xx,"publisher":xx,"createTime":xx,"replyTime":xx,"modifyTime":xx},...]
 '''
-def select_topics_byReq(req):
-    dao = Topic.objects.order_by(req["method"]+req["column"])
+def select_topics_byReq(req,page):
+    dao = Topic.objects.order_by(req["method"]+req["column"])[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
     rsp = []
     for v in dao:
         value = {}

@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+  body b{
+  	font-size:30px
+  }
+  .container{
+	margin:100px 25px;
+	width:1300px;
+  }
+  .affix{
+  	width:30em;
+  }
+  #detail{
+  	height:10em;
+  }
+  #error {
+    color: red;
+}

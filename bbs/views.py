@@ -4,14 +4,23 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse
 import json
-from bbs.dao import BBSDao, select_topics_byReq
+from bbs.dao import BBSDao, select_topics_byReq, select_Ctopic
 
 def into_bbs(req):
     return render_to_response('bbs.html',RequestContext(req))
 
 @csrf_exempt
 def get_bbs(req):
-    return HttpResponse(json.dumps(select_topics_byReq({"method":"-","column":"modifytime"})),content_type="application/json")
+    p = int(req.GET.get('p'))
+    cur = p
+    rs = {}
+    if p==0:
+        cur = 1
+        cn = select_Ctopic()
+        rs['numT'] = cn
+    ts = select_topics_byReq({"method":"-","column":"modifytime"},cur)
+    rs['topic'] = ts
+    return HttpResponse(json.dumps(rs),content_type="application/json")
     
 '''
 发布话题：
