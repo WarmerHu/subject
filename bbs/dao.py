@@ -9,8 +9,8 @@ import time
 from subject import settings
 from django.utils import timezone
 from login.dao import userDao
+from subject.globalData import ONE_PAGE_NUM
 
-ONE_PAGE_NUM = 20
 
 def select_Ctopic():
     return Topic.objects.count()
@@ -45,11 +45,18 @@ class BBSDao():
         if req.has_key("id"):
             self.bbs = Topic.objects.get(id=req["id"])
     
-    def select_Obbs_by_us(self):
+    def select_COBBS_by_us(self):
+        q = '''select count(topicID) as num,topicID,opinion.id
+            from opinion,topic where opinion.userID = '''+str(self.us.id)+''' and topicId=topic.id;'''
+        o = Opinion.objects.raw(q)
+        for v in o:
+            return v.num
+        
+    def select_Obbs_by_us(self,page,each):
         q = '''select DISTINCT topicID,opinion.id, name,max(opinion.time) as newtime
-            from opinion,topic where opinion.userID = 11 and topicId=topic.id
-            GROUP BY topicId;'''
-        opi = Opinion.objects.raw(q)
+            from opinion,topic where opinion.userID = '''+str(self.us.id)+''' and topicId=topic.id
+            GROUP BY topicId order by newtime desc;'''
+        opi = Opinion.objects.raw(q)[(page-1)*each:page*each]
         rsp = []
         for v in opi:
             value = {}
@@ -57,10 +64,14 @@ class BBSDao():
             value['topicName'] = v.name
             value['time'] = timezone.localtime(v.newtime).strftime('%Y-%m-%d %H:%M:%S')
             rsp.append(value)
+        print "rsp:",rsp
         return rsp
     
-    def select_bbs_by_us(self):
-        bbs = Topic.objects.filter(userid=self.us)
+    def select_Cbbs_by_us(self):
+        return  Topic.objects.filter(userid=self.us).count()
+        
+    def select_bbs_by_us(self,page,each):
+        bbs = Topic.objects.filter(userid=self.us).order_by('-time')[(page-1)*each:page*each]
         rsp = []
         for v in bbs:
             value = {}
@@ -89,7 +100,7 @@ class BBSDao():
             self.bbs.modifytime = req["realtime"]
         self.bbs.save()
     
-    def select_topicOpinions(self):
+    def select_topic(self):
         rsp = {}
         rsp["id"] = self.bbs.id
         rsp["topic"] = self.bbs.name
@@ -98,11 +109,14 @@ class BBSDao():
         rsp["head"] = settings.STATIC_URL+'img/'+self.bbs.userid.head
         rsp["creatTime"] = timezone.localtime(self.bbs.time).strftime('%Y-%m-%d %H:%M:%S')
         rsp["replayTime"] = self.bbs.replytime
-        rsp["opinions"] = self.select_opinions_byBBS()
+#         rsp["opinions"] = self.select_opinions_byBBS()
         return rsp
     
-    def select_opinions_byBBS(self):
-        dao = Opinion.objects.filter(topicid=self.bbs)
+    def select_Copinion_byBBS(self):
+        return Opinion.objects.filter(topicid=self.bbs).count()
+    
+    def select_opinions_byBBS(self,page):
+        dao = Opinion.objects.filter(topicid=self.bbs)[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
         rsp = []
         for v in dao:
             value = {}

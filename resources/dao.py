@@ -6,8 +6,12 @@ Created on 2016年1月10日
 '''
 from subject.models import Source, User
 from subject import settings
-def select_resources():
-    s = Source.objects.all()
+from subject.globalData import ONE_PAGE_NUM
+def select_Cresource():
+    return Source.objects.count()
+
+def select_resources(page):
+    s = Source.objects.all()[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
     rsp = []
     for v in s:
         content = {}
@@ -41,7 +45,7 @@ class resourcesDao():
 
 def uploadFile(req):
     f_path = settings.MEDIA_ROOT + req['filename']
-    with open(f_path,'wb+') as info:
+    with open(f_path,'w') as info:
         for chunk in req['file'].chunks():
             info.write(chunk)
     resourcesDao({"id":req['userid']}).insert_a_resources({'points':req['points'],'path':req['filename']})

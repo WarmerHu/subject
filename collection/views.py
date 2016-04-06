@@ -22,8 +22,17 @@ def into_collection(req):
 
 def get_collection(req):
     if req.COOKIES.has_key('userid'):
-        dataVal = collectionDao({'userid':req.COOKIES['userid']}).select_collection_byUs()
-        return HttpResponse(json.dumps(dataVal),content_type="application/json")
+        p = int(req.GET.get('p'))
+        cur = p
+        rs = {}
+        dao = collectionDao({'userid':req.COOKIES['userid']}) 
+        if p==0:
+            cur = 1
+            cn = dao.select_Ccollection_byUs()
+            rs['numT'] = cn
+        ts = dao.select_collection_byUs(cur)
+        rs['col'] = ts
+        return HttpResponse(json.dumps(rs),content_type="application/json")
     return HttpResponse(json.dumps({}),content_type="application/json")
 
 @csrf_exempt

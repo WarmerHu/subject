@@ -5,6 +5,7 @@ Created on 2016-1-5
 description:
 '''
 from subject.models import Collection, Exercise, User
+from subject.globalData import ONE_PAGE_NUM
 
 def update_rightTime_byReq(req):
     if req.has_key('id'):
@@ -38,9 +39,12 @@ class collectionDao():
             return True
         return False
     
-    def select_collection_byUs(self):
+    def select_Ccollection_byUs(self):
+        return Collection.objects.filter(userid=self.us).count()
+        
+    def select_collection_byUs(self,page):
         rsp = []
-        col = Collection.objects.filter(userid=self.us)
+        col = Collection.objects.filter(userid=self.us)[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
         for v in col:
             title = {'id':v.exerciseid.id,'title':v.exerciseid.title,'answer':v.exerciseid.answer}
             val = {'id':v.id,'rightTime':v.righttime,'wrongTime':v.wrongtime,'note':v.note,'title':title}

@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+  body b{
+  	font-size:30px;
+  }
+  #points{
+  	width:30px;
+  	height: 20px;
+  }
+	#tips{
+		color:red
+	}
+	#uploadForm {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 5px;
+    left: 155px;
+    padding: 5px;
+    position: relative;
+    width: 50%;
+    text-align: center;
+}
+#sub{
+	position:relative;
+	margin:0 auto;
+	top: -8px;
+    width: 50%;
+}
+#uploadedfile {
+    margin-bottom: 5px;
+    position: relative;
+	width: 100%;
+}

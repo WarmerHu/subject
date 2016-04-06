@@ -1,5 +1,6 @@
 {% extends "baseE.html" %}
   {% block script %}
+  <script type="text/javascript" src="{{STATIC_URL}}smart/paging.js"></script>
   <script type="text/javascript" src="{{STATIC_URL}}smart/account.js">  </script>
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.md5.js">  </script>
   <script type="text/javascript" src="{{STATIC_URL}}jquery/jquery.pagination.js">  </script>
@@ -63,9 +64,11 @@
 			<tbody id="o-all"></tbody>
 		</table>
 		<div>
-			<input type='hidden' id='current_page' />
-			<input type='hidden' id='show_per_page' />
-			<div id='page_navigation'></div>
+		<nav>
+  	<ul class="pagination" id="pagination1">
+		<li><a href="#" class="ap" name="pre"><span aria-hidden="true">&laquo;</span></a></li>
+  	</ul>
+</nav>	
 		</div>
 		<br>
 		<br>
@@ -83,6 +86,11 @@
 			</thead>
 			<tbody id="t-all"></tbody>
 		</table>
+		<nav>
+  	<ul class="pagination" id="pagination2">
+		<li><a href="#" class="ap2" name="pre"><span aria-hidden="true">&laquo;</span></a></li>
+  	</ul>
+</nav>	
 	</div>
 </div>
 {% endblock %} 

@@ -1,5 +1,5 @@
-pageCount = 1;
-curPage = 1;
+bbsid = $.cookie("bbsid");
+curNum = 0
 
 function getHeight(){
 	authorh = $(".p_author").outerHeight(true)+30;
@@ -10,10 +10,54 @@ function getHeight(){
 		$(".p_postlist").css("height",contenth);
 	}
 }
+function showData(p){
+	getOpinion(bbsid,p);
+}
+function getOpinion(bbsid,p){
+	cur = p==0?1:p;
+	curNum = (cur-1)*20+1
+	$("#opi-all").children().remove();
+	$.ajax({
+		type:"GET",
+		url:"/bbs/topic/O/list/"+bbsid+"/?p="+p,
+		dataType:"json",
+		success:function(data){
+			if(!$.isEmptyObject(data)){
+				if(data.numT){
+					pageCount = Math.ceil(data.numT / 20);
+					paging(pageCount,".pagination");
+				}
+				$.each(data.opinion,function(n,v){
+					var parentdiv = $("<div class='p_postlist'></div>");
+					var authordiv = $("<ul class='p_author'></ul>");
+					var imgInAuthordiv = $("<li>" +
+							"<a class='p_author_face' target='_blank'>" +
+							"<img src='"+v.head+"'></a></li>");
+					var nameInAuthordiv = $("<li>" +
+							"<a class='p_author_name j_user_card' target='_blank' alog-group='p_author'>"+v.name+"</a></li>");
+					var timeInAuthordiv = $("<br><li>"+v.time+"</li><li>#"+(n+curNum)+"</li>");
+					imgInAuthordiv.appendTo(authordiv);
+					nameInAuthordiv.appendTo(authordiv);
+					timeInAuthordiv.appendTo(authordiv);
+					
+					var contentdiv = $("<div class='p_content'>" +
+							"<pre>"+v.content+"</pre></div>");
+					authordiv.appendTo(parentdiv);
+					contentdiv.appendTo(parentdiv);
+					
+					parentdiv.appendTo($("#opi-all"));
+					getHeight();
+				});
+				
+			}
+	},
+	error:function(){
+		$("#opi").html("获取意见详情失败");
+	}
+	});
+}
 
-$(function initial(){
-	$('#tips').hide();
-	bbsid = $.cookie("bbsid");
+function getTopic(bbsid){
 	$.ajax({
 		type:"GET",
 		url:"/bbs/topic/list/"+bbsid,
@@ -27,27 +71,6 @@ $(function initial(){
 				$("#title-author").html(data.author);
 				$("#title-time").html(data.creatTime);
 				$("#title-content").html(data.content);
-
-				$.each(data.opinions,function(n,v){
-					var parentdiv = $("<div class='p_postlist'></div>");
-					var authordiv = $("<ul class='p_author'></ul>");
-					var imgInAuthordiv = $("<li>" +
-							"<a class='p_author_face' target='_blank'>" +
-							"<img src='"+v.head+"'></a></li>");
-					var nameInAuthordiv = $("<li>" +
-							"<a class='p_author_name j_user_card' target='_blank' alog-group='p_author'>"+v.name+"</a></li>");
-					var timeInAuthordiv = $("<br><li>"+v.time+"</li>");
-					imgInAuthordiv.appendTo(authordiv);
-					nameInAuthordiv.appendTo(authordiv);
-					timeInAuthordiv.appendTo(authordiv);
-					
-					var contentdiv = $("<div class='p_content'>" +
-							"<pre>"+v.content+"</pre></div>");
-					authordiv.appendTo(parentdiv);
-					contentdiv.appendTo(parentdiv);
-					
-					parentdiv.appendTo($("#opi-all"));
-				});
 				getHeight();
 			}
 			else{
@@ -58,6 +81,11 @@ $(function initial(){
 		$("#opi").html("获取话题详情失败");
 	}
 	});
+}
+$(function initial(){
+	$('#tips').hide();
+	getTopic(bbsid);
+	getOpinion(bbsid,0);
 })   
 
 $(function publish(){

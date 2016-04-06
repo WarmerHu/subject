@@ -1,37 +1,46 @@
-	$(function initial(){
-  		$.ajax({
-				type:"GET",
-				url:"/resources/list",
-				dataType:"json",
-				success:function(data){
-					if(!$.isEmptyObject(data)){
-						$.each(data,function(n,value){
-	  						var parentdiv=$("<tr name='tr-" + n + "'></tr>");  
-	  					    var name=$("<td>"+
-	  					    	"<input type='hidden' name='col-id-"+ n +"' value=" + value.id + ">" + 
-  					    	"<input type='hidden' name='col-up-id-"+n+ "' value=" + value.uploader + ">" +
-	  					    	value.downloader +"</td>");   
-	  					    var money=$("<td name='p-"+n+"'>"+value.money+"</td>");   
-	  					    var downloaded=$("<td id='"+value.id+"-count'>"+value.downloaded+"</td>");   
-	  					    var downloader=$("<td><button class='btn btn-link' id="+n+" value='"+value.downloader+"'>下载</a></td>");   
+function showData(p){
+	$("#col-list").children().remove();
+	$.ajax({
+		type:"GET",
+		url:"/resources/list/?p="+p,
+		dataType:"json",
+		success:function(data){
+			if(!$.isEmptyObject(data)){
+				if(data.numT){
+					pageCount = Math.ceil(data.numT / 20);
+					paging(pageCount，".pagination");
+				}
+				$.each(data.res,function(n,value){
+						var parentdiv=$("<tr name='tr-" + n + "'></tr>");  
+					    var name=$("<td>"+
+					    	"<input type='hidden' name='col-id-"+ n +"' value=" + value.id + ">" + 
+				    	"<input type='hidden' name='col-up-id-"+n+ "' value=" + value.uploader + ">" +
+					    	value.downloader +"</td>");   
+					    var money=$("<td name='p-"+n+"'>"+value.money+"</td>");   
+					    var downloaded=$("<td id='"+value.id+"-count'>"+value.downloaded+"</td>");   
+					    var downloader=$("<td><button class='btn btn-link' id="+n+" value='"+value.downloader+"'>下载</a></td>");   
 
-	  					    name.appendTo(parentdiv);        
-	  					    money.appendTo(parentdiv);        
-	  					    downloaded.appendTo(parentdiv);        
-	  					    downloader.appendTo(parentdiv);        
-	  					    parentdiv.appendTo($("#col-list"));
-						});
-					}
-					else{
-						var content = $("<tr><td>暂无资源</td><td></td><td></td><td></td></tr>");
-						content.appendTo($("#col-list"));
-					}
-			},
-			error:function(){
-				alert("获取资源列表失败");
+					    name.appendTo(parentdiv);        
+					    money.appendTo(parentdiv);        
+					    downloaded.appendTo(parentdiv);        
+					    downloader.appendTo(parentdiv);        
+					    parentdiv.appendTo($("#col-list"));
+				});
 			}
-			});
-  	})  
+			else{
+				var content = $("<tr><td>暂无资源</td><td></td><td></td><td></td></tr>");
+				content.appendTo($("#col-list"));
+			}
+	},
+	error:function(){
+		alert("获取资源列表失败");
+	}
+	});
+}
+$(function initial(){
+  	showData(0);
+  	$('#change-head').hide();
+  	}) 
   
 
   	

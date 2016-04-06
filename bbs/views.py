@@ -48,7 +48,20 @@ def into_a_bbs(req):
 
 
 def get_topic(req,param):
-    return HttpResponse(json.dumps(BBSDao({"id":int(param)}).select_topicOpinions()),content_type="application/json")
+    return HttpResponse(json.dumps(BBSDao({"id":int(param)}).select_topic()),content_type="application/json")
+
+def get_opinions(req,param):
+    p = int(req.GET.get('p'))
+    cur = p
+    rs = {}
+    dao = BBSDao({"id":int(param)})
+    if p==0:
+        cur = 1
+        cn = dao.select_Copinion_byBBS()
+        rs['numT'] = cn
+    rs['opinion'] = dao.select_opinions_byBBS(cur)
+    
+    return HttpResponse(json.dumps(rs),content_type="application/json")
  
 @csrf_exempt
 def add_a_opinion(req,param):

@@ -1,0 +1,1 @@
+ONE_PAGE_NUM = 20

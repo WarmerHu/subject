@@ -1,31 +1,29 @@
 {% extends "baseNoLog.html" %}
   {% block script %}
+    <script type="text/javascript" src="{{STATIC_URL}}smart/paging.js"></script>
   <script type="text/javascript" src="{{STATIC_URL}}smart/resources.js">  </script>
   <script type="text/javascript" src="{{STATIC_URL}}jquery/ajaxfileupload.js">  </script>
-  <style>
-  body b{
-  	font-size:30px
-  }
-  #points{
-  	width:30px
-  }
-	#tips{
-		color:red
-	}
-  </style> 
+  <link href="{{STATIC_URL}}css/resources.css" rel="stylesheet" type="text/css">
   {% endblock %}
 
 {% block content %}  
 
 <div class="row">
+	<div>
     	<b>资源列表&nbsp&nbsp&nbsp&nbsp</b><strong id="tips" ></strong>
-     
-    <form id= "uploadForm"  enctype="multipart/form-data"> 
-    <input id="uploadedfile" name="uploadedfile" type="file" />
-    <input type="button" value="上传" onclick="doUpload()" /> 
+    	<input id="sub" class="btn btn-primary" type="button" onclick="$('#change-head').show();" value="文件上传">
+    </div>
+     <div id="change-head" style="display: block;">
+	    <form id= "uploadForm"  enctype="multipart/form-data"> 
+    	<input id="uploadedfile" name="uploadedfile" type="file" class="btn btn-link"/>
     	下载时所需积分：<input id="points" name="points" value=0 />
     	<input type="hidden" name="filename" id="filename" />
-    </form>
+    	<br />
+    	<br />
+    	<input class="btn btn-info" type="button" onclick="doUpload()" value="确定">
+		<input class="btn btn-info " type="button" onclick="$('#change-head').hide();" value="取消">
+    	</form>
+    </div>
     <hr/>
   <div >
       <table class="table table-striped">
@@ -41,7 +39,12 @@
       	</tbody>
       </table>
     </div>
+    
   
-
+<nav>
+  	<ul class="pagination">
+		<li><a href="#" class="ap" name="pre"><span aria-hidden="true">&laquo;</span></a></li>
+  	</ul>
+</nav>	
 </div>
 {% endblock %} 

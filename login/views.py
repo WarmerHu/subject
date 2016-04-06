@@ -110,16 +110,35 @@ def list(req):  # @ReservedAssignment
     return HttpResponse(json.dumps(rsp),content_type="application/json")
 
 def topic(req):
+    p = int(req.GET.get('p'))
+    e = int(req.GET.get('e'))
+    cur = p
+    rs = {}
     id = req.COOKIES["userid"]  # @ReservedAssignment
-    dao = BBSDao({'userid':id})
-    rsp = dao.select_bbs_by_us()
-    return HttpResponse(json.dumps(rsp),content_type="application/json")
+    dao = BBSDao({'userid':id}) 
+    if p==0:
+        cur = 1
+        cn = dao.select_Cbbs_by_us()
+        rs['numT'] = cn
+    ts = dao.select_bbs_by_us(cur, e)
+    rs['topic'] = ts
+    
+    return HttpResponse(json.dumps(rs),content_type="application/json")
 
 def opinion(req):
     id = req.COOKIES["userid"]  # @ReservedAssignment
     dao = BBSDao({'userid':id})
-    rsp = dao.select_Obbs_by_us()
-    return HttpResponse(json.dumps(rsp),content_type="application/json")
+    p = int(req.GET.get('p'))
+    e = int(req.GET.get('e'))
+    cur = p
+    rs = {}
+    if p==0:
+        cur = 1
+        cn = dao.select_COBBS_by_us()
+        rs['numT'] = cn
+    ts = dao.select_Obbs_by_us(cur, e)
+    rs['opinion'] = ts
+    return HttpResponse(json.dumps(rs),content_type="application/json")
 
 @csrf_exempt
 def picture(req):

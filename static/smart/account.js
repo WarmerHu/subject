@@ -1,3 +1,50 @@
+pageCount2 = 1;
+curPage2 = 1;
+function paging2(num,pardiv){
+	if(num<25){
+		for(var i=1;i<=num;i++){
+			$('<li><a href="#" class="ap2" name="p" id="p2-'+i+'">'+i+'</a></li>').appendTo($(pardiv));
+		}
+	}else{
+		for(var i=1;i<5;i++){
+			$('<li><a href="#" name="p2" class="ap2" id="p2-'+i+'">'+i+'</a></li>').appendTo($(pardiv));
+		}
+		$('<li><a href="#" class="ap2" name="pelse" id="p2-'+(i+1)+'">...</a></li>').appendTo($(pardiv));
+	}
+	$('<li><a href="#" class="ap2" name="next"><span aria-hidden="true">&raquo;</span></a></li>').appendTo($(pardiv));
+}
+function changeColor2(elem){
+	$('.ap2').attr("style","background-color:#fff");
+	$('#p2-'+curPage2).attr("style","background-color:#337ab7");
+}
+$(function(){
+	$("body").on('click',".ap2",function(){
+		name = $(this).attr("name");
+		console.log(name);
+		console.log(curPage2);
+		if(name=='pre'){
+			if(curPage2>1){
+				curPage2 = parseInt(curPage2);
+				curPage2 -= 1;
+				showData2(curPage2);
+				changeColor2(curPage2);
+			}
+		}else if(name=='next'){
+			if(curPage2<pageCount2){
+				curPage2 = parseInt(curPage2);
+				curPage2 += 1;
+				showData2(curPage2);
+				changeColor2(curPage2);
+			}
+		}else if(name=='p'){
+			curPage2 = parseInt($(this).html());
+			showData2(curPage2);
+			changeColor2(curPage2);
+		}else{
+			
+		}
+	});
+})
 function get_base(){
 	$.ajax({
 		type:"GET",
@@ -16,13 +63,18 @@ function get_base(){
 	});
 }
 
-function get_opinion(){
+function showData(p){
+	$("#o-all").children().remove();
 	$.ajax({
 		type:"GET",
-		url:"/account/opinion",
+		url:"/account/opinion/?p="+p+"&e=5",
 		success:function(data){
 			if(!$.isEmptyObject(data)){
-				$.each(data,function(n,v){
+				if(data.numT){
+					pageCount = Math.ceil(data.numT / 5);
+					paging(pageCount,"#pagination1");
+				}
+				$.each(data.opinion,function(n,v){
 					var topic = $("<tr class='toTopic' id='"+v.topicId+"'>" +
 							"<td>"+v.topicName+"</td>" +
 									"<td>"+v.time+"</td></tr>");
@@ -33,13 +85,18 @@ function get_opinion(){
 	});
 }
 
-function get_topic(){
+function showData2(p){
+	$("#t-all").children().remove();
 	$.ajax({
 		type:"GET",
-		url:"/account/topic",
+		url:"/account/topic/?p="+p+"&e=5",
 		success:function(data){
 			if(!$.isEmptyObject(data)){
-				$.each(data,function(n,v){
+				if(data.numT){
+					pageCount2 = Math.ceil(data.numT / 5);
+					paging2(pageCount2,"#pagination2");
+				}
+				$.each(data.topic,function(n,v){
 					var topic = $("<tr class='toTopic' id='"+v.topicId+"'>" +
 							"<td>"+v.topicName+"</td>" +
 									"<td>"+v.time+"</td></tr>");
@@ -128,8 +185,6 @@ function page(){
 	var show_per_page = 3; 
 	var number_of_items = $('#t-all').children().size();
 	var number_of_pages = Math.ceil(number_of_items/show_per_page);
-	console.log(number_of_items);
-	console.log(number_of_pages);
 	$('#current_page').val(0);
 	$('#show_per_page').val(show_per_page);
 	var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
@@ -147,9 +202,9 @@ function page(){
 
 $(function initial(){
 	get_base();
-	get_topic();
-	get_opinion();
-	page();
+	showData2(0);
+	showData(0);
+//	page();
 	$("#PWch").hide();
 	$("#tips").hide();
 	$("#error").hide();

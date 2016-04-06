@@ -6,9 +6,13 @@ description:
 '''
 from subject.models import User
 from subject import settings
+from subject.globalData import ONE_PAGE_NUM
 
-def select_fortune():
-    dao = User.objects.order_by("-points")
+def select_Cuser():
+    return User.objects.count()
+
+def select_fortune(page):
+    dao = User.objects.order_by("-points")[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
     rsp = []
     for v in dao:
         value = {}
