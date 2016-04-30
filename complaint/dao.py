@@ -110,6 +110,12 @@ class complaintDao:
             dao = BBSDao({'bbs':self.tp})
             dao.update_Tcomplaint(method)
             dao.update_Tsave()
+        elif self.op:
+            cm = Complaint.objects.get(opinionid=self.op, userid=self.us)
+            from bbs.dao import OpinDao
+            dao = OpinDao({'op':self.op})
+            dao.update_Ocomplaint(method)
+            dao.update_save()
         if key=='state':
             cm.state = 'CANCEL'
         cm.save()

@@ -5,6 +5,8 @@ import simplejson
 from complaint.dao import complaintDao
 from django.http.response import HttpResponse
 import json
+from activity.dao import activityDao
+from login.dao import userDao
 
 '''
 add a complaint:
@@ -16,27 +18,35 @@ def add(req):
         jsonReq = simplejson.loads(req.body)
         rq = {}
         userid = req.COOKIES['userid']
+        actDao = activityDao({"userid":userid})
+        usname = userDao({"userid":userid}).us.username
         if jsonReq.has_key('titleid'):
             titleid = jsonReq['titleid']
             dao = complaintDao({'userid':userid,'titleid':titleid})
             if dao.is_complaint_byEX():
                 return HttpResponse(json.dumps({'tips':'你已经投诉过了'}), content_type="application/json")
+            activities = usname+" complaints for "+dao.ex.title
         elif jsonReq.has_key('authorid'):
             authorid = jsonReq['authorid']
             dao = complaintDao({'userid':userid,'authorid':authorid})
             if dao.is_complaint_byAU():
                 return HttpResponse(json.dumps({'tips':'你已经投诉过了'}), content_type="application/json")
+            activities = usname+" complaints for "+dao.au.username
         elif jsonReq.has_key('topicid'):
             topicid = jsonReq['topicid']
             dao = complaintDao({'userid':userid,'topicid':topicid})
             if dao.is_complaint_byTP():
                 return HttpResponse(json.dumps({'tips':'你已经投诉过了'}), content_type="application/json")
+            activities = usname+" complaints for "+dao.tp.name
         elif jsonReq.has_key('opinionid'):
             opinionid = jsonReq['opinionid']
             dao = complaintDao({'userid':userid,'opinionid':opinionid})
             if dao.is_complaint_byOP():
                 return HttpResponse(json.dumps({'tips':'你已经投诉过了'}), content_type="application/json")
+            opdao = dao.op
+            activities = usname+" complaints for an opinion published by "+opdao.userid.username+" on "+opdao.topicid.name
         rq['content'] = jsonReq['content']
+        actDao.add_a_activity(activities)
         return HttpResponse(json.dumps({'tips':dao.insert_a_complaint(rq)}), content_type="application/json")
     return HttpResponse(json.dumps({'tips':'请求格式不正确or未登录'}), content_type="application/json")
 
@@ -61,5 +71,5 @@ def cancel(req):
         elif jsonReq.has_key('opinionid'):
             dao = complaintDao({'userid':userid, 'opinionid': jsonReq['opinionid']})
             dao.update_a_complaint('state', 'opinionid','-')
-        return HttpResponse(json.dumps({'tips':'取消投诉成功'}), content_type="application/json")
+        return HttpResponse(json.dumps({}), content_type="application/json")
     return HttpResponse(json.dumps({'tips':'请求格式不正确'}), content_type="application/json")

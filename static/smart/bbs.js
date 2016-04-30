@@ -54,7 +54,7 @@ $(function toTopic(){
 		var name = $.trim($("input[name='name']").val());
 		var detail = $.trim($("textarea[name='detail']").val());
 		
-		if(name.length<6 || name.length>20 || detail.length<10){
+		if(name.length<6 || name.length>50 || detail.length<10){
 			$("#error").html("请正确描写标题与详情").show();
 		}
 		else{

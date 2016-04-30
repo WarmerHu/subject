@@ -55,6 +55,7 @@ class OpinDao:
 
 class BBSDao:
     def __init__(self,req):
+        self.us = None
         if req.has_key("username"):
             self.us = User.objects.get(username=req["username"])
         elif req.has_key("userid"):
@@ -106,10 +107,14 @@ class BBSDao:
             realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
             Opinion(userid=self.us,topicid=self.bbs,opinion=req["content"],time=realtime,state='NORMAL',complaint=0).save()
             self.update_topic({"realtime":realtime})
-            userDao({'userid':req['userid']}).update_point_byReq({'method':'+','points':1})
+            dao = userDao({'userid':req['userid']})
+            dao.update_point_byReq({'method':'+','points':1})
+            dao.save_update()
             num = Opinion.objects.filter(topicid=self.bbs).count()
             if not num%5:
-                userDao({'userid':self.bbs.userid.id}).update_point_byReq({'method':'+','points':num/5})
+                dao = userDao({'userid':self.bbs.userid.id})
+                dao.update_point_byReq({'method':'+','points':num/5})
+                dao.save_update()
             return True
         return False
      
@@ -144,13 +149,12 @@ class BBSDao:
         rsp["replayTime"] = self.bbs.replytime
         from complaint.dao import complaintDao
         rsp['complaint'] = complaintDao({'topicid':rsp["id"], 'userid':us}).is_complaint_byTP()
-#         rsp["opinions"] = self.select_opinions_byBBS()
         return rsp
      
     def select_Copinion_byBBS(self):
         return Opinion.objects.filter(topicid=self.bbs).count()
      
-    def select_opinions_byBBS(self,page):
+    def select_opinions_byBBS(self,page,us=None):
         dao = Opinion.objects.filter(topicid=self.bbs)[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
         rsp = []
         for v in dao:
@@ -161,6 +165,8 @@ class BBSDao:
             value["head"] = '/static/img/'+v.userid.head
             value["content"] = v.opinion
             value["time"] = timezone.localtime(v.time).strftime('%Y-%m-%d %H:%M:%S')
+            from complaint.dao import complaintDao
+            value['complaint'] = complaintDao({'opinionid':v.id, 'userid':us}).is_complaint_byOP()
             rsp.append(value)
         return rsp
      

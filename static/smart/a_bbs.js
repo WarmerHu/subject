@@ -1,13 +1,12 @@
 bbsid = $.cookie("bbsid");
-curNum = 0
+curNum = 0;
+curAU = 0;
+curOP = 0;
+ph = 0;
 
 function getHeight(that){
 	authorh = $(that).children(".p_author").outerHeight(true)+30;
 	contenth = $(that).children(".p_content").outerHeight(true);
-	console.log(authorh);
-	console.log(contenth);
-	console.log(that);
-	console.log($(that).children(".p_author"));
 	if(authorh>contenth){
 		$(".p_postlist").css("height",authorh);
 	}else{
@@ -32,20 +31,27 @@ function getOpinion(bbsid,p){
 					paging(pageCount,".pagination");
 				}
 				$.each(data.opinion,function(n,v){
-					var parentdiv = $("<div class='p_postlist'></div>");
+					var parentdiv = $("<div class='p_postlist' id='op-"+v.id+"'></div>");
 					var authordiv = $("<ul class='p_author'></ul>");
 					var imgInAuthordiv = $("<li>" +
 							"<a class='p_author_face' target='_blank'>" +
 							"<img src='"+v.head+"'></a></li>");
 					var nameInAuthordiv = $("<li>" +
 							"<a class='p_author_name j_user_card' target='_blank' alog-group='p_author'>"+v.name+"</a></li>");
-					var timeInAuthordiv = $("<br><li>"+v.time+"</li><li>#"+(n+curNum)+"</li>");
-					var buttondiv = $("<li><button type='button' class='btn btn-default complaintO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
-							"<i class='glyphicon glyphicon-thumbs-down'></i>"+
-					"<span class='cmp'  cc='add'>投诉</span></button>" +
-					"<button type='button' class='btn btn-default quoteO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
+					var timeInAuthordiv = $("<br><li>"+v.time+"</li><li class='opNUM'>#"+(n+curNum)+"</li>");
+					if(v.complaint){
+						var combut = "<li><button type='button' class='btn btn-default complaintO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
+						"<i class='glyphicon glyphicon-thumbs-down'></i>"+
+						"<span class='cmp'  cc='can'>取消投诉</span></button>"
+					}else{
+						var combut = "<li><button type='button' class='btn btn-default complaintO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
+						"<i class='glyphicon glyphicon-thumbs-down'></i>"+
+						"<span class='cmp'  cc='add'>投诉</span></button>"
+					}
+					var buttondiv = $( combut+	"<button type='button' class='btn btn-default quoteO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
 							"<i class='glyphicon glyphicon-thumbs-up'></i>"+
 					"<span class='quo'  cc='addO'>引用</span></button></li>");
+					
 					imgInAuthordiv.appendTo(authordiv);
 					nameInAuthordiv.appendTo(authordiv);
 					timeInAuthordiv.appendTo(authordiv);
@@ -84,9 +90,10 @@ function getTopic(bbsid){
 				$("#title-content").html(data.content);
 				$("#complaintT").attr("tp",data.id);
 				$("#complaintT").attr("au",data.authorid);
+				getHeight(this);
 				if(data.complaint){
-					$("#cmpT").html("取消投诉");
-					$("#cmpT").attr("cc","canT");
+					$(".cmp").html("取消投诉");
+					$(".cmp").attr("cc","can");
 				}
 			}
 			else{
@@ -117,9 +124,12 @@ function cancelComplaintT(that){
         	alert("取消投诉失败");
         },
         success: function(data){
-        		$("#cmpT").html("投诉");
-        		$("#cmpT").attr("cc","addT");
-        		$("#tips").html(data.tips).show();
+        	if(data.tips){
+        		alert(data.tips);
+        	}else{
+        		$(that).children(".cmp").html("投诉");
+        		$(that).children(".cmp").attr("cc","add");
+        		}
         }
 		});
 }  	
@@ -152,8 +162,8 @@ function addComplaintT(that){
 	        	if(data.tips){
 	        		alert(data.tips);
 	        	}else{
-	        		$("#cmpT").html("取消投诉");
-	        		$("#cmpT").attr("cc","canT");
+	        		$(that).children(".cmp").html("取消投诉");
+	        		$(that).children(".cmp").attr("cc","can");
 	        	}
 	        }
 			});
@@ -161,7 +171,7 @@ function addComplaintT(that){
 }
 function com(that){
 	$(".submitT").attr("au",$("#complaintT").attr("au"));
-	str = $(that).children(".cmpT").attr("cc");;
+	str = $(that).children(".cmp").attr("cc");
 	if(str=='add'){
 		$("#RULE").hide();
 		$("#CMs").toggle();
@@ -179,8 +189,10 @@ $(function initial(){
 	getTopic(bbsid);
 	getOpinion(bbsid,0);
 	$("#complaintT").click(function(){
+		$("#opinion").removeAttr("checked");
+		$("#topic").removeAttr("disabled");
 		$("#opinion").attr("disabled","true");
-		$("#topic").attr("checked","checked");
+		$("#topic").prop("checked","checked");
 		$(".submitT").attr("tp",$("#complaintT").attr("tp"));
 		com(this);
 	});
@@ -191,10 +203,20 @@ $(function initial(){
 	$("body").on('click',".complaintO",function(){
 		$("#opinion").removeAttr("disabled");
 		$("#topic").removeAttr("checked");
-		$("#opinion").attr("checked","checked");
+		$("#opinion").prop("checked","checked");
 		$("#topic").attr("disabled","true");
 		$(".submitT").attr("op",$(this).attr("op"));
 		com(this);
+	});
+	$("body").on('click',".quoteO",function(){
+		var opid = parseInt($(this).attr("op")); 
+		var par = $(this).parent().parent();
+		ph = par.children(".opNUM").html();
+		curAU = parseInt($(this).attr("au"));
+		curOP = "#op-"+opid;
+		$("#detail").val("<b>引用<a href='"+curOP+"'>"+ph+"</a>的意见</b>\n");
+		$("#detail").focus();
+		$(this).scrollTo('#pu-opi');
 	});
 })   
 
@@ -209,6 +231,9 @@ $(function publish(){
 				dataType:"json",
 				data:{
 					"content":detail,
+					"au":curAU,
+					"op":curOP,
+					"ph":ph
 				},
 				success:function(result){
 					if($.isEmptyObject(result)){
