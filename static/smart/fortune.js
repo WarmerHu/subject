@@ -8,7 +8,7 @@ function showData(p){
 			if(!$.isEmptyObject(data)){
 				if(data.numT){
 					pageCount = Math.ceil(data.numT / 20);
-					paging(pageCount，".pagination");
+					paging(pageCount, ".pagination");
 				}
 				$.each(data.fortune,function(n,value){
 						var parentdiv=$("<tr><td>"+value.username+"</td><td>"+value.fortune+"</td></tr>");  

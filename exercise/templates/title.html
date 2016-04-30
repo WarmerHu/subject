@@ -1,23 +1,67 @@
 {% extends "baseE.html" %}
   {% block script %}
-  	<script type="text/javascript" src="{{STATIC_URL}}smart/title.js">  </script>
-  	<link href="{{STATIC_URL}}css/title.css" rel="stylesheet" type="text/css">
+  	<script type="text/javascript" src="/static/smart/title.js">  </script>
+  	<link href="/static/css/title.css" rel="stylesheet" type="text/css">
   {% endblock %}
 
 {% block content %}  
 
 <div class="row">
-  <div class="col-ms-1 col-md-3">
-    &nbsp;
+  <div class="col-md-3">
+    <div id="comment">
+    	<button type="button" class="btn btn-default" id="seeA">
+			<i class="glyphicon glyphicon-chevron-down"></i>
+			答案
+		</button>
+		<button type="button" class="btn btn-default" id="contribute">
+			<i class="glyphicon glyphicon-heart"></i>
+			赞
+			<span id="linkearticle"></span>
+		</button>
+		<button type="button" class="btn btn-danger" id="complaint">
+			<i class="glyphicon glyphicon-thumbs-down"></i>
+			<span id="cmp"  cc="addC">投诉</span>
+		</button>
+      </div>
+      <div id="CMs">
+      			<br />
+      			<label><input type="radio" name="radio"  value="author"  disabled/> 用户</label>
+				<label><input type="radio" name="radio"  value="title"   checked="checked" /> 题目</label>
+				<div class="input-group">
+              		<span class="input-group-addon">投诉理由</span>
+             		<textarea name="reason"   class="form-control" placeholder="请输入不少于10位字符" ></textarea>
+          		</div>
+          		<br />
+          		<button class="btn btn-primary btn-lg btn-block" id="submit"  >确定</button>
+			</div>
+      <br />
+      <div id="regulation">
+      	<p>关于点赞：</p>
+      	<ol>
+      		<li>觉得这道题目出得有意义，正中红心，请点赞O(∩_∩)O～</li>
+      		<li>每点一个赞会为出题者增加积分x1</li>
+      		<li>点赞不会扣除点赞者的积分</li>
+      		<li>每人每天只可点赞一次</li>
+      		<li>尊重劳动者，请毫不犹豫的点赞吧！</li>
+      	</ol>
+      	<p>关于投诉：</p>
+      	<ol>
+      		<li>请谨慎投诉！</li>
+      		<li>投诉时默认选择投诉的对象——题目</li>
+      		<li>投诉用户请移步至财富榜</li>
+      		<li>每人针对每道题|每位用户只能投诉一次！</li>
+      		<li>当某道题目被投诉数量达到5时，该道题目被锁定，不再显示在刷题宝典中</li>
+      		<li>当某一用户被投诉（包括不同模块）的数量达到10时，该用户被锁定，不能使用Smart的主要功能</li>
+      		<li>在刷题宝典里可取消对题目的投诉</li>
+      	</ol>
+      </div>
   </div>
   <div class="col-ms-10 col-md-6">
-    
-    
     <div class="alert alert-danger" id="tips"></div>
      <input type='hidden' name='csrfmiddlewaretoken' value='WXxL1hnit3PZ5a18BzHZek0Z6oHQpb5O' />
       <input name="problem_id" type="hidden" value="11" />
       <div class="head">
-      	<div id="au"></div>
+      	<b id="au"></b>
       	<div id="state"></div>
       </div>
       <pre><div id="title"></div></pre>
@@ -34,7 +78,15 @@
     
   </div>
   <div class="col-ms-1 col-md-3">
-    &nbsp;
+    <p>关于规则：</p>
+    <ol>
+    	<li>刷题宝典自带验证答案功能</li>
+    	<li>请用户自觉做题，文明做题</li>
+    	<li>一旦答案错误，系统会给出相应提示</li>
+    	<li>同时，系统将错题添加至错题集</li>
+    	<li>实在认为此题存在问题（如，对输入的答案非常自信，而系统却认为此答案有误），请“查看答案”，并参考投诉规则</li>
+    	<li>Smart的判定功能，全交由用户本身觉得，暂无管理员等拥有特殊权限的角色；请大家自觉遵守规则，文明使用各个功能</li>
+    </ol>
   </div>
 </div>
 {% endblock %} 

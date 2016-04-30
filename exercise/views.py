@@ -3,7 +3,6 @@ from django.shortcuts import  render_to_response
 from django.template.context import RequestContext
 
 from collection.dao import collectionDao
-from exercise.dao import read_a_title, get_tips_byId, exerciseDao
 from django.http.response import HttpResponse
 import json
 from activity.dao import activityDao
@@ -12,6 +11,7 @@ from subject.models import Exercise
 from django.views.decorators.csrf import csrf_exempt
 from login.dao import userDao
 from exercise.controller import fileCon
+from exercise.dao import read_a_title, get_tips_byId, exerciseDao, updateEXDao
 
 
 def into_title(req):
@@ -25,8 +25,8 @@ def into_title(req):
 
 #获取一条题目
 def get_title(req,param):
-    if req.COOKIES.has_key('username'):
-        rsp = read_a_title(param)
+    if req.COOKIES.has_key('userid'):
+        rsp = read_a_title(req=param,userid=req.COOKIES['userid'] )
         return HttpResponse(json.dumps(rsp), content_type="application/json")
     return HttpResponse(json.dumps({'tips':'获取失败，请重新登录'}), content_type="application/json")
 
@@ -44,14 +44,16 @@ def check_answer(req):
         jsonReq = simplejson.loads(req.body)
         titleId = jsonReq['id']
         titleAs = jsonReq['answer']
-        userid = req.COOKIES['userid']
+        usid = req.COOKIES['userid']
         if titleAs:
             isTitle = Exercise.objects.filter(id = titleId,answer = titleAs)
             if isTitle:
-                userDao({'userid':userid}).update_point_byReq({'method':'+','points':1})
-                rsp = read_a_title(jsonReq['num'])
+                dao = userDao({'userid':usid})
+                dao.update_point_byReq({'method':'+','points':1})
+                dao.save_update()
+                rsp = read_a_title(req=jsonReq['num'],userid=usid)
                 return HttpResponse(json.dumps(rsp), content_type="application/json")
-        rsp = {'exerciseid':titleId,'userid':userid}
+        rsp = {'exerciseid':titleId,'userid':usid}
         CDao = collectionDao(rsp)
         if not CDao.select_collection_byExUs():
             CDao.insert_collection()    
@@ -91,5 +93,20 @@ def publish_title(req):
             return HttpResponse(json.dumps({'tips':tips}), content_type="application/json")
     return HttpResponse(json.dumps({'tips':'添加失败'}), content_type="application/json")
 
+'''
+request body:{'titleid':xxx, 'authorid':xxx}
+'''
+@csrf_exempt
+def contribute(req):
+    if req.method=='POST' and req.COOKIES.has_key('userid'):
+        jsonReq = simplejson.loads(req.body)
+        dao = updateEXDao(ex=jsonReq['titleid'])
+        dao.update_exercise_points()
+        dao.update_ex_save()
+        dao = userDao({'userid':jsonReq['authorid']})
+        dao.update_point_byReq({'method':'+','points':1})
+        dao.save_update()
+        return HttpResponse(json.dumps({'tips':'点赞成功'}), content_type="application/json")
+    return HttpResponse(json.dumps({'tips':'点赞失败'}), content_type="application/json")
             
             

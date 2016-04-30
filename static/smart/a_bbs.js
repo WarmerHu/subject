@@ -1,9 +1,13 @@
 bbsid = $.cookie("bbsid");
 curNum = 0
 
-function getHeight(){
-	authorh = $(".p_author").outerHeight(true)+30;
-	contenth = $(".p_content").outerHeight(true);
+function getHeight(that){
+	authorh = $(that).children(".p_author").outerHeight(true)+30;
+	contenth = $(that).children(".p_content").outerHeight(true);
+	console.log(authorh);
+	console.log(contenth);
+	console.log(that);
+	console.log($(that).children(".p_author"));
 	if(authorh>contenth){
 		$(".p_postlist").css("height",authorh);
 	}else{
@@ -36,17 +40,24 @@ function getOpinion(bbsid,p){
 					var nameInAuthordiv = $("<li>" +
 							"<a class='p_author_name j_user_card' target='_blank' alog-group='p_author'>"+v.name+"</a></li>");
 					var timeInAuthordiv = $("<br><li>"+v.time+"</li><li>#"+(n+curNum)+"</li>");
+					var buttondiv = $("<li><button type='button' class='btn btn-default complaintO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
+							"<i class='glyphicon glyphicon-thumbs-down'></i>"+
+					"<span class='cmp'  cc='add'>投诉</span></button>" +
+					"<button type='button' class='btn btn-default quoteO' id='' au='"+v.authorid+"' op='"+v.id+"' tp=''>"+
+							"<i class='glyphicon glyphicon-thumbs-up'></i>"+
+					"<span class='quo'  cc='addO'>引用</span></button></li>");
 					imgInAuthordiv.appendTo(authordiv);
 					nameInAuthordiv.appendTo(authordiv);
 					timeInAuthordiv.appendTo(authordiv);
+					buttondiv.appendTo(authordiv);
 					
 					var contentdiv = $("<div class='p_content'>" +
 							"<pre>"+v.content+"</pre></div>");
 					authordiv.appendTo(parentdiv);
 					contentdiv.appendTo(parentdiv);
-					
+//					getHeight(parentdiv);
 					parentdiv.appendTo($("#opi-all"));
-					getHeight();
+					
 				});
 				
 			}
@@ -71,7 +82,12 @@ function getTopic(bbsid){
 				$("#title-author").html(data.author);
 				$("#title-time").html(data.creatTime);
 				$("#title-content").html(data.content);
-				getHeight();
+				$("#complaintT").attr("tp",data.id);
+				$("#complaintT").attr("au",data.authorid);
+				if(data.complaint){
+					$("#cmpT").html("取消投诉");
+					$("#cmpT").attr("cc","canT");
+				}
 			}
 			else{
 				$("#opi").html("没有该则话题");
@@ -82,10 +98,104 @@ function getTopic(bbsid){
 	}
 	});
 }
+function cancelComplaintT(that){
+	tp = parseInt($(that).attr("tp"));
+	op = parseInt($(that).attr("op"));
+	jsonData = {};
+	if(tp){
+		jsonData['topicid'] = tp;
+	}else if(op){
+		jsonData['opinionid'] = op;
+	}
+	$.ajax({
+        type: "POST",
+        url: "/complaint/cancel/",
+        dataType: "json",
+        timeout: 1000,
+        data:JSON.stringify(jsonData),
+        error: function(){
+        	alert("取消投诉失败");
+        },
+        success: function(data){
+        		$("#cmpT").html("投诉");
+        		$("#cmpT").attr("cc","addT");
+        		$("#tips").html(data.tips).show();
+        }
+		});
+}  	
+function addComplaintT(that){
+	content = 	$.trim($('textarea[name="reason"]').val());
+	if(!content || content.length<10){
+		alert("请正确输入投诉理由");
+	}else{
+	jsonData = {
+				'content':content
+		}
+		value = $('input:radio[name="radio"]:checked').val();
+		if(value=='topic'){
+			jsonData['topicid'] = parseInt($(that).attr("tp"));
+		}else if(value=='author'){
+			jsonData['authorid'] = parseInt($(that).attr("au"));
+		}else if(value=='opinion'){
+			jsonData['opinionid'] = parseInt($(that).attr("op"));
+		}
+		$.ajax({
+	        type: "POST",
+	        url: "/complaint/add/",
+	        dataType: "json",
+	        timeout: 1000,
+	        data:JSON.stringify(jsonData),
+	        error: function(){
+	        	alert("提交投诉失败");
+	        },
+	        success: function(data){
+	        	if(data.tips){
+	        		alert(data.tips);
+	        	}else{
+	        		$("#cmpT").html("取消投诉");
+	        		$("#cmpT").attr("cc","canT");
+	        	}
+	        }
+			});
+	}
+}
+function com(that){
+	$(".submitT").attr("au",$("#complaintT").attr("au"));
+	str = $(that).children(".cmpT").attr("cc");;
+	if(str=='add'){
+		$("#RULE").hide();
+		$("#CMs").toggle();
+		$(".submitT").click(function(){
+			addComplaintT(that);
+		});
+	}else if(str=='can'){
+		cancelComplaintT(that);
+	}
+}
 $(function initial(){
+	$("#CMs").hide();
+	$("#RULE").hide();
 	$('#tips').hide();
 	getTopic(bbsid);
 	getOpinion(bbsid,0);
+	$("#complaintT").click(function(){
+		$("#opinion").attr("disabled","true");
+		$("#topic").attr("checked","checked");
+		$(".submitT").attr("tp",$("#complaintT").attr("tp"));
+		com(this);
+	});
+	$("#regular").click(function(){
+		$("#CMs").hide();
+		$("#RULE").toggle();
+	});
+	$("body").on('click',".complaintO",function(){
+		$("#opinion").removeAttr("disabled");
+		$("#topic").removeAttr("checked");
+		$("#opinion").attr("checked","checked");
+		$("#topic").attr("disabled","true");
+		$(".submitT").attr("op",$(this).attr("op"));
+		com(this);
+	});
 })   
 
 $(function publish(){

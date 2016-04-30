@@ -1,4 +1,31 @@
 @CHARSET "UTF-8";
+#complaintT{
+	height: 28px;
+	width: 100px;
+	text-align: center;
+}
+#regular{
+	height: 28px;
+	width: 100px;
+	text-align: center;
+}
+#CMs{
+	border: 10px solid #ddd;
+background-color: white;
+padding: 5px;
+position: fixed;
+left: 40em;
+z-index: 999;
+}
+#RULE{
+border: 10px solid #ddd;
+background-color: white;
+padding: 5px;
+position: fixed;
+left: 35em;
+z-index: 999;
+width: 39%;
+}
 .core_title_wrap_bright {
     border-color:#bbbdbf #e5e5e5 #bbbdbf #e5e5e5;
     border-style: none none solid solid;

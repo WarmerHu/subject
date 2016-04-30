@@ -4,7 +4,7 @@ from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse
 import json
-from bbs.dao import BBSDao, select_topics_byReq, select_Ctopic
+from bbs.dao import select_Ctopic, select_topics_byReq, BBSDao
 
 def into_bbs(req):
     return render_to_response('bbs.html',RequestContext(req))
@@ -48,7 +48,12 @@ def into_a_bbs(req):
 
 
 def get_topic(req,param):
-    return HttpResponse(json.dumps(BBSDao({"id":int(param)}).select_topic()),content_type="application/json")
+    dao = BBSDao({"id":int(param)})
+    if req.COOKIES.has_key('userid'):
+        dao = dao.select_topic(us=req.COOKIES['userid'])
+    else:
+        dao = dao.select_topic()
+    return HttpResponse(json.dumps(dao),content_type="application/json")
 
 def get_opinions(req,param):
     p = int(req.GET.get('p'))

@@ -2,10 +2,6 @@
   body b{
   	font-size:30px
   }
-  .container{
-	margin:100px 25px;
-	width:1300px;
-  }
   .affix{
   	width:30em;
   }
@@ -14,4 +10,10 @@
   }
   #error {
     color: red;
+}
+.col-md-8{
+	padding-left: 0px;
+}
+.container {
+    padding-left: 0px;
 }

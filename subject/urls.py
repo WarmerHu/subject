@@ -10,15 +10,17 @@ import activity.urls
 import fortune.urls
 import bbs.urls
 import jobs.urls
+import complaint.url
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # url(r'^$', 'subject.views.home', name='home'),
-    url(r'^static/(?P<path>.*)$','django.views.static.serve',),
+#     url(r'^static/(?P<path>.*)$','django.views.static.serve',),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),    
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include(login.urls)),
     url(r'^title/', include(exercise.url)),
+    url(r'^complaint/', include(complaint.url)),
     url(r'^collection/', include(collection.urls)),
     url(r'^resources/', include(resources.urls)),
     url(r'^activity/', include(activity.urls)),

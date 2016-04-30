@@ -1,0 +1,11 @@
+import os  
+import sys  
+
+os.environ['PYTHON_EGG_CACHE'] = '/tmp/.python-eggs' 
+path = '/var/www/workspace/subject'  
+if path not in sys.path:  
+    sys.path.append(path)  
+os.environ['DJANGO_SETTINGS_MODULE'] = 'subject.settings'  
+  
+import django.core.handlers.wsgi  
+application = django.core.handlers.wsgi.WSGIHandler()  

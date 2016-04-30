@@ -2,7 +2,7 @@
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
-#   * Remove `managed = False` lines if you wish to allow Django to create and delete the table
+#   * Remove `managed = False` lines for those models you wish to give write DB access
 # Feel free to rename the models, but don't rename db_table values or field names.
 #
 # Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
@@ -31,6 +31,27 @@ class Collection(models.Model):
         managed = False
         db_table = 'collection'
 
+class Complaint(models.Model):
+    id = models.IntegerField(primary_key=True)
+    userid = models.ForeignKey('User', db_column='userId', blank=True, null=True) # Field name made lowercase.
+    titleid = models.ForeignKey('Exercise', db_column='titleId', blank=True, null=True) # Field name made lowercase.
+    content = models.TextField(blank=True)
+    authorid = models.ForeignKey('User', db_column='authorid', blank=True, null=True)
+    state = models.CharField(max_length=6, blank=True)
+    topicid = models.ForeignKey('Topic', db_column='topicid', blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'complaint'
+
+class DjangoMigrations(models.Model):
+    id = models.IntegerField(primary_key=True)
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
 class Exercise(models.Model):
     id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
@@ -38,21 +59,11 @@ class Exercise(models.Model):
     tips = models.CharField(max_length=255, blank=True)
     userid = models.ForeignKey('User', db_column='userId', blank=True, null=True) # Field name made lowercase.
     state = models.CharField(max_length=6, blank=True)
+    points = models.IntegerField(blank=True, null=True)
+    complaint = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'exercise'
-
-class Jobs(models.Model):
-    id = models.IntegerField(primary_key=True)
-    createtime = models.DateTimeField()
-    company = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
-    duty = models.TextField()
-    contact = models.CharField(max_length=255)
-    source = models.CharField(max_length=255)
-    class Meta:
-        managed = False
-        db_table = 'jobs'
 
 class Opinion(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -60,6 +71,8 @@ class Opinion(models.Model):
     topicid = models.ForeignKey('Topic', db_column='topicId') # Field name made lowercase.
     opinion = models.CharField(max_length=255)
     time = models.DateTimeField()
+    state = models.CharField(max_length=6, blank=True)
+    complaint = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'opinion'
@@ -82,6 +95,8 @@ class Topic(models.Model):
     userid = models.ForeignKey('User', db_column='userID') # Field name made lowercase.
     replytime = models.IntegerField(db_column='replyTime') # Field name made lowercase.
     modifytime = models.DateTimeField(db_column='modifyTime') # Field name made lowercase.
+    complaint = models.IntegerField(blank=True, null=True)
+    state = models.CharField(max_length=6, blank=True)
     class Meta:
         managed = False
         db_table = 'topic'
@@ -95,6 +110,7 @@ class User(models.Model):
     points = models.IntegerField(blank=True, null=True)
     head = models.CharField(max_length=255, blank=True)
     flag = models.CharField(max_length=255, blank=True)
+    complaint = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'user'

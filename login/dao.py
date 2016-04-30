@@ -1,8 +1,6 @@
 #coding:utf-8
 '''
 Created on 2016-1-4
-@author: 
-description:
 '''
 from subject.models import User
 from subject import settings
@@ -28,12 +26,21 @@ class userDao():
     def __init__(self,req):
         if req.has_key('userid'):
             self.us = User.objects.get(id=req['userid'])
+        elif req.has_key('us'):
+            self.us = req['us']
         elif req.has_key('username'):
             self.us = User.objects.get(username=req['username'])
         elif req.has_key('email'):
             self.us = User.objects.get(email=req['email'])
             self.name = self.us.username
     
+    def update_complaint(self,method):
+        if method=='+':
+            self.us.complaint += 1
+        elif method=='-':
+            self.us.complaint -= 1
+        return self.us.complaint
+        
     def update_state(self,req):
         self.us.state = req
         
@@ -42,7 +49,6 @@ class userDao():
             self.us.points += int(req['points'])
         else:
             self.us.points -= int(req['points'])
-            self.us.save()
     
     def update_flag(self,req):
         self.us.flag = req
@@ -65,7 +71,7 @@ class userDao():
         return rsp 
     
 def uploadHead(req):
-    f_path = settings.STATIC_ROOT + req['filename']
+    f_path = settings.STATIC_ROOT+'img/' + req['filename']
     with open(f_path,'wb+') as info:
         for chunk in req['file'].chunks():
             info.write(chunk)

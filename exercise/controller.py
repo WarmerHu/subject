@@ -1,8 +1,8 @@
 #coding:utf-8
 from subject import settings
-from exercise.dao import exerciseDao
 import os
 import xlrd
+from exercise.dao import exerciseDao
 def fileCon(req):
     f_path = settings.MEDIA_ROOT + req['filename']
     with open(f_path,'wb+') as info:

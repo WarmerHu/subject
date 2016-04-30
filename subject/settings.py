@@ -23,6 +23,7 @@ INSTALLED_APPS = (
     'fortune',
     'bbs',
     'jobs',
+    'complaint',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,7 +53,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE =  'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -67,7 +68,7 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = (  
     'static',  
 )  
-STATIC_ROOT = os.path.join(BASE_DIR,'static/img/').replace("\\","/")
+STATIC_ROOT = os.path.join(BASE_DIR,'static/').replace("\\","/")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/').replace("\\","/")
 
