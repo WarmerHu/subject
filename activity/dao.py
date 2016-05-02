@@ -16,6 +16,11 @@ def select_activity(req):
         rsp.append('\t'.join([timezone.localtime(v.time).strftime('%Y-%m-%d %H:%M:%S'), v.content]))
     return rsp
 
+def is_activity(req):
+    if Activity.objects.filter(content=req):
+        return True
+    return False
+
 class activityDao():
     def __init__(self,req):
         if req.has_key("userid"):
@@ -25,3 +30,5 @@ class activityDao():
         realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         Activity(userid=self.us,content=self.us.username.encode('utf-8')+realcontent,time=realtime).save()
         return
+    
+    

@@ -3,15 +3,15 @@ curPage = 1;
 function paging(num,pardiv){
 	if(num<25){
 		for(var i=1;i<=num;i++){
-			$('<li><a href="#" class="ap" name="p" id="p-'+i+'">'+i+'</a></li>').appendTo($(pardiv));
+			$('<li><a href="#" class="ap nt" name="p" id="p-'+i+'">'+i+'</a></li>').appendTo($(pardiv));
 		}
 	}else{
 		for(var i=1;i<25;i++){
-			$('<li><a href="#" name="p" class="ap" id="p-'+i+'">'+i+'</a></li>').appendTo($(pardiv));
+			$('<li><a href="#" name="p" class="ap nt" id="p-'+i+'">'+i+'</a></li>').appendTo($(pardiv));
 		}
-		$('<li><a href="#" class="ap" name="pelse" id="p-'+(i+1)+'">...</a></li>').appendTo($(pardiv));
+		$('<li><a href="#" class="ap nt" name="pelse" id="p-'+(i+1)+'">...</a></li>').appendTo($(pardiv));
 	}
-	$('<li><a href="#" class="ap" name="next"><span aria-hidden="true">&raquo;</span></a></li>').appendTo($(pardiv));
+	$('<li><a href="#" class="ap nt" name="next"><span aria-hidden="true">&raquo;</span></a></li>').appendTo($(pardiv));
 }
 function changeColor(elem){
 	$('.ap').attr("style","background-color:#fff");

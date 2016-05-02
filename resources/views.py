@@ -6,7 +6,7 @@ import json
 from resources.dao import select_resources, uploadFile, update_a_resources_byReq,\
     select_Cresource
 from django.views.decorators.csrf import csrf_exempt
-from subject.models import User
+from subject.models import User, Source
 from activity.dao import activityDao
 from login.dao import userDao
 
@@ -21,7 +21,10 @@ def get_resources(req):
         cur = 1
         cn = select_Cresource()
         rs['numT'] = cn
-    rs['res'] = select_resources(cur)
+    us = None
+    if req.COOKIES.has_key("userid"):
+        us = req.COOKIES["userid"]
+    rs['res'] = select_resources(cur,us)
     return HttpResponse(json.dumps(rs),content_type="application/json")
 
  
@@ -34,11 +37,11 @@ def upload_resources(req):
         if file:
             userid = req.COOKIES['userid'].decode('utf-8').encode('utf-8')
             uploadFile({'userid':userid,'file':file,'filename':filename,'points':points})
-            content = '上传资源：' + filename 
+            content = ' 上传资源：' + filename 
             ADao = activityDao({"userid":userid})
             ADao.add_a_activity(content)
             return HttpResponse(json.dumps({'tips':'上传成功'}),content_type="application/json")  
-    return HttpResponse(json.dumps({'tips':'上传失败'}),content_type="application/json") 
+    return HttpResponse(json.dumps({'tips':'上传失败or未登录'}),content_type="application/json") 
 
 '''
 下载时的积分处理：
@@ -56,10 +59,14 @@ def download_resources(req):
         uploader = int(req.POST["uploader"])
         resourceID = int(req.POST["resourceID"])
         if User.objects.filter(id=downloader,points__gte=downloadPoint):
-            userDao({'userid':downloader}).update_point_byReq({'method':'-','points':downloadPoint}) 
-            userDao({'userid':uploader}).update_point_byReq({'method':'+','points':downloadPoint})
+            dao = userDao({'userid':downloader})
+            dao.update_point_byReq({'method':'-','points':downloadPoint})
+            dao.save_update() 
+            dao = userDao({'userid':uploader})
+            dao.update_point_byReq({'method':'+','points':downloadPoint})
+            dao.save_update()
             count = update_a_resources_byReq({'id': resourceID})
-            content = '下载资源' 
+            content = (' 下载资源: ').decode("utf-8") + Source.objects.get(id=resourceID).download  
             ADao = activityDao({"userid":downloader})
             ADao.add_a_activity(content)
             return HttpResponse(json.dumps({'resourceID':resourceID,"count":count}),content_type="application/json")

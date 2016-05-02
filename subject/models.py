@@ -21,7 +21,7 @@ class Activity(models.Model):
 
 
 class Collection(models.Model):
-    exerciseid = models.ForeignKey('Exercise',  db_column='exerciseId')  # Field name made lowercase.
+    exerciseid = models.ForeignKey('Exercise', db_column='exerciseId')  # Field name made lowercase.
     userid = models.ForeignKey('User', db_column='userId')  # Field name made lowercase.
     note = models.TextField(blank=True, null=True)
     righttime = models.IntegerField(db_column='rightTime', blank=True, null=True)  # Field name made lowercase.
@@ -36,10 +36,11 @@ class Complaint(models.Model):
     userid = models.ForeignKey('User', db_column='userId', blank=True, null=True)  # Field name made lowercase.
     titleid = models.ForeignKey('Exercise', db_column='titleId', blank=True, null=True)  # Field name made lowercase.
     content = models.TextField(blank=True, null=True)
-    authorid = models.ForeignKey('User',  db_column='authorid', blank=True, null=True)
+    authorid = models.ForeignKey('User', db_column='authorid', blank=True, null=True)
     state = models.CharField(max_length=6, blank=True, null=True)
     topicid = models.ForeignKey('Topic', db_column='topicid', blank=True, null=True)
     opinionid = models.ForeignKey('Opinion', db_column='opinionid', blank=True, null=True)
+    resourceid = models.ForeignKey('Source', db_column='resourceid', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -60,7 +61,7 @@ class Exercise(models.Model):
     title = models.CharField(max_length=255)
     answer = models.CharField(max_length=255)
     tips = models.CharField(max_length=255, blank=True, null=True)
-    userid = models.ForeignKey('User',  db_column='userId', blank=True, null=True)  # Field name made lowercase.
+    userid = models.ForeignKey('User', db_column='userId', blank=True, null=True)  # Field name made lowercase.
     state = models.CharField(max_length=6, blank=True, null=True)
     points = models.IntegerField(blank=True, null=True)
     complaint = models.IntegerField(blank=True, null=True)
@@ -71,7 +72,7 @@ class Exercise(models.Model):
 
 
 class Opinion(models.Model):
-    userid = models.ForeignKey('User',  db_column='userId')  # Field name made lowercase.
+    userid = models.ForeignKey('User', db_column='userId')  # Field name made lowercase.
     topicid = models.ForeignKey('Topic', db_column='topicId')  # Field name made lowercase.
     opinion = models.CharField(max_length=255)
     time = models.DateTimeField()
@@ -84,10 +85,12 @@ class Opinion(models.Model):
 
 
 class Source(models.Model):
-    userid = models.ForeignKey('User',  db_column='userId')  # Field name made lowercase.
+    userid = models.ForeignKey('User', db_column='userId')  # Field name made lowercase.
     content = models.IntegerField()
     points = models.IntegerField()
     download = models.CharField(max_length=255)
+    state = models.CharField(max_length=6, blank=True, null=True)
+    complaint = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

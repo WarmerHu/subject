@@ -141,7 +141,7 @@ function addComplaintT(that){
 	jsonData = {
 				'content':content
 		}
-		value = $('input:radio[name="radio"]:checked').val();
+		var value = $('input:radio[name="radio"]:checked').val();
 		if(value=='topic'){
 			jsonData['topicid'] = parseInt($(that).attr("tp"));
 		}else if(value=='author'){
@@ -161,9 +161,10 @@ function addComplaintT(that){
 	        success: function(data){
 	        	if(data.tips){
 	        		alert(data.tips);
-	        	}else{
+	        	}else if(value=='topic' ||  value=='opinion'){
 	        		$(that).children(".cmp").html("取消投诉");
 	        		$(that).children(".cmp").attr("cc","can");
+	        		$("#CMs").hide();
 	        	}
 	        }
 			});

@@ -1,16 +1,16 @@
-{% extends "baseNoLog.html" %}
+{% extends "baseB.html" %}
   {% block script %}
-    <script type="text/javascript" src="{{STATIC_URL}}smart/paging.js"></script>
-  <script type="text/javascript" src="{{STATIC_URL}}smart/resources.js">  </script>
-  <script type="text/javascript" src="{{STATIC_URL}}jquery/ajaxfileupload.js">  </script>
-  <link href="{{STATIC_URL}}css/resources.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/static/smart/paging.js"></script>
+  <script type="text/javascript" src="/static/smart/resources.js">  </script>
+  <script type="text/javascript" src="/static/jquery/ajaxfileupload.js">  </script>
+  <link href="/static/css/resources.css" rel="stylesheet" type="text/css">
   {% endblock %}
 
 {% block content %}  
 
 <div class="row">
 	<div>
-    	<b>资源列表&nbsp&nbsp&nbsp&nbsp</b><strong id="tips" ></strong>
+    	<b>资源列表&nbsp&nbsp&nbsp&nbsp</b>
     	<input id="sub" class="btn btn-primary" type="button" onclick="$('#change-head').show();" value="文件上传">
     </div>
      <div id="change-head" style="display: block;">
@@ -24,15 +24,28 @@
 		<input class="btn btn-info " type="button" onclick="$('#change-head').hide();" value="取消">
     	</form>
     </div>
+    <strong id="tips" ></strong>
     <hr/>
+    <div id="CMs">
+      			<br />
+      			<label><input type="radio" name="radio"  value="author"  id="author"/> 用户</label>
+				<label><input type="radio" name="radio"  value="resourse"  id="resourse"/> 资源</label>
+				<div class="input-group">
+              		<span class="input-group-addon">投诉理由</span>
+             		<textarea name="reason"   class="form-control" placeholder="请输入不少于10位字符" ></textarea>
+          		</div>
+          		<br />
+          		<button class="btn btn-primary btn-lg btn-block submitT" au="" tp="" op="">确定</button>
+</div>
   <div >
       <table class="table table-striped">
       	<thead>
       		<tr>
       			<th>资源</th>
-      			<th>消耗积分</th>
-      			<th>下载量</th>
-      			<th>下载入口</th>
+      			<th class="md">消耗积分</th>
+      			<th class="md">下载量</th>
+      			<th class="md">下载入口</th>
+      			<th class="md">此资源有令人不安的内容</th>
       		</tr>
       	</thead>
       	<tbody id="col-list">

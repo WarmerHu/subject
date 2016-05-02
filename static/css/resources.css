@@ -2,10 +2,21 @@
   body b{
   	font-size:30px;
   }
+  .md{
+  	text-align: center;
+  }
   #points{
   	width:30px;
   	height: 20px;
   }
+  #CMs{
+	border: 10px solid #ddd;
+background-color: white;
+padding: 5px;
+position: fixed;
+left: 40em;
+z-index: 999;
+}
 	#tips{
 		color:red
 	}
