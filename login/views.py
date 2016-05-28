@@ -59,6 +59,7 @@ def regist(req):
     return HttpResponse(json.dumps({'error':'请输入正确的未注册的用户名、邮箱'}),content_type="application/json")
 
 def active(req):
+    req.encoding='gb2312'
     deadline = int(req.GET.get('t'))
     flag = req.GET.get('un').encode('utf-8')
     name = req.GET.get('name').encode('utf-8')

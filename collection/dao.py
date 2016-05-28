@@ -6,6 +6,8 @@ description:
 '''
 from subject.models import Collection, Exercise, User
 from subject.globalData import ONE_PAGE_NUM
+from django.db.models.query_utils import Q
+from _dbus_bindings import String
 
 def update_rightTime_byReq(req):
     if req.has_key('id'):
@@ -44,25 +46,27 @@ class collectionDao():
         
     def select_collection_byUs(self,page):
         rsp = []
-        col = Collection.objects.filter(userid=self.us)[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
+        col = Collection.objects.filter(userid=self.us).order_by('-wrongtime')[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
         for v in col:
-            title = {'id':v.exerciseid.id,'title':v.exerciseid.title,'answer':v.exerciseid.answer}
-            val = {'id':v.id,'rightTime':v.righttime,'wrongTime':v.wrongtime,'note':v.note,'title':title}
-            rsp.append(val)
+            if v.exerciseid.state=='NORMAL':
+                title = {'id':v.exerciseid.id,'title':v.exerciseid.title,'answer':v.exerciseid.answer}
+                val = {'id':v.id,'rightTime':v.righttime,'wrongTime':v.wrongtime,'note':v.note,'title':title}
+                rsp.append(val)
         return rsp
     
     def select_a_collection_byUs(self,req=1):
-        e = Collection.objects.filter(userid=self.us)[int(req)-1 : req]
+        q  = '''select collection.id as id,exercise.id as exid,title,rightTime as rt,wrongTime as wt from collection,exercise 
+                where collection.userId='''+String(self.us.id)+''' and exercise.state="NORMAL" and exerciseid=exercise.id limit '''+String(req)+''',1;'''
+        e = Collection.objects.raw(q)
         rsp = {}
         title = {}
         for v in e:
-            title['id'] = v.exerciseid.id
-            title['title'] = v.exerciseid.title
+            title['id'] = v.exid
+            title['title'] = v.title
             rsp['id'] = v.id
-            rsp['rightTime'] = v.righttime
-            rsp['wrongTime'] = v.wrongtime
-            rsp['note'] = v.note
+            rsp['rightTime'] = v.rt
+            rsp['wrongTime'] = v.wt
             rsp['title'] = title
-            return rsp
+        return rsp
     
 

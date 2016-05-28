@@ -9,7 +9,7 @@ function showData(p){
 					$.each(data.topic,function(n,v){
   						var parentdiv=$("<tr class='toTopic' id='"+v.id+"'><td>"+v.title+"</td>" +
   								"<td>"+v.publisher+"</td>" +
-  								"<td>"+v.replyTime+"</td>" +
+  								"<td class='td-t'>"+v.replyTime+"</td>" +
   								"<td>"+v.createTime+"</td>" +
   								"<td>"+v.modifyTime+"</td></tr>");  
   					    parentdiv.appendTo($("#col-list"));

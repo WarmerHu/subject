@@ -77,7 +77,8 @@ def get_opinions(req,param):
 def add_a_opinion(req,param):
     if req.method == "POST" and req.COOKIES.has_key('userid'):
         content = req.POST["content"]
-        au = req.POST["au"]
+        auTp = int(req.POST["auTp"]) #发布话题的作者
+        au = int(req.POST["au"]) #用户quote
         op = req.POST["op"]
         ph = req.POST["ph"]
         userid = req.COOKIES["userid"]
@@ -85,11 +86,10 @@ def add_a_opinion(req,param):
         if dlen<10 or dlen>10000:
             return HttpResponse(json.dumps({"tips":"请正确输入意见，长度∈[10,10000]"}),content_type="application/json")
         else:
-            dao = BBSDao({"userid":userid,"id":int(param)}) 
+            dao = BBSDao({"userid":userid,"id":int(param),'au':auTp}) 
             if dao.insert_a_opinion({"content":content,"userid":userid}):
                 if au and op and ph:
                     regLIST = "<b>"+('引用').decode("utf-8")+"<a href='"+op+"'>"+ph+"</a>"+("的意见").decode("utf-8")+"</b>"
-#                     if re.compile(regLIST).match(content):
                     if re.match(regLIST,content):
                         dao = userDao({'userid':int(au)})
                         dao.update_point_byReq({'method':"+",'points':1})

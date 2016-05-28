@@ -10,6 +10,8 @@ from django.utils import timezone
 import time
 from login.dao import userDao
 from subject import settings
+import datetime
+from django.db.models.query_utils import Q
 
 
 def select_Ctopic():
@@ -20,7 +22,7 @@ def select_Ctopic():
 返回[{"id":12,"title":xx,"publisher":xx,"createTime":xx,"replyTime":xx,"modifyTime":xx},...]
 '''
 def select_topics_byReq(req,page):
-    dao = Topic.objects.order_by(req["method"]+req["column"])[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
+    dao = Topic.objects.filter(state='NORMAL').order_by(req["method"]+req["column"])[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
     rsp = []
     for v in dao:
         value = {}
@@ -64,6 +66,8 @@ class BBSDao:
             self.bbs = Topic.objects.get(id=req["id"])
         elif req.has_key("bbs"):
             self.bbs = req["bbs"]
+        if req.has_key("au"):
+            self.au = User.objects.get(id=req["au"])
     
     def select_COBBS_by_us(self):
         q = '''select count(topicID) as num,topicID,opinion.id
@@ -102,15 +106,18 @@ class BBSDao:
         return rsp
      
     def insert_a_opinion(self,req):
-        realtime = time.strftime('%Y-%m-%d %H:%M',time.localtime(time.time()))
-        if not Opinion.objects.filter(userid=self.us,topicid=self.bbs,time__startswith=realtime):
+        date_to =  datetime.datetime.now()
+        date_from = date_to - datetime.timedelta(minutes=1) 
+        if not Opinion.objects.filter(userid=self.us,topicid=self.bbs,time__range=[date_from, date_to]):
             realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
             Opinion(userid=self.us,topicid=self.bbs,opinion=req["content"],time=realtime,state='NORMAL',complaint=0).save()
             self.update_topic({"realtime":realtime})
-            dao = userDao({'userid':req['userid']})
-            dao.update_point_byReq({'method':'+','points':1})
-            dao.save_update()
-            num = Opinion.objects.filter(topicid=self.bbs).count()
+            usid = req['userid']
+            if not self.au==self.us:
+                dao = userDao({'userid':usid})
+                dao.update_point_byReq({'method':'+','points':1})
+                dao.save_update()
+            num = Opinion.objects.filter(Q(topicid=self.bbs), ~Q(userid=self.au)).count()
             if not num%5:
                 dao = userDao({'userid':self.bbs.userid.id})
                 dao.update_point_byReq({'method':'+','points':num/5})
@@ -139,35 +146,37 @@ class BBSDao:
      
     def select_topic(self, us=None):
         rsp = {}
-        rsp["id"] = self.bbs.id
-        rsp["topic"] = self.bbs.name
-        rsp["content"] = self.bbs.content
-        rsp["author"] = self.bbs.userid.username
-        rsp["authorid"] = self.bbs.userid.id
-        rsp["head"] = '/static/img/'+self.bbs.userid.head
-        rsp["creatTime"] = timezone.localtime(self.bbs.time).strftime('%Y-%m-%d %H:%M:%S')
-        rsp["replayTime"] = self.bbs.replytime
-        from complaint.dao import complaintDao
-        rsp['complaint'] = complaintDao({'topicid':rsp["id"], 'userid':us}).is_complaint_byTP()
+        if self.bbs.state=='NORMAL':
+            rsp["id"] = self.bbs.id
+            rsp["topic"] = self.bbs.name
+            rsp["content"] = self.bbs.content
+            rsp["author"] = self.bbs.userid.username
+            rsp["authorid"] = self.bbs.userid.id
+            rsp["head"] = '/static/img/'+self.bbs.userid.head
+            rsp["creatTime"] = timezone.localtime(self.bbs.time).strftime('%Y-%m-%d %H:%M:%S')
+            rsp["replayTime"] = self.bbs.replytime
+            from complaint.dao import complaintDao
+            rsp['complaint'] = complaintDao({'topicid':rsp["id"], 'userid':us}).is_complaint_byTP()
         return rsp
      
     def select_Copinion_byBBS(self):
         return Opinion.objects.filter(topicid=self.bbs).count()
      
     def select_opinions_byBBS(self,page,us=None):
-        dao = Opinion.objects.filter(topicid=self.bbs)[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
         rsp = []
-        for v in dao:
-            value = {}
-            value["id"] = v.id
-            value["name"] = v.userid.username
-            value["authorid"] = v.userid.id
-            value["head"] = '/static/img/'+v.userid.head
-            value["content"] = v.opinion
-            value["time"] = timezone.localtime(v.time).strftime('%Y-%m-%d %H:%M:%S')
-            from complaint.dao import complaintDao
-            value['complaint'] = complaintDao({'opinionid':v.id, 'userid':us}).is_complaint_byOP()
-            rsp.append(value)
+        if self.bbs.state=='NORMAL':
+            dao = Opinion.objects.filter(topicid=self.bbs,state='NORMAL')[(page-1)*ONE_PAGE_NUM:page*ONE_PAGE_NUM]
+            for v in dao:
+                value = {}
+                value["id"] = v.id
+                value["name"] = v.userid.username
+                value["authorid"] = v.userid.id
+                value["head"] = '/static/img/'+v.userid.head
+                value["content"] = v.opinion
+                value["time"] = timezone.localtime(v.time).strftime('%Y-%m-%d %H:%M:%S')
+                from complaint.dao import complaintDao
+                value['complaint'] = complaintDao({'opinionid':v.id, 'userid':us}).is_complaint_byOP()
+                rsp.append(value)
         return rsp
      
     '''
@@ -179,10 +188,14 @@ class BBSDao:
     3.插入话题至数据库
     '''
     def insert_a_topic(self,req):
-        realtime = time.strftime('%Y-%m-%d',time.localtime(time.time()))
-        if Topic.objects.filter(userid=self.us,time__startswith=realtime).count() < 5:
+        date_from = datetime.date.today() 
+        date_to = date_from + datetime.timedelta(days=1) 
+        if Topic.objects.filter(userid=self.us,time__range=[date_from, date_to]).count() < 5:
             realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
             Topic(userid=self.us,name=req["name"],content=req["content"],time=realtime,replytime=0,modifytime=realtime,state='NORMAL',complaint=0).save()
+            dao = userDao({'us': self.us})
+            dao.update_point_byReq({'method': '+', 'points': '1'})
+            dao.save_update()
             return True
         return False
      

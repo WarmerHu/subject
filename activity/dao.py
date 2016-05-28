@@ -28,7 +28,7 @@ class activityDao():
 
     def add_a_activity(self,realcontent):
         realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        Activity(userid=self.us,content=self.us.username.encode('utf-8')+realcontent,time=realtime).save()
+        Activity(userid=self.us,content=self.us.username+realcontent,time=realtime).save()
         return
     
     

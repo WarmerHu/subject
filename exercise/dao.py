@@ -6,6 +6,8 @@ description:读取数据库
 '''
 from subject.models import Exercise, User
 from complaint.dao import complaintDao
+import datetime
+import time
 
 
 '''
@@ -67,15 +69,24 @@ class exerciseDao():
         elif req.has_key('userid'):
             self.us = User.objects.get(id=req['userid'])
     
+    def if_excel(self):
+        date_from = datetime.date.today() 
+        date_to = date_from + datetime.timedelta(days=1)
+        if Exercise.objects.filter(userid=self.us,exceltime__range=[date_from, date_to]):
+            return True
+        return False 
+    
     def insert_a_title(self,req):
         Exercise(title=req['title'],answer=req['answer'],tips=req['tips'],userid=self.us,state='NORMAL').save()
     
     def insert_titles(self,req):
         querysetlist=[]
+        realtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         for i in req:
             querysetlist.append(Exercise(title=i['title'],
                                          answer=i['answer'],
                                          tips=i['tips'],
                                          userid=self.us,
-                                         state='ACTIVE'))        
+                                         state='NORMAL',
+                                         exceltime=realtime))     
         Exercise.objects.bulk_create(querysetlist)

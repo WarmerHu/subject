@@ -23,7 +23,7 @@ def mail_control(req):
     userna = req['username']
     deadline = time_control({req['method']:''})
     unameDeadline = make_password(userna+deadline,None,SSH_KEY)
-    activeURL = "127.0.0.1:8001/account/active/?name="+userna.decode('utf-8')+"&un="+unameDeadline+"&t="+deadline
+    activeURL = "smart.com/account/active/?name="+userna.decode('utf-8')+"&un="+unameDeadline+"&t="+deadline
     message = ("亲爱的"+userna+"，你好！\n感谢注册smart，请在7天内点击以下链接激活账号:\n").decode('utf-8')+activeURL
     send_mail("smart激活邮件",message,EMAIL_HOST_USER,[str(req['email'])])
     return unameDeadline

@@ -70,7 +70,7 @@ $(function initial(){
 			},
 			success: function(data){
 				if(data.tips){
-					$("#tips").html(data.tips).show();
+					$("#tips").html("提示："+data.tips).show();
 				}else{
 					sudata(data);
 				}
@@ -122,9 +122,12 @@ function cancelComplaint(){
 	        	alert("取消投诉失败");
 	        },
 	        success: function(data){
+	        	if(data.tips){
+	        		$("#tips").html(data.tips).show();
+	        	}else{
 	        		$("#cmp").html("投诉");
 	        		$("#cmp").attr("cc","addC");
-	        		$("#tips").html(data.tips).show();
+	        	}
 	        }
 			});
 }  	
@@ -153,9 +156,13 @@ function addComplaint(){
 		        	alert("提交投诉失败");
 		        },
 		        success: function(data){
+		        	if(data.tips){
 		        		$("#tips").html(data.tips).show();
+		        	}else{
 		        		$("#cmp").html("取消投诉");
 		        		$("#cmp").attr("cc","canC");
+		        	}
+		        		$('#CMs').hide();
 		        }
 				});
 		}

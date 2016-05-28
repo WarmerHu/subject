@@ -17,7 +17,7 @@ from exercise.dao import read_a_title, get_tips_byId, exerciseDao, updateEXDao
 def into_title(req):
     if req.COOKIES.has_key('userid'):
         userid = req.COOKIES['userid'] 
-        content = '进入刷题宝典'
+        content = ('进入刷题宝典').decode('utf-8')
         ADao = activityDao({"userid":userid})
         ADao.add_a_activity(content)
         return render_to_response('title.html',RequestContext(req))
@@ -63,10 +63,6 @@ def check_answer(req):
 
 def into_publish(req):
     if req.COOKIES.has_key('userid'):
-        userid = req.COOKIES['userid'] 
-        content = '发布了题目'
-        ADao = activityDao({"userid":userid})
-        ADao.add_a_activity(content)
         return render_to_response('publish.html',RequestContext(req))
     return render_to_response('login.html',RequestContext(req))
 
@@ -78,18 +74,24 @@ def into_publish(req):
 def publish_title(req):
     if req.method=='POST' and req.COOKIES.has_key('userid'):
         method = str(req.GET.get('p'))
+        userid = req.COOKIES['userid'] 
         if method == 'input':
             jsonReq = simplejson.loads(req.body)
-            ED = exerciseDao({'userid':req.COOKIES['userid']})
+            ED = exerciseDao({'userid':userid})
             for v in jsonReq:
                 ED.insert_a_title(v)
+            content = ('发布了题目').decode('utf-8')
+            ADao = activityDao({"userid":userid})
+            ADao.add_a_activity(content)
             return HttpResponse(json.dumps({'tips':'添加成功'}), content_type="application/json")
         elif method == 'upload':
-            file = req.FILES['uploadedfile']  # @ReservedAssignment
-            filename = req.POST['filename']
-            if file:
-                userid = req.COOKIES['userid'].decode('utf-8').encode('utf-8')
-                tips = fileCon({'filename':filename,'file':file,'userid':userid})
+            if not exerciseDao({'userid':userid}).if_excel():
+                file = req.FILES['uploadedfile']  # @ReservedAssignment
+                filename = req.POST['filename'].encode('utf-8')
+                if file:
+                    tips = fileCon({'filename':filename,'file':file,'userid':userid})
+            else:
+                tips = "今天已上传了excel"
             return HttpResponse(json.dumps({'tips':tips}), content_type="application/json")
     return HttpResponse(json.dumps({'tips':'添加失败'}), content_type="application/json")
 

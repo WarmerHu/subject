@@ -65,6 +65,7 @@ class Exercise(models.Model):
     state = models.CharField(max_length=6, blank=True, null=True)
     points = models.IntegerField(blank=True, null=True)
     complaint = models.IntegerField(blank=True, null=True)
+    exceltime = models.DateTimeField(db_column='excelTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

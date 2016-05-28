@@ -86,7 +86,7 @@ def add(req):
             activities = " complaints for a resource " + rsdao.download + " uploaded by "+ rsdao.userid.username   
         rq['content'] = jsonReq['content']
         actDao.add_a_activity(activities)
-        return HttpResponse(json.dumps({'tips':dao.insert_a_complaint(rq)}), content_type="application/json")
+        return HttpResponse(json.dumps({'tips':dao.insert_a_complaint(rq,'+')}), content_type="application/json")
     return HttpResponse(json.dumps({'tips':'请求格式不正确or未登录'}), content_type="application/json")
 
 '''

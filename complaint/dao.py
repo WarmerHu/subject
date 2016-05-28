@@ -139,55 +139,54 @@ class complaintDao:
             return True
         return False
     
-    def insert_a_complaint(self,req):
+    def insert_a_complaint(self,req,method):
         if self.ex:
-            n =  Complaint.objects.filter(titleid=self.ex).count()
+            n =  Complaint.objects.filter(titleid=self.ex,state='NORMAL').count()
             if n<5:
                 Complaint(titleid=self.ex, content=req['content'],userid=self.us, state='NORMAL').save()
                 from exercise.dao import updateEXDao
                 dao = updateEXDao() 
                 if dao.update_exercise_complaint( method='+',ex=self.ex)==5:
                     dao.update_exercise_state('ACTIVE', self.ex)
-                    dao.update_ex_save()
-                return 'complain successfully'
+                dao.update_ex_save()
+                return None
         elif self.au:
-            n =  Complaint.objects.filter( authorid=self.au).count()
+            n =  Complaint.objects.filter( authorid=self.au,state='NORMAL').count()
             if n<10:
                 Complaint(authorid=self.au, content=req['content'],userid=self.us, state='NORMAL').save()
                 dao = userDao({'us':self.au})
                 if dao.update_complaint('+')==10:
                     dao.update_state('ACTIVE')
-                    dao.save_update()
+                dao.save_update()
                 return None
         elif self.tp:
-            n =  Complaint.objects.filter( topicid=self.tp).count()
+            n =  Complaint.objects.filter( topicid=self.tp,state='NORMAL').count()
             if n<10:
                 Complaint(topicid=self.tp, content=req['content'],userid=self.us, state='NORMAL').save()
                 from bbs.dao import BBSDao
                 dao = BBSDao({'bbs':self.tp})
-                if dao.update_Tcomplaint('+')==10:
+                if dao.update_Tcomplaint(method)==10:
                     dao.update_Tstate('ACTIVE')
-                    dao.update_Tsave()
+                dao.update_Tsave()
                 return None
         elif self.op:
-            n =  Complaint.objects.filter(opinionid=self.op).count()
+            n =  Complaint.objects.filter(opinionid=self.op,state='NORMAL').count()
             if n<5:
                 Complaint(opinionid=self.op, content=req['content'],userid=self.us, state='NORMAL').save()
                 from bbs.dao import OpinDao
                 dao = OpinDao({'op':self.op})
-                if dao.update_Ocomplaint('+')==10:
+                if dao.update_Ocomplaint('+')==5:
                     dao.update_state('ACTIVE')
-                    dao.save_update()
+                dao.update_save()
                 return None
         elif self.rs:
-            n =  Complaint.objects.filter(resourceid=self.rs).count()
+            n =  Complaint.objects.filter(resourceid=self.rs,state='NORMAL').count()
             if n<10:
                 Complaint(resourceid=self.rs, content=req['content'],userid=self.us, state='NORMAL').save()
                 dao = rsUpdateDao(self.rs)
-                n = dao.update_complaint('+')
                 if dao.update_complaint('+')==10:
                     dao.update_state('ACTIVE')
-                    dao.update_save()
+                dao.update_save()
                 return None
         return 'wrong request'        
         

@@ -14,7 +14,7 @@ from exercise.dao import get_tips_byId
 def into_collection(req):
     if req.COOKIES.has_key('userid'):
         userid = req.COOKIES['userid'] 
-        content = '进入错题集'
+        content = ('进入错题集').decode('utf-8')
         ADao = activityDao({"userid":userid})
         ADao.add_a_activity(content)
         return render_to_response('collection.html',RequestContext(req))
@@ -52,7 +52,7 @@ def into_a_collection(req):
 #获取一条错题
 def get_a_collection(req,param):
     if req.COOKIES.has_key('userid'):
-        rsp = collectionDao({'userid':req.COOKIES['userid']}).select_a_collection_byUs(param)
+        rsp = collectionDao({'userid':req.COOKIES['userid']}).select_a_collection_byUs(int(param)-1)
         return HttpResponse(json.dumps(rsp), content_type="application/json")
     return HttpResponse(json.dumps({}), content_type="application/json")
 
@@ -72,7 +72,7 @@ def check_answer(req):
         CDao = collectionDao({'userid':req.COOKIES['userid']})
         if isTitle:
             update_rightTime_byReq({'id':id})
-            rsp = CDao.select_a_collection_byUs(jsonReq['num'])
+            rsp = CDao.select_a_collection_byUs(jsonReq['num']-1)
             return HttpResponse(json.dumps(rsp), content_type="application/json")
         else:
             update_wrongTime_byReq({'id':id})

@@ -61,7 +61,7 @@ function getOpinion(bbsid,p){
 							"<pre>"+v.content+"</pre></div>");
 					authordiv.appendTo(parentdiv);
 					contentdiv.appendTo(parentdiv);
-//					getHeight(parentdiv);
+//					getHeight(this);
 					parentdiv.appendTo($("#opi-all"));
 					
 				});
@@ -97,7 +97,7 @@ function getTopic(bbsid){
 				}
 			}
 			else{
-				$("#opi").html("没有该则话题");
+				$("#opi").html("没有该则话题or该则话题已被锁定");
 			}
 	},
 	error:function(){
@@ -164,8 +164,8 @@ function addComplaintT(that){
 	        	}else if(value=='topic' ||  value=='opinion'){
 	        		$(that).children(".cmp").html("取消投诉");
 	        		$(that).children(".cmp").attr("cc","can");
-	        		$("#CMs").hide();
 	        	}
+	        	$("#CMs").hide();
 	        }
 			});
 	}
@@ -232,6 +232,7 @@ $(function publish(){
 				dataType:"json",
 				data:{
 					"content":detail,
+					"auTp": parseInt($("#complaintT").attr("au")),
 					"au":curAU,
 					"op":curOP,
 					"ph":ph
