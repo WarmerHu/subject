@@ -5,9 +5,10 @@ import simplejson
 from complaint.dao import complaintDao
 from django.http.response import HttpResponse
 import json
-from activity.dao import activityDao
+from activity.dao import activityDao, is_activity
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
+from subject.models import User
 
 
 def into_complaint(req):
@@ -80,10 +81,15 @@ def add(req):
         elif jsonReq.has_key('rsid'):
             rsid = jsonReq['rsid']
             dao = complaintDao({'userid':userid,'rsid':rsid})
-            if dao.is_complaint_byRS():
-                return HttpResponse(json.dumps({'tips':'你已经投诉过了'}), content_type="application/json")
-            rsdao = dao.rs
-            activities = " complaints for a resource " + rsdao.download + " uploaded by "+ rsdao.userid.username   
+            q = (dao.us.username + ("  下载资源: ").decode("utf-8") + dao.rs.download).encode("utf-8")
+            if not is_activity(q):
+                return HttpResponse(json.dumps({'tips':'假如你没有下载这份资源，你怎么知道资源的内容违反礼仪？'}), content_type="application/json")
+            else:
+                if dao.is_complaint_byRS():
+                    return HttpResponse(json.dumps({'tips':'你已经投诉过了'}), content_type="application/json")
+                rsdao = dao.rs
+#                 activities = " complaints for a resource " + rsdao.download + " uploaded by "+ rsdao.userid.username   
+                activities = '对'  + rsdao.userid.username + '发布的资源：' + rsdao.download + '进行投诉'   
         rq['content'] = jsonReq['content']
         actDao.add_a_activity(activities)
         return HttpResponse(json.dumps({'tips':dao.insert_a_complaint(rq,'+')}), content_type="application/json")

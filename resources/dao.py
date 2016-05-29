@@ -4,7 +4,7 @@ Created on 2016年1月10日
 
 @author: warmerhu
 '''
-from subject.models import Source, User, Activity
+from subject.models import Source, User
 from subject import settings
 from subject.globalData import ONE_PAGE_NUM
 from activity.dao import is_activity
@@ -30,23 +30,23 @@ def select_resources(page,us=None):
             dao = complaintDao({"userid":us, "rsid":v.id})
             content['complaint'] = dao.is_complaint_byRS()
             q = (dao.us.username + ("  下载资源: ").decode("utf-8") + v.download).encode("utf-8")
-            w = "warmer 下载资源: test.py"
+#             w = "warmer 下载资源: test.py"
             content['dw'] =  is_activity(q)
 #             content['dw'] =  q
         rsp.append(content)
     return rsp
 
-def update_a_resources_byReq(req):
-    if req.has_key('id'):
-        s = Source.objects.get(id = req['id'])
-    s.content += 1
-    s.save()
-    return s.content
-
 class rsUpdateDao:
-    def __init__(self,rss):
-        self.rs = rss
+    def __init__(self,rss=0,rsid=0):
+        if rss:
+            self.rs = rss
+        if rsid:
+            self.rs = Source.objects.get(id = rsid)
     
+    def update_content(self):
+            self.rs.content += 1
+            return self.rs.content
+
     def update_state(self, st="ACTIVE"):
         self.rs.state = st
     

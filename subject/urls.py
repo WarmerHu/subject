@@ -5,7 +5,6 @@ import login.urls
 import exercise.url
 import collection.urls
 import resources.urls
-from subject import settings
 import activity.urls
 import fortune.urls
 import bbs.urls
@@ -16,7 +15,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # url(r'^$', 'subject.views.home', name='home'),
 #     url(r'^static/(?P<path>.*)$','django.views.static.serve',),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),    
+#     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),    
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include(login.urls)),
     url(r'^title/', include(exercise.url)),

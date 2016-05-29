@@ -18,7 +18,7 @@ function showData(p){
 					    	value.downloader +"</td>");   
 					    var money=$("<td name='p-"+n+"' class='md' >"+value.money+"</td>");   
 					    var downloaded=$("<td id='"+value.id+"-count' class='md'>"+value.downloaded+"</td>");   
-					    var downloader=$("<td class='md'><button class='btn btn-link dwl' id="+n+" value='"+value.downloader+"'>下载</button></td>");
+					    var downloader=$("<td class='md'><a class='dwl' id="+n+" value='"+value.downloader+"' href='/resources/download/?rs="+value.id+"'>下载</a></td>");
 					    if(value.complaint){
 					    	var complaint=$("<td class='md'><button class='btn btn-link com' id='' au='"+value.uploader+"' rs='"+value.id+"' dw='' cc='can'>取消投诉</button></td>");
 					    }else if(value.dw){
@@ -110,7 +110,7 @@ $(function initial(){
   		 str = $(this).attr("cc");
   		 if(str=='add'){
   			$("#RULE").hide();
-  			if($(this).attr("dw") == "true"){
+//  			if($(this).attr("dw") == "true"){
   				$("#resourse").prop("checked","checked");
   				$(".submitT").attr("rs",$(this).attr("rs"));
   				$(".submitT").attr("au",$(this).attr("au"));
@@ -118,9 +118,9 @@ $(function initial(){
   				$(".submitT").click(function(){
   					addComplaintT(this);
   				});
-  			}else{
-  			 alert("假如你没有下载这份资源，你怎么知道资源的内容违反礼仪？");
-  			}
+//  			}else{
+//  			 alert("假如你没有下载这份资源，你怎么知道资源的内容违反礼仪？");
+//  			}
   		}else if(str=='can'){
   			cancelComplaintT(this);
   		}
@@ -151,7 +151,7 @@ function doUpload(){
 	          }  
 	     }); 
 	}
- 
+ /*
 	 $(function download(){
 		 $("body").on('click',".dwl",function(){
 			 var n = $(this).attr("id");
@@ -176,11 +176,12 @@ function doUpload(){
 			        	}else{
 			        		$("#"+data.resourceID+"-count").html(data.count).show();
 			        		$("#tips").html("扣除"+points+"积分").show();
-			        		location.href = "/static/media/"+value;
+			        		location.href = data.dURL;
 			        		$(that).parent().next().children(".com").attr("dw","true");
 			        	}
 			        }
 				});
 		 })
 	 })
+	 */
 	 
